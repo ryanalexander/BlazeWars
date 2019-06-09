@@ -24,6 +24,8 @@ public class Main extends JavaPlugin implements Listener {
 
       game.setGamestate(gameState.LOBBY);
 
+      getCommand("mct").setExecutor(new com.stelch.games2.BlazeWars.commands.mct());
+
   }
   
   @EventHandler
