@@ -15,7 +15,7 @@ public class Main extends JavaPlugin implements Listener {
   
   public void onEnable() {
 
-      game = new Game("BlazeWars", gameType.DESTROY,2,8);
+      game = new Game("BlazeWars", gameType.DESTROY,1,8, this);
 
       game.setAllow_spectators(true);
 
