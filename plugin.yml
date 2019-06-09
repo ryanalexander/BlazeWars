@@ -1,0 +1,17 @@
+name: Blazewars
+version: 2.0
+author: Aspire
+main: com.stelch.games2.BlazeWars.Main
+commands:
+    setitemspawn:
+        description: Define spawn point for a team.
+    setteamspawn:
+        description: Define spawn point for a team.
+    setplayerspawn:
+        description: Define spawn point for a team.
+    start:
+        description: Define spawn point for a team.
+    setforge:
+        description: Yeet
+    setblaze:
+        description: Yeet

@@ -1,0 +1,89 @@
+maps:
+  hell:
+    spawnpoints:
+      red:
+        x: 0
+        y: 0
+        z: 0
+      blue:
+        x: 0
+        y: 0
+        z: 0
+      green:
+        x: 0
+        y: 0
+        z: 0
+      yellow:
+        x: 0
+        y: 0
+        z: 0
+    blaze:
+      red:
+        x: 0
+        y: 0
+        z: 0
+      blue:
+        x: 0
+        y: 0
+        z: 0
+      green:
+        x: 0
+        y: 0
+        z: 0
+      yellow:
+        x: 0
+        y: 0
+        z: 0
+    villagers:
+      red:
+        team:
+          x: 0
+          y: 0
+          z: 0
+        item:
+          x: 0
+          y: 0
+          z: 0
+        forge:
+          x: 0
+          y: 0
+          z: 0
+      blue:
+        team:
+          x: 0
+          y: 0
+          z: 0
+        item:
+          x: 0
+          y: 0
+          z: 0
+        forge:
+          x: 0
+          y: 0
+          z: 0
+      green:
+        team:
+          x: 0
+          y: 0
+          z: 0
+        item:
+          x: 0
+          y: 0
+          z: 0
+        forge:
+          x: 0
+          y: 0
+          z: 0
+      yellow:
+        team:
+          x: 0
+          y: 0
+          z: 0
+        item:
+          x: 0
+          y: 0
+          z: 0
+        forge:
+          x: 0
+          y: 0
+          z: 0
