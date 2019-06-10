@@ -25,6 +25,10 @@ public class Main extends JavaPlugin implements Listener {
       PluginManager pm = Bukkit.getPluginManager();
       pm.registerEvents(new com.stelch.games2.BlazeWars.events.playerJoin(this),this);
       pm.registerEvents(new com.stelch.games2.BlazeWars.events.blockPlace(),this);
+      pm.registerEvents(new com.stelch.games2.BlazeWars.events.AsyncChatEvent(),this);
+      pm.registerEvents(new com.stelch.games2.BlazeWars.events.playerDeathEvent(this),this);
+      pm.registerEvents(new com.stelch.games2.BlazeWars.events.CommandPreProcessEvent(),this);
+      pm.registerEvents(new com.stelch.games2.BlazeWars.events.EntityInteract(),this);
 
       game.setGamestate(gameState.LOBBY);
 

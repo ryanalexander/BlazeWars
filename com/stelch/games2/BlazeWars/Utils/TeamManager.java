@@ -10,7 +10,20 @@ public class TeamManager {
 
     private HashMap<Player,teamColors> players = new HashMap<>();
 
+    public enum Colors {
+        RED("&c"), GREEN("&a"), BLUE("&b"), PINK("&d");
+        private String color;
+        public String getColor() {return this.color;}
+        private Colors(String color){this.color = color;}
+    }
 
+    public teamColors getTeam(Player p){
+        return players.get(p);
+    }
+
+    public String getTeamColor(teamColors team){
+        return Colors.valueOf(team.toString()).getColor();
+    }
 
     public void assignTeams(){
         teamColors team;
