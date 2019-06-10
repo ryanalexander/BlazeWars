@@ -1,5 +1,6 @@
 package com.stelch.games2.BlazeWars;
 
+import com.stelch.games2.BlazeWars.Inventories.shop;
 import com.stelch.games2.BlazeWars.Utils.TeamManager;
 import com.stelch.games2.BlazeWars.Utils.text;
 import com.stelch.games2.BlazeWars.varables.gameState;
@@ -33,7 +34,7 @@ public class Game {
 
     private TeamManager teamManager;
 
-    private int start_time = 10;
+    private int start_time = 5;
 
     private Main handler;
 
@@ -145,7 +146,7 @@ public class Game {
                 }
                 Bukkit.broadcastMessage(text.f(String.format("&aGAME> &fThe game will begin in %s",start_time)));
                 if(start_time==0){
-                    start_time=10;
+                    start_time=5;
                     setGamestate(gameState.IN_GAME);
                     Bukkit.getScheduler().cancelTasks(handler);
 
@@ -214,10 +215,13 @@ public class Game {
                         v.setSilent(true);
                         v.setGliding(false);
                         v.getEquipment().setItemInMainHand(new ItemStack(Material.AIR));
+                        v.getEquipment().setItemInOffHand(new ItemStack(Material.AIR));
+                        v.getEquipment().setItemInHand(new ItemStack(Material.AIR));
                         EntityFunctions.put(v, new click() {
                             @Override
                             public void run(Player player) {
-                                player.sendMessage("No action specified for this entity.");
+                                shop shop = new shop();
+                                player.openInventory(shop.getShop(player));
                             }
                         });
                         gameEntities.add(v);

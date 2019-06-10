@@ -51,6 +51,9 @@ public class mct implements CommandExecutor {
             case "list":
                 sender.sendMessage(text.f("&aMCT> The &elist&r command is under construction"));
                 break;
+            case "spawnec":
+
+                break;
             default:
                 sender.sendMessage(text.f("&aMCT> &fThe command specified does not exist."));
         }

@@ -38,7 +38,6 @@ public class playerDeathEvent implements Listener {
     @EventHandler
     public void onDamage(EntityDamageByEntityEvent e) {
         if(e.getEntity().getType() != PLAYER){
-            Bukkit.broadcastMessage("Damage negated as non-player entity");
             return;
         }
         Player player = (Player) e.getEntity();
