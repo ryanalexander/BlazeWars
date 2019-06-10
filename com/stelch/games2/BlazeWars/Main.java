@@ -18,16 +18,18 @@ public class Main extends JavaPlugin implements Listener {
       getConfig().options().copyDefaults(true);
       saveConfig();
 
-      game = new Game("BlazeWars", gameType.DESTROY,1,8, this);
+      game = new Game("BlazeWars", gameType.DESTROY,2,8, this);
 
       game.setAllow_spectators(true);
 
       PluginManager pm = Bukkit.getPluginManager();
       pm.registerEvents(new com.stelch.games2.BlazeWars.events.playerJoin(this),this);
+      pm.registerEvents(new com.stelch.games2.BlazeWars.events.blockPlace(),this);
 
       game.setGamestate(gameState.LOBBY);
 
       getCommand("mct").setExecutor(new com.stelch.games2.BlazeWars.commands.mct(this));
+      getCommand("admin").setExecutor(new com.stelch.games2.BlazeWars.commands.admin(this));
 
   }
   

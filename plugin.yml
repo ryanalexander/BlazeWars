@@ -5,3 +5,5 @@ main: com.stelch.games2.BlazeWars.Main
 commands:
     mct:
         description: Map Creator Tools V1
+    admin:
+        description: Arcade Administration command

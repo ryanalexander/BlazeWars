@@ -9,10 +9,13 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.block.Block;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 public class Game {
@@ -23,6 +26,10 @@ public class Game {
     private int max_players;
 
     private gameState gamestate = gameState.DISABLED;
+
+    private ArrayList<Entity> gameEntities=new ArrayList<>();
+
+    private HashMap<Location,Block> blockChanges = new HashMap<>();
 
     private TeamManager teamManager;
 
@@ -47,6 +54,12 @@ public class Game {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public void doBlockUpdate(Location loc, Block b){
+        if(!(this.blockChanges.containsKey(loc))){
+            this.blockChanges.put(loc,b);
+        }
     }
 
     public void setAllow_spectators(boolean allow_spectators) {
@@ -103,14 +116,18 @@ public class Game {
     }
 
     public void start() {
+        setGamestate(gameState.STARTING);
 
         // Start countdown
         Bukkit.getScheduler().scheduleSyncRepeatingTask(this.handler, new Runnable() {
             @Override
             public void run() {
-                setGamestate(gameState.STARTING);
+                if(getGamestate()!=gameState.STARTING){
+                    Bukkit.getScheduler().cancelTasks(handler);
+                }
                 Bukkit.broadcastMessage(text.f(String.format("&aGAME> &fThe game will begin in %s",start_time)));
                 if(start_time==0){
+                    setGamestate(gameState.IN_GAME);
                     Bukkit.getScheduler().cancelTasks(handler);
 
                     teamManager.assignTeams();
@@ -134,8 +151,20 @@ public class Game {
                         Double y = Double.parseDouble(config.getString(String.format(("maps.%s.core.%s.y"),"world",s)));
                         Double z = Double.parseDouble(config.getString(String.format(("maps.%s.core.%s.z"),"world",s)));
                         Location core=new Location(Bukkit.getWorld("world"),x,y,z);
+                        Double bx = Double.parseDouble(config.getString(String.format(("maps.%s.blaze.%s.x"),"world",s)));
+                        Double by = Double.parseDouble(config.getString(String.format(("maps.%s.blaze.%s.y"),"world",s)));
+                        Double bz = Double.parseDouble(config.getString(String.format(("maps.%s.blaze.%s.z"),"world",s)));
+                        Location blaze=new Location(Bukkit.getWorld("world"),bx,by,bz);
 
                         core.getBlock().setType(Material.OBSIDIAN);
+
+                        Blaze b = (Blaze)Bukkit.getWorld("world").spawnEntity(blaze,EntityType.BLAZE);
+                        b.setAI(false);
+                        b.setCanPickupItems(false);
+                        b.setCollidable(false);
+                        b.setInvulnerable(true);
+                        b.setSilent(true);
+                        b.setGliding(false);
                     }
 
                 }
@@ -143,5 +172,17 @@ public class Game {
             }
         },1,25);
 
+    }
+
+    public void stop() {
+        this.gamestate=gameState.POST_GAME;
+        Bukkit.broadcastMessage(text.f("&aGame> &7This game has been &c&lSTOPPED&7 by an Administrator."));
+        for(Entity e : this.gameEntities){
+            e.remove();
+        }
+        for(Map.Entry<Location,Block> b : this.blockChanges.entrySet()){
+            b.getKey().getBlock().setType(b.getValue().getType());
+            b.getKey().getBlock().setBlockData(b.getValue().getBlockData());
+        }
     }
 }
