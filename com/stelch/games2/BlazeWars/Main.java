@@ -15,6 +15,9 @@ public class Main extends JavaPlugin implements Listener {
   
   public void onEnable() {
 
+      getConfig().options().copyDefaults(true);
+      saveConfig();
+
       game = new Game("BlazeWars", gameType.DESTROY,1,8, this);
 
       game.setAllow_spectators(true);
@@ -24,7 +27,7 @@ public class Main extends JavaPlugin implements Listener {
 
       game.setGamestate(gameState.LOBBY);
 
-      getCommand("mct").setExecutor(new com.stelch.games2.BlazeWars.commands.mct());
+      getCommand("mct").setExecutor(new com.stelch.games2.BlazeWars.commands.mct(this));
 
   }
   
