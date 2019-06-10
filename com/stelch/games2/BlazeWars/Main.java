@@ -52,15 +52,14 @@ public class Main extends JavaPlugin implements Listener {
   @EventHandler
   public void food(FoodLevelChangeEvent e) { e.setCancelled(true); }
 
-  @EventHandler
-  public void inventoryClick(InventoryClickEvent e) {
-      Bukkit.broadcastMessage("Clicked");
-      if(Actions.containsKey(e.getCurrentItem())){
-          Bukkit.broadcastMessage("Found");Actions.get(e.getCurrentItem()).run((Player)e.getWhoClicked());
-      } else {
-          for(Map.Entry<ItemStack,Item.click> es : Actions.entrySet()){
-              Bukkit.broadcastMessage(text.f(String.format("Item: %s &rClicked: %s",es.getKey(),e.getCurrentItem())));
-          }
-      }
-  }
+    @EventHandler
+    public void InventoryClickEvent(InventoryClickEvent e) {
+        for (Map.Entry<ItemStack, Item.click> is : Actions.entrySet()) {
+            if (((ItemStack)is.getKey()).equals(e.getCurrentItem())) {
+                ((Item.click)is.getValue()).run((Player)e.getWhoClicked());
+                e.setCancelled(true);
+                return;
+            }
+        }
+    }
 }

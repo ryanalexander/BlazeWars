@@ -3,6 +3,7 @@ package com.stelch.games2.BlazeWars.events;
 import com.stelch.games2.BlazeWars.Main;
 import com.stelch.games2.BlazeWars.Utils.text;
 import com.stelch.games2.BlazeWars.varables.gameState;
+import com.stelch.games2.BlazeWars.varables.teamColors;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -37,6 +38,12 @@ public class blockPlace implements Listener {
             if(!(Main.game.canBreakBlock(e.getBlock()))){
                 e.getPlayer().sendMessage(text.f("&cYou can only break blocks placed by players."));
                 e.setCancelled(true);
+            }else {
+                if(Main.game.getTeamManager().isCore(e.getBlock())){
+                    teamColors team = Main.game.getTeamManager().getCore(e.getBlock());
+                    Main.game.getTeamManager().setCantRespawn(team,true);
+                    Bukkit.broadcastMessage(String.format("%s's core has been destroyed! They are now vulnerable.",team));
+                }
             }
         }
     }

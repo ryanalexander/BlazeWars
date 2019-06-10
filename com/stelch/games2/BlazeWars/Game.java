@@ -188,7 +188,14 @@ public class Game {
                         Float vpitch = Float.parseFloat("0.0");
                         Location villager=new Location(Bukkit.getWorld("world"),vx,vy,vz,vyaw,vpitch);
 
+                        Double fx = Double.parseDouble(config.getString(String.format(("maps.%s.forge.%s.x"),"world",s)));
+                        Double fy = Double.parseDouble(config.getString(String.format(("maps.%s.forge.%s.y"),"world",s)));
+                        Double fz = Double.parseDouble(config.getString(String.format(("maps.%s.forge.%s.z"),"world",s)));
+                        Location forge =new Location(Bukkit.getWorld("world"),fx,fy,fz);
+
                         core.getBlock().setType(Material.NETHER_QUARTZ_ORE);
+                        Main.game.getTeamManager().addCore(s,core.getBlock());
+
 
                         blockChanges.put(core.getBlock().getLocation(),core.getBlock());
 
@@ -214,9 +221,6 @@ public class Game {
                         v.setInvulnerable(true);
                         v.setSilent(true);
                         v.setGliding(false);
-                        v.getEquipment().setItemInMainHand(new ItemStack(Material.AIR));
-                        v.getEquipment().setItemInOffHand(new ItemStack(Material.AIR));
-                        v.getEquipment().setItemInHand(new ItemStack(Material.AIR));
                         EntityFunctions.put(v, new click() {
                             @Override
                             public void run(Player player) {
@@ -237,6 +241,7 @@ public class Game {
     public void stop() {
         this.gamestate=gameState.RESTARTING;
         Bukkit.broadcastMessage(text.f("&aGame> &7This game has been &c&lSTOPPED&7 by an Administrator."));
+        Bukkit.getScheduler().cancelTasks(handler);
         for(Entity e : this.gameEntities){
             e.remove();
         }

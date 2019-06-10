@@ -20,8 +20,13 @@ public class Item {
         im.setDisplayName(text.f(name));
     }
 
-    public void setOnClick(click onClick){
+    public void setAmount(int amount){
+        is.setAmount(amount);
+    }
+
+    public Item setOnClick(click onClick){
         Main.Actions.put(this.is,onClick);
+        return this;
     }
 
     public ItemStack spigot() {

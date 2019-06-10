@@ -2,13 +2,20 @@ package com.stelch.games2.BlazeWars.Utils;
 
 import com.stelch.games2.BlazeWars.varables.teamColors;
 import org.bukkit.Bukkit;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.bukkit.scoreboard.Team;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 public class TeamManager {
 
     private HashMap<Player,teamColors> players = new HashMap<>();
+
+    private HashMap<teamColors, Block> cores = new HashMap<>();
+    private ArrayList<teamColors> cantRespawn = new ArrayList<>();
 
     public enum Colors {
         RED("&c"), GREEN("&a"), BLUE("&b"), PINK("&d");
@@ -21,6 +28,34 @@ public class TeamManager {
         return players.get(p);
     }
 
+    public void setCantRespawn (teamColors team, boolean state) {
+        if(state){
+            cantRespawn.add(team);
+        }else {
+            cantRespawn.remove(team);
+        }
+    }
+    public boolean isCore(Block block){
+        return cores.containsValue(block);
+    }
+    public teamColors getCore(Block block){
+        for(Map.Entry<teamColors, Block> data : this.cores.entrySet()){
+            if(data.getValue().equals(block)){
+                return data.getKey();
+            }
+        }
+        return null;
+    }
+    public Block getCore(teamColors team){
+        return this.cores.get(team);
+    }
+
+    public void addCore(teamColors team, Block core){
+        cores.put(team,core);
+    }
+    public boolean getCanRespawn(teamColors team) {
+        return !cantRespawn.contains(team);
+    }
     public String getTeamColor(teamColors team){
         return Colors.valueOf(team.toString()).getColor();
     }
