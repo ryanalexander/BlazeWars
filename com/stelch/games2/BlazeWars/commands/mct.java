@@ -26,18 +26,21 @@ public class mct implements CommandExecutor {
                     text.f("&eThis tool was created for Map Creators to"),
                     text.f("&ehave the ability to specify custom map parameters"),
                     " ",
-                    text.f("&e- &a/mct set &d{spawner/blaze/core} {team/id}"),
-                    text.f("&e- &a/mct remove &d{spawner/blaze/core} {team/id}"),
+                    text.f("&e- &a/mct set &d{spawn/forge/blaze/core} {team/id}"),
+                    text.f("&e- &a/mct remove &d{spawn/forge/blaze/core} {team/id}"),
                     "",
                     text.f("&e- &a/mct list &d{spawner/blaze/core}")
 
             });
+            return false;
         }
 
         switch(args[0]){
             case "set":
-                sender.sendMessage(text.f("&aMCT> The &eset&r command is under construction"));
-                plugin.getConfig().set(String.format("maps.%s.%s",args[1],args[2]),loc.toString());
+                plugin.getConfig().set(String.format("maps.%s.%s.%s.x",loc.getWorld().getName(),args[1].toLowerCase(),args[2].toLowerCase()),loc.getX());
+                plugin.getConfig().set(String.format("maps.%s.%s.%s.y",loc.getWorld().getName(),args[1].toLowerCase(),args[2].toLowerCase()),loc.getY());
+                plugin.getConfig().set(String.format("maps.%s.%s.%s.z",loc.getWorld().getName(),args[1].toLowerCase(),args[2].toLowerCase()),loc.getZ());
+                plugin.saveConfig();
                 sender.sendMessage(text.f(String.format("&aMCT> &7Saved &e%s&7 location at x:%s y:%s z:%s",args[1],loc.getX(),loc.getY(),loc.getZ())));
                 break;
             case "remove":

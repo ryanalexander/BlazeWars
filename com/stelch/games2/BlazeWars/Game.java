@@ -1,10 +1,19 @@
 package com.stelch.games2.BlazeWars;
 
+import com.stelch.games2.BlazeWars.Utils.TeamManager;
 import com.stelch.games2.BlazeWars.Utils.text;
 import com.stelch.games2.BlazeWars.varables.gameState;
 import com.stelch.games2.BlazeWars.varables.gameType;
+import com.stelch.games2.BlazeWars.varables.teamColors;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.World;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
+
+import java.util.Map;
 
 public class Game {
 
@@ -14,6 +23,8 @@ public class Game {
     private int max_players;
 
     private gameState gamestate = gameState.DISABLED;
+
+    private TeamManager teamManager;
 
     private int start_time = 10;
 
@@ -26,6 +37,7 @@ public class Game {
     private gameType gamemode;
 
     public Game(String title, gameType gamemode, int min_players, int max_players, Main handler){
+        teamManager=new TeamManager();
         this.title=title;
         this.gamemode=gamemode;
         this.min_players=min_players;
@@ -101,7 +113,31 @@ public class Game {
                 if(start_time==0){
                     Bukkit.getScheduler().cancelTasks(handler);
 
-                    Bukkit.broadcastMessage("The game has begun");
+                    teamManager.assignTeams();
+
+                    for(Map.Entry<Player, teamColors> teamPlayer : teamManager.getPlayers().entrySet()){
+                        Player player = teamPlayer.getKey();
+                        teamColors team = teamPlayer.getValue();
+                        FileConfiguration config = handler.getConfig();
+                        Bukkit.broadcastMessage(config.getString(String.format(("maps.%s.spawn.%s.z"),"world","red")));
+                        Double x = Double.parseDouble(config.getString(String.format(("maps.%s.spawn.%s.x"),"world",team)));
+                        Double y = Double.parseDouble(config.getString(String.format(("maps.%s.spawn.%s.y"),"world",team)));
+                        Double z = Double.parseDouble(config.getString(String.format(("maps.%s.spawn.%s.z"),"world",team)));
+                        Location teamSpawn=new Location(player.getWorld(),x,y,z);
+
+                        player.teleport(teamSpawn);
+                    }
+
+                    for(teamColors s : teamColors.values()){
+                        FileConfiguration config = handler.getConfig();
+                        Double x = Double.parseDouble(config.getString(String.format(("maps.%s.core.%s.x"),"world",s)));
+                        Double y = Double.parseDouble(config.getString(String.format(("maps.%s.core.%s.y"),"world",s)));
+                        Double z = Double.parseDouble(config.getString(String.format(("maps.%s.core.%s.z"),"world",s)));
+                        Location core=new Location(Bukkit.getWorld("world"),x,y,z);
+
+                        core.getBlock().setType(Material.OBSIDIAN);
+                    }
+
                 }
                 start_time--;
             }
