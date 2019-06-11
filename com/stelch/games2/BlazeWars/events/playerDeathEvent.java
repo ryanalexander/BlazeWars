@@ -1,6 +1,7 @@
 package com.stelch.games2.BlazeWars.events;
 
 import com.stelch.games2.BlazeWars.Main;
+import com.stelch.games2.BlazeWars.Utils.TeamManager;
 import com.stelch.games2.BlazeWars.Utils.text;
 import com.stelch.games2.BlazeWars.varables.gameState;
 import com.stelch.games2.BlazeWars.varables.teamColors;
@@ -8,12 +9,16 @@ import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Sound;
+import org.bukkit.block.data.type.Snow;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByBlockEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.concurrent.ThreadLocalRandom;
@@ -35,23 +40,27 @@ public class playerDeathEvent implements Listener {
     }
 
     @EventHandler
+    public void onDeath(PlayerDeathEvent e){
+        e.setDeathMessage(null);
+        e.setDroppedExp(0);
+    }
+
+    @EventHandler
     public void onDamage(EntityDamageByEntityEvent e) {
-        if(e.getEntity().getType() != PLAYER){
-            return;
-        }
+        if(!(e.getEntity().getType().equals(PLAYER))){return;}
         Player player = (Player) e.getEntity();
-        Player attacker = (Player) e.getDamager();
+        Player attacker = resolveDamager(e.getDamager());
         if ((player.getHealth()-e.getFinalDamage())<=1) {
             e.setCancelled(true);
             if(Main.game.getGamestate()==gameState.IN_GAME){
                 Bukkit.broadcastMessage(
                         text.f(
-                                String.format("&eDEATH> &f"+messages[ThreadLocalRandom.current().nextInt(0,3)],
-                                        player.getDisplayName(),
-                                        attacker.getDisplayName()
+                                String.format("&eDEATH> &f"+messages[ThreadLocalRandom.current().nextInt(0, messages.length)],
+                                        Main.game.getTeamManager().getTeamColor(Main.game.getTeamManager().getTeam(player))+player.getName(),
+                                        Main.game.getTeamManager().getTeamColor(Main.game.getTeamManager().getTeam(attacker))+attacker.getName()
                                 )
                         ));
-                attacker.playSound(attacker.getLocation(), Sound.ENTITY_BAT_DEATH,1,1);
+                if(attacker!=null)attacker.playSound(attacker.getLocation(), Sound.ENTITY_BAT_DEATH,1,1);
                 player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING,1,1);
 
                 player.setGameMode(GameMode.SPECTATOR);
@@ -64,14 +73,13 @@ public class playerDeathEvent implements Listener {
     public void doRespawnPlayer(Player player){
         teamColors team = Main.game.getTeamManager().getTeam(player);
         if(!(Main.game.getTeamManager().getCanRespawn(team))){
-            player.sendTitle(text.f("&c&lYou have been eliminated"),text.f(("&eYou may no longer respawn")));
+            player.sendTitle(text.f("&c&lYou have been eliminated"),text.f(("&eYou may no longer respawn")),2,30,2);
             return;
         }
         new BukkitRunnable(){
             int respawn_time = 5;
             public void run() {
                 if(respawn_time<=0){
-                    player.setGameMode(GameMode.SURVIVAL);
                     FileConfiguration config = plugin.getConfig();
                     teamColors team = Main.game.getTeamManager().getTeam(player);
                     Double x = Double.parseDouble(config.getString(String.format(("maps.%s.spawn.%s.x"),"world",team)));
@@ -82,10 +90,11 @@ public class playerDeathEvent implements Listener {
                     Location teamSpawn=new Location(player.getWorld(),x,y,z,yaw,pitch);
                     player.sendTitle(" ","");
                     player.teleport(teamSpawn);
+                    player.setGameMode(GameMode.SURVIVAL);
                     player.setHealth(20);
                     cancel();
                 }else {
-                    player.sendTitle(text.f("&c&lYou have died"),text.f(String.format("&eRespawning in %ss",respawn_time)));
+                    player.sendTitle(text.f("&cYou have died"),text.f(String.format("&eRespawning in %s",respawn_time)),0,30,0);
                     respawn_time--;
                 }
             }
@@ -94,29 +103,49 @@ public class playerDeathEvent implements Listener {
 
     @EventHandler
     public void onDamage(EntityDamageEvent e){
-        if(e.getEntity() instanceof Player) {
+        if(e.getCause().equals(EntityDamageEvent.DamageCause.LIGHTNING))e.setCancelled(true);
+        if(e.getEntity() instanceof Player&&(((((Player) e.getEntity()).getHealth()-e.getFinalDamage())<=1)||e.getCause().equals(EntityDamageEvent.DamageCause.VOID))) {
             e.getCause();
             Player player = (Player)e.getEntity();
-            if (e.getCause().name().equalsIgnoreCase("void")){
-                e.setCancelled(false);
-                Double x = Double.parseDouble(plugin.getConfig().getString("maps.world.mid.x"));
-                Double y = Double.parseDouble(plugin.getConfig().getString("maps.world.mid.y"));
-                Double z = Double.parseDouble(plugin.getConfig().getString("maps.world.mid.z"));
-                Location mid=new Location(player.getWorld(),x,y,z);
-                player.teleport(mid);
-                player.setGameMode(GameMode.SPECTATOR);
-                Bukkit.broadcastMessage(
-                        text.f(
-                                String.format("&eDEATH> &f"+messages[ThreadLocalRandom.current().nextInt(0, messages.length + 1)],
-                                        player.getDisplayName(),
-                                        text.f("&8THE VOID&r")
-                                )
-                        ));
-                doRespawnPlayer(((Player) e.getEntity()).getPlayer());
-            }
+            if((((Player) e.getEntity()).getHealth()-e.getFinalDamage())<=1)e.setCancelled(true);
+            Double x = Double.parseDouble(plugin.getConfig().getString("maps.world.mid.x"));
+            Double y = Double.parseDouble(plugin.getConfig().getString("maps.world.mid.y"));
+            Double z = Double.parseDouble(plugin.getConfig().getString("maps.world.mid.z"));
+            Location mid=new Location(player.getWorld(),x,y,z);
+            player.teleport(mid);
+            player.setGameMode(GameMode.SPECTATOR);
+            Bukkit.broadcastMessage(
+                    text.f(
+                            String.format("&eDEATH> &f"+messages[ThreadLocalRandom.current().nextInt(0, messages.length)],
+                                    player.getDisplayName(),
+                                    e.getCause().toString()
+                            )
+                    ));
+            doRespawnPlayer(((Player) e.getEntity()).getPlayer());
         }
         if(Main.game.isGameEntity(e.getEntity())){
             e.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void EntityDamageByBlockEvent(EntityDamageByBlockEvent e){
+        e.setCancelled(false);
+        return;
+    }
+
+    public static Player resolveDamager(Entity e) {
+        switch (e.getType()){
+            case ARROW:
+                return ((Player)((Arrow)e).getShooter());
+            case PLAYER:
+                return (Player)e;
+            case SNOWBALL:
+                return ((Player)((Snowball)e).getShooter());
+            case PRIMED_TNT:
+                return ((Player)((TNTPrimed)e).getSource());
+            default:
+                return null;
         }
     }
 }

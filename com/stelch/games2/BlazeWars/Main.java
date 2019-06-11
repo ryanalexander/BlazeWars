@@ -55,8 +55,9 @@ public class Main extends JavaPlugin implements Listener {
     @EventHandler
     public void InventoryClickEvent(InventoryClickEvent e) {
         for (Map.Entry<ItemStack, Item.click> is : Actions.entrySet()) {
-            if (((ItemStack)is.getKey()).equals(e.getCurrentItem())) {
-                ((Item.click)is.getValue()).run((Player)e.getWhoClicked());
+            if(is.getKey().equals(e.getCurrentItem())){
+                if(is.getValue()!=null)
+                    is.getValue().run((Player)e.getWhoClicked());
                 e.setCancelled(true);
                 return;
             }

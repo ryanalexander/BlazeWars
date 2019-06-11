@@ -1,6 +1,7 @@
 package com.stelch.games2.BlazeWars.Inventories;
 
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -25,7 +26,18 @@ public class header {
             Item Eggs = new Item(Material.MAGMA_CUBE_SPAWN_EGG,"&6Eggs");
             Item Special = new Item(Material.TNT,"&6Special");
 
+            Armor.setLore(new String[]{"&r","&eComing Soon"});
+            Potions.setLore(new String[]{"&r","&eComing Soon"});
+            Eggs.setLore(new String[]{"&r","&eComing Soon"});
+            Special.setLore(new String[]{"&r","&eComing Soon"});
+
             Blocks.setOnClick(new Item.click(){public void run(Player p){p.openInventory(blocks.getShop(p));}});
+            Weapons.setOnClick(new Item.click(){public void run(Player p){p.openInventory(weapons.getShop(p));}});
+            Armor.setOnClick(new Item.click(){public void run(Player p){p.playSound(p.getLocation(), Sound.ENTITY_VILLAGER_TRADE,1,1);}});
+            Tools.setOnClick(new Item.click(){public void run(Player p){p.openInventory(tools.getShop(p));}});
+            Potions.setOnClick(new Item.click(){public void run(Player p){p.playSound(p.getLocation(), Sound.ENTITY_VILLAGER_TRADE,1,1);}});
+            Eggs.setOnClick(new Item.click(){public void run(Player p){p.playSound(p.getLocation(), Sound.ENTITY_VILLAGER_TRADE,1,1);}});
+            Special.setOnClick(new Item.click(){public void run(Player p){p.playSound(p.getLocation(), Sound.ENTITY_VILLAGER_TRADE,1,1);}});
 
             inv.setItem(10,Blocks.spigot());
             inv.setItem(11,Weapons.spigot());
