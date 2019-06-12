@@ -37,10 +37,10 @@ public class mct implements CommandExecutor {
 
         switch(args[0]){
             case "set":
-                plugin.getConfig().set(String.format("maps.%s.%s.%s.x",loc.getWorld().getName(),args[1].toLowerCase(),args[2].toLowerCase()),loc.getX());
-                plugin.getConfig().set(String.format("maps.%s.%s.%s.y",loc.getWorld().getName(),args[1].toLowerCase(),args[2].toLowerCase()),loc.getY());
-                plugin.getConfig().set(String.format("maps.%s.%s.%s.z",loc.getWorld().getName(),args[1].toLowerCase(),args[2].toLowerCase()),loc.getZ());
-                plugin.getConfig().set(String.format("maps.%s.%s.%s.yaw",loc.getWorld().getName(),args[1].toLowerCase(),args[2].toLowerCase()),loc.getYaw());
+                plugin.getConfig().set(String.format("maps.%s.%s.%s.x",loc.getWorld().getName(),args[1].toLowerCase(),args[2].toLowerCase()),Double.parseDouble(""+loc.getX()));
+                plugin.getConfig().set(String.format("maps.%s.%s.%s.y",loc.getWorld().getName(),args[1].toLowerCase(),args[2].toLowerCase()),Double.parseDouble(""+loc.getY()));
+                plugin.getConfig().set(String.format("maps.%s.%s.%s.z",loc.getWorld().getName(),args[1].toLowerCase(),args[2].toLowerCase()),Double.parseDouble(""+loc.getZ()));
+                plugin.getConfig().set(String.format("maps.%s.%s.%s.yaw",loc.getWorld().getName(),args[1].toLowerCase(),args[2].toLowerCase()),Double.parseDouble(""+loc.getYaw()));
                 plugin.saveConfig();
                 sender.sendMessage(text.f(String.format("&aMCT> &7Saved &e%s&7 location at x:%s y:%s z:%s",args[1],loc.getX(),loc.getY(),loc.getZ())));
                 break;

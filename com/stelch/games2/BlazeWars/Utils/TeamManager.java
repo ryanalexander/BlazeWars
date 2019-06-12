@@ -146,10 +146,22 @@ public class TeamManager {
         for(Player p : Bukkit.getOnlinePlayers()){
             if(iterator==0){
                 players.put(p,teamColors.blue);
+                p.setDisplayName(getTeamColor(teamColors.blue)+p.getName());
                 team=teamColors.blue;
+                iterator=1;
+            }else if (iterator==1){
+                players.put(p,teamColors.green);
+                p.setDisplayName(getTeamColor(teamColors.green)+p.getName());
+                team=teamColors.green;
+                iterator=1;
+            }else if (iterator==2){
+                players.put(p,teamColors.yellow);
+                p.setDisplayName(getTeamColor(teamColors.yellow)+p.getName());
+                team=teamColors.yellow;
                 iterator=1;
             }else {
                 players.put(p,teamColors.pink);
+                p.setDisplayName(getTeamColor(teamColors.pink)+p.getName());
                 team=teamColors.pink;
                 iterator=0;
             }

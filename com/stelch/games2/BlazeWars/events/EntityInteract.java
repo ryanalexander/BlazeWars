@@ -7,6 +7,10 @@ import com.stelch.games2.BlazeWars.Utils.text;
 import com.stelch.games2.BlazeWars.varables.gameState;
 import com.stelch.games2.BlazeWars.varables.teamColors;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Fireball;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -14,8 +18,22 @@ import org.bukkit.event.entity.EntityInteractEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.util.Vector;
 
 public class EntityInteract implements Listener {
+
+    @EventHandler
+    public void EntityInteract(PlayerInteractEvent e){
+        if(e.getMaterial().equals(Material.FIRE_CHARGE)){
+            e.setCancelled(true);
+            Fireball fb = (Fireball) e.getPlayer().getWorld().spawnEntity(e.getPlayer().getLocation(), EntityType.FIREBALL);
+            fb.setDirection(e.getPlayer().getLocation().getDirection());
+            fb.setBounce(false);
+            fb.setVelocity(fb.getVelocity().multiply(2));
+            fb.setShooter(e.getPlayer());
+        }
+    }
 
     @EventHandler
     public void EntityInteractEvent(PlayerInteractEntityEvent e){

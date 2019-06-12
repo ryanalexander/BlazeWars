@@ -42,7 +42,7 @@ public class Item {
 
     public Item setOnClick(click onClick){
         if(onClick!=null)
-            Main.Actions.put(this.is,onClick);
+            Main.Actions.put(this,onClick);
         return this;
     }
 

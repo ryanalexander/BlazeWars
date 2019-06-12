@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import static com.stelch.games2.BlazeWars.varables.itemUpgrades.*;
 import static org.bukkit.Material.*;
 
-public class tools implements Listener {
+public class specials implements Listener {
 
     private static Inventory shop;
 
@@ -24,7 +24,7 @@ public class tools implements Listener {
     // 11,12,13,14,15,16,17,29,30,31,33,34,35,38,39
 
     public static Inventory getShop(Player player) {
-        tools.shop = header.format(Bukkit.createInventory(null,9*6, text.f("&cSkully's Tools")),false);
+        specials.shop = header.format(Bukkit.createInventory(null,9*6, text.f("&cSkully's Tools")),false);
 
         Item close = new Item(Material.BARRIER,"&cBack");
         close.setOnClick(new Item.click() {
@@ -34,81 +34,65 @@ public class tools implements Listener {
             }
         });
 
-        Item shears = new Item(Material.SHEARS,"&bShears");
-        shears.setLore(new String[]{
+        Item tnt = new Item(Material.TNT,"&bTNT");
+        tnt.setLore(new String[]{
                 "&r",
-                "&aCost: &f20 Iron"
+                "&aCost: &64 Gold"
         });
-        shears.setAmount(1);
-        shears.setOnClick(new Item.click(){public void run(Player p){if(tools.doCharge(p,Material.IRON_INGOT,20))p.getInventory().addItem(new ItemStack(Material.SHEARS,1));}});
+        tnt.setAmount(1);
+        tnt.setOnClick(new Item.click(){public void run(Player p){if(specials.doCharge(p, GOLD_INGOT,4))p.getInventory().addItem(new ItemStack(Material.TNT,1));}});
 
-
-        Item pickaxe = new Item(nextUpgrade(player,PICAXE),"&bPicaxe");
-        ItemStack pickaxe_cost = getPrice(player,PICAXE);
-        pickaxe.setLore(new String[]{
+        Item epearl = new Item(ENDER_PEARL,"&bEnder Pearl");
+        epearl.setLore(new String[]{
                 "&r",
-                "&aCost: &f"+((pickaxe_cost!=null)?pickaxe_cost.getAmount()+" "+pickaxe_cost.getType().name().replaceAll("_"," ").toLowerCase():"&cFully Upgraded")
+                "&aCost: &c2 Blaze Rod"
         });
-        pickaxe.setAmount(1);
-        pickaxe.setOnClick(new Item.click(){public void run(Player p){
-            if(pickaxe_cost!=null){
-                if(tools.doCharge(p,pickaxe_cost.getType(),pickaxe_cost.getAmount())) {
-                    Material last = lastUpgrade(player, PICAXE);
-                    Material next = nextUpgrade(player, PICAXE);
-                    if(last!=null){p.getInventory().remove(last);}
-                    p.getInventory().addItem(new ItemStack(next));
-                    p.openInventory(tools.getShop(p));
-                }
-            }
-        }});
+        epearl.setAmount(1);
+        epearl.setOnClick(new Item.click(){public void run(Player p){if(specials.doCharge(p, BLAZE_ROD,2))p.getInventory().addItem(new ItemStack(ENDER_PEARL,1));}});
 
-        Item axe = new Item(nextUpgrade(player,AXE),"&bAXE");
-        ItemStack axe_cost = getPrice(player,AXE);
-        axe.setLore(new String[]{
+        Item water = new Item(WATER_BUCKET,"&bWater");
+        water.setLore(new String[]{
                 "&r",
-                "&aCost: &f"+((axe_cost!=null)?axe_cost.getAmount()+" "+axe_cost.getType().name().replaceAll("_"," ").toLowerCase():"&cFully Upgraded")
+                "&aCost: &62 Gold"
         });
-        axe.setAmount(1);
-        axe.setOnClick(new Item.click(){public void run(Player p){
-            if(axe_cost!=null){
-                if(tools.doCharge(p,axe_cost.getType(),axe_cost.getAmount())) {
-                    Material last = lastUpgrade(player, AXE);
-                    Material next = nextUpgrade(player, AXE);
-                    if(last!=null){p.getInventory().remove(last);}
-                    p.getInventory().addItem(new ItemStack(next));
-                    p.openInventory(tools.getShop(p));
-                }
-            }
-        }});
+        water.setAmount(1);
+        water.setOnClick(new Item.click(){public void run(Player p){if(specials.doCharge(p, GOLD_INGOT,2))p.getInventory().addItem(new ItemStack(WATER_BUCKET,1));}});
 
-        Item shovel = new Item(nextUpgrade(player,SHOVEL),"&bSHOVEL");
-        ItemStack shovel_cost = getPrice(player,SHOVEL);
-        shovel.setLore(new String[]{
+        Item fireball = new Item(FIRE_CHARGE,"&bFireball");
+        fireball.setLore(new String[]{
                 "&r",
-                "&aCost: &f"+((shovel_cost!=null)?shovel_cost.getAmount()+" "+shovel_cost.getType().name().replaceAll("_"," ").toLowerCase():"&cFully Upgraded")
+                "&aCost: &f40 Iron"
         });
-        shovel.setAmount(1);
-        shovel.setOnClick(new Item.click(){public void run(Player p){
-            if(shovel_cost!=null){
-                if(tools.doCharge(p,shovel_cost.getType(),shovel_cost.getAmount())) {
-                    Material last = lastUpgrade(player, SHOVEL);
-                    Material next = nextUpgrade(player, SHOVEL);
-                    if(last!=null){p.getInventory().remove(last);}
-                    p.getInventory().addItem(new ItemStack(next));
-                    p.openInventory(tools.getShop(p));
-                }
-            }
-        }});
+        fireball.setAmount(1);
+        fireball.setOnClick(new Item.click(){public void run(Player p){if(specials.doCharge(p, IRON_INGOT,40))p.getInventory().addItem(new ItemStack(FIRE_CHARGE,1));}});
 
-        tools.shop.setItem(0,close.spigot());
-        if(!(player.getInventory().contains(Material.SHEARS)))
-            tools.shop.setItem(19,shears.spigot());
-        tools.shop.setItem(20,pickaxe.spigot());
-        tools.shop.setItem(21,axe.spigot());
-        tools.shop.setItem(22,shovel.spigot());
+        Item bridge_egg = new Item(EGG,"&bBridge Egg");
+        bridge_egg.setLore(new String[]{
+                "&r",
+                "&aCost: &c2 Blaze Rod"
+        });
+        bridge_egg.setAmount(1);
+        bridge_egg.setOnClick(new Item.click(){public void run(Player p){if(specials.doCharge(p, BLAZE_ROD,2))p.getInventory().addItem(new ItemStack(EGG,1));}});
 
-        tools.menus.add(tools.shop);
-        return tools.shop;
+        Item golden_apple = new Item(GOLDEN_APPLE,"&bGolden Apple");
+        golden_apple.setLore(new String[]{
+                "&r",
+                "&aCost: &62 Gold"
+        });
+        golden_apple.setAmount(1);
+        golden_apple.setOnClick(new Item.click(){public void run(Player p){if(specials.doCharge(p, GOLD_INGOT,2))p.getInventory().addItem(new ItemStack(GOLDEN_APPLE,1));}});
+
+
+        specials.shop.setItem(0,close.spigot());
+        specials.shop.setItem(19,tnt.spigot());
+        specials.shop.setItem(20,epearl.spigot());
+        //specials.shop.setItem(21,water.spigot());
+        //specials.shop.setItem(22,fireball.spigot());
+        //specials.shop.setItem(23, bridge_egg.spigot());
+        specials.shop.setItem(23,golden_apple.spigot());
+
+        specials.menus.add(specials.shop);
+        return specials.shop;
     }
 
     public static Material nextUpgrade (Player player, itemUpgrades upgrade){

@@ -26,6 +26,9 @@ public class playerJoin implements Listener {
                     Main.game.start();
                 }
                 break;
+            case STARTING:
+                Bukkit.broadcastMessage(text.f(String.format("&aJOIN> &7Welcome &9%s&7, ( &9%s &7/ &9%s &7)" ,e.getPlayer().getDisplayName(),Bukkit.getOnlinePlayers().size(),Main.game.getMin_players())));
+                break;
             case IN_GAME:
                 if(Main.game.isAllow_spectators()){
                     e.getPlayer().setGameMode(GameMode.SPECTATOR);

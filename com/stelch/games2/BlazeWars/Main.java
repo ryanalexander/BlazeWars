@@ -11,6 +11,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -21,7 +22,7 @@ public class Main extends JavaPlugin implements Listener {
 
   public static Game game;
 
-  public static HashMap<ItemStack,Item.click> Actions = new HashMap<>();
+  public static HashMap<Item,Item.click> Actions = new HashMap<>();
   
   public void onEnable() {
 
@@ -54,8 +55,8 @@ public class Main extends JavaPlugin implements Listener {
 
     @EventHandler
     public void InventoryClickEvent(InventoryClickEvent e) {
-        for (Map.Entry<ItemStack, Item.click> is : Actions.entrySet()) {
-            if(is.getKey().equals(e.getCurrentItem())){
+        for (Map.Entry<Item, Item.click> is : Actions.entrySet()) {
+            if(is.getKey().spigot().equals(e.getCurrentItem())){
                 if(is.getValue()!=null)
                     is.getValue().run((Player)e.getWhoClicked());
                 e.setCancelled(true);
