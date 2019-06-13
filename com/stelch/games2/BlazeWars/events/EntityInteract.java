@@ -5,6 +5,7 @@ import com.stelch.games2.BlazeWars.Inventories.Item;
 import com.stelch.games2.BlazeWars.Main;
 import com.stelch.games2.BlazeWars.Utils.text;
 import com.stelch.games2.BlazeWars.varables.gameState;
+import com.stelch.games2.BlazeWars.varables.lang;
 import com.stelch.games2.BlazeWars.varables.teamColors;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -56,7 +57,7 @@ public class EntityInteract implements Listener {
                 }
                 teamColors team = Main.game.getTeamManager().getTeam((Player) e.getPlayer());
                 if (!(team.equals(teamChest))) {
-                    e.getPlayer().sendMessage(text.f(String.format("&cYou may not open %s's chest until they are eliminated!",teamChest)));
+                    e.getPlayer().sendMessage(text.f(String.format(lang.CHEST_TEAM_NOT_ELIMINATED.get(),Main.game.getTeamManager().getTeamColor(teamChest)+teamChest)));
                     e.setCancelled(true);
                 }
             }

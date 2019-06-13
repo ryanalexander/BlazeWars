@@ -45,6 +45,7 @@ public class playerDeathEvent implements Listener {
                 Player player = (Player)e.getEntity();
                 if((player.getHealth()-e.getFinalDamage())<1){
                     doDeath(player,String.format(messages[0],player.getDisplayName(),resolveDamager(e.getDamager()).getDisplayName()));
+                    player.setHealth(20);
                     e.setCancelled(true);
                 }
                 break;
@@ -55,6 +56,7 @@ public class playerDeathEvent implements Listener {
 
     @EventHandler
     public void EntityDamageEvent(EntityDamageEvent e){
+        if(e.getCause().equals(EntityDamageEvent.DamageCause.LIGHTNING)){e.setCancelled(true);}
         switch (e.getEntityType()){
             case PLAYER:
                 if(e.getCause().equals(EntityDamageEvent.DamageCause.ENTITY_ATTACK)){return;}
@@ -74,10 +76,10 @@ public class playerDeathEvent implements Listener {
     public void doDeath(Player player, String message) {
         Bukkit.broadcastMessage(text.f(message));
         player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING,1,1);
+        player.teleport(Main.game.getMap().getSpawnLocation());
 
         if(Main.game.getTeamManager().getCanRespawn(Main.game.getTeamManager().getTeam(player))){
             Spectator spec = new Spectator(player);
-            player.teleport(Bukkit.getWorld("world").getSpawnLocation());
             for(Player p : Bukkit.getOnlinePlayers()){
                 p.hidePlayer(plugin,player);
             }
@@ -86,10 +88,11 @@ public class playerDeathEvent implements Listener {
                 int timer = 5;
                 @Override
                 public void run() {
-                    player.sendTitle(text.f("&cYou died"),String.format(text.f("&cRespawning in %s Seconds"),timer),0,5,0);
+                    player.sendTitle(text.f("&cYou died"),String.format(text.f("&cRespawning in %s Seconds"),timer),0,60,0);
                     timer--;
 
                     if(timer<=0){
+                        cancel();
                         spec.leave();
                         player.sendTitle("","",0,0,0);
                         FileConfiguration config = plugin.getConfig();

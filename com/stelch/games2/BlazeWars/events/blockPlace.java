@@ -4,6 +4,7 @@ import com.stelch.games2.BlazeWars.Inventories.Item;
 import com.stelch.games2.BlazeWars.Main;
 import com.stelch.games2.BlazeWars.Utils.text;
 import com.stelch.games2.BlazeWars.varables.gameState;
+import com.stelch.games2.BlazeWars.varables.lang;
 import com.stelch.games2.BlazeWars.varables.teamColors;
 import net.minecraft.server.v1_13_R2.EntityLiving;
 import net.minecraft.server.v1_13_R2.EntityTNTPrimed;
@@ -66,12 +67,12 @@ public class blockPlace implements Listener {
                 e.getBlock().getLocation().getWorld().dropItem(e.getBlock().getLocation(),item.spigot());
             }
             if(!(Main.game.canBreakBlock(e.getBlock()))){
-                e.getPlayer().sendMessage(text.f("&cYou can only break blocks placed by players."));
+                e.getPlayer().sendMessage(text.f(lang.BLOCK_NOT_BREAKABLE));
                 e.setCancelled(true);
             }else {
                 if(Main.game.getTeamManager().isCore(e.getBlock())) {
                     if(Main.game.getTeamManager().getCore(Main.game.getTeamManager().getTeam(e.getPlayer())).equals(e.getBlock())){
-                        e.getPlayer().sendMessage(text.f("&cHey! That's your core."));
+                        e.getPlayer().sendMessage(text.f(lang.BLOCK_NOT_BREAKABLE_SABOTAGE));
                         e.setCancelled(true);
                         return;
                     }
@@ -83,7 +84,9 @@ public class blockPlace implements Listener {
                         e.getPlayer().getWorld().strikeLightning(e.getBlock().getLocation());
                         e.getPlayer().getWorld().playSound(e.getPlayer().getLocation(), Sound.ENTITY_LIGHTNING_BOLT_THUNDER, 1, 1);
                         e.getBlock().setType(Material.AIR);
-                        Bukkit.broadcastMessage(String.format("%s's core has been destroyed! They are now vulnerable.", team));
+                        Main.game.getScoreboard().editLine(Main.game.getTeamManager().getScoreboardLine(team),(Main.game.getTeamManager().getTeamColor(team)+"&l"+team.toString().charAt(0)+"&r "+(capitalizeFirstLetter(team.toString())+": &c&l✗")));
+
+                        Bukkit.broadcastMessage(text.f(String.format(lang.GAME_CORE_DESTROYED.get(), Main.game.getTeamManager().getTeamColor(team)+team)));
                     }
                 }
             }
@@ -102,6 +105,14 @@ public class blockPlace implements Listener {
             }
         }
         e.setCancelled(true);
+    }
+
+
+    private static String capitalizeFirstLetter(String original) {
+        if (original == null || original.length() == 0) {
+            return original;
+        }
+        return original.substring(0, 1).toUpperCase() + original.substring(1).toLowerCase();
     }
 
 }

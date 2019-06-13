@@ -1,13 +1,10 @@
 package com.stelch.games2.BlazeWars;
 
-import com.stelch.games2.BlazeWars.Inventories.islandUpgrades;
 import com.stelch.games2.BlazeWars.Inventories.shop;
+import com.stelch.games2.BlazeWars.Utils.ScoreboardManager;
 import com.stelch.games2.BlazeWars.Utils.TeamManager;
 import com.stelch.games2.BlazeWars.Utils.text;
-import com.stelch.games2.BlazeWars.varables.gameState;
-import com.stelch.games2.BlazeWars.varables.gameType;
-import com.stelch.games2.BlazeWars.varables.menuSource;
-import com.stelch.games2.BlazeWars.varables.teamColors;
+import com.stelch.games2.BlazeWars.varables.*;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -31,6 +28,10 @@ public class Game {
 
     private gameState gamestate = gameState.DISABLED;
 
+    private ScoreboardManager scoreboard;
+
+    private World map;
+
     private ArrayList<Entity> gameEntities=new ArrayList<>();
 
     private HashMap<Entity,click> EntityFunctions=new HashMap<>();
@@ -51,13 +52,26 @@ public class Game {
 
     private gameType gamemode;
 
-    public Game(String title, gameType gamemode, int min_players, int max_players, Main handler){
+    public Game(String title, gameType gamemode, int min_players, int max_players, Main handler, World map){
+        // PLAYERS GAME SERVER
         teamManager=new TeamManager();
+        this.scoreboard=new ScoreboardManager("&6&lBLAZE WARS");
+        this.scoreboard.addBlank();
+        this.scoreboard.addLine("&e&lPLAYERS");
+        this.scoreboard.addLine(String.format("&a%s &7/ &a%s",Bukkit.getOnlinePlayers().size(),min_players));
+        this.scoreboard.addBlank();
+        this.scoreboard.addLine("&b&lGAME:");
+        this.scoreboard.addLine("&a"+title.toUpperCase());
+        this.scoreboard.addBlank();
+        this.scoreboard.addLine("&d&lSERVER:");
+        this.scoreboard.addLine("&a"+Bukkit.getServer().getServerName());
+        this.scoreboard.addBlank();
         this.title=title;
         this.gamemode=gamemode;
         this.min_players=min_players;
         this.max_players=max_players;
         this.handler=handler;
+        this.map=map;
     }
 
     public void setTitle(String title) {
@@ -96,9 +110,13 @@ public class Game {
 
     public click getEntityFunction(Entity e) { return this.EntityFunctions.get(e); }
 
+    public World getMap() { return this.map; }
+
     public TeamManager getTeamManager() {
         return teamManager;
     }
+
+    public ScoreboardManager getScoreboard() { return scoreboard; }
 
     public gameState getGamestate() {
         return gamestate;
@@ -152,13 +170,20 @@ public class Game {
                     Bukkit.getScheduler().cancelTasks(handler);
                 }
                 FileConfiguration config = handler.getConfig();
-                Bukkit.broadcastMessage(text.f(String.format("&aGAME> &fThe game will begin in %s",start_time)));
+                Bukkit.broadcastMessage(text.f(String.format(lang.GAME_BEGIN_IN.get(),start_time)));
+                for(Player player : Bukkit.getOnlinePlayers()){
+                    player.playSound(player.getLocation(),Sound.BLOCK_NOTE_BLOCK_PLING,1,1);
+                }
                 if(start_time==0){
                     start_time=5;
                     setGamestate(gameState.IN_GAME);
                     Bukkit.getScheduler().cancelTasks(handler);
 
                     teamManager.assignTeams();
+
+                    scoreboard.clear();
+                    scoreboard.addBlank();
+                    scoreboard.addBlank();
 
                     for(Map.Entry<Player, teamColors> teamPlayer : teamManager.getPlayers().entrySet()){
                         Player player = teamPlayer.getKey();
@@ -177,7 +202,10 @@ public class Game {
                         player.setGameMode(GameMode.SURVIVAL);
                     }
 
-                    for(teamColors team : teamColors.values()){
+                    for(teamColors team : teamManager.getActive_teams()){
+
+                        teamManager.setScoreboardLine(team,scoreboard.addLine(teamManager.getTeamColor(team)+"&l"+team.toString().charAt(0)+"&r "+(capitalizeFirstLetter(team.toString())+": &a&l✓")));
+
                         Double x = Double.parseDouble(config.getString(String.format(("maps.%s.core.%s.x"),"world",team)));
                         Double y = Double.parseDouble(config.getString(String.format(("maps.%s.core.%s.y"),"world",team)));
                         Double z = Double.parseDouble(config.getString(String.format(("maps.%s.core.%s.z"),"world",team)));
@@ -276,6 +304,9 @@ public class Game {
                         }
                     }
 
+                    scoreboard.addBlank();
+                    scoreboard.addLine("&cwww.stelch.gg");
+
                     Double mfx = Double.parseDouble(config.getString(String.format(("maps.%s.forge.%s.x"),"world","map")));
                     Double mfy = Double.parseDouble(config.getString(String.format(("maps.%s.forge.%s.y"),"world","map")));
                     Double mfz = Double.parseDouble(config.getString(String.format(("maps.%s.forge.%s.z"),"world","map")));
@@ -283,7 +314,7 @@ public class Game {
                         Location mid_forge =new Location(Bukkit.getWorld("world"),mfx,mfy,mfz,0F,0F);
                         Game.spawnner spawnner_mid = new spawnner(mid_forge,new ItemStack(Material.BLAZE_POWDER),0);
                     }else {
-                        Bukkit.broadcastMessage(String.format("&cMCT> &7Failed to load &e%s&7 missing &6%s check config and use MCT to set the island",teamColors.other,"Mid_Forge"));
+                        Bukkit.broadcastMessage(String.format("&cMCT> &7Failed to load &e%s&7 missing &6%s check config and use MCT to set the island","mid","Mid_Forge"));
                     }
 
                 }
@@ -295,7 +326,7 @@ public class Game {
 
     public void stop() {
         this.gamestate=gameState.RESTARTING;
-        Bukkit.broadcastMessage(text.f("&aGame> &7This game has been &c&lSTOPPED&7 by an Administrator."));
+        Bukkit.broadcastMessage(text.f(lang.GAME_STOPPED_ADMIN));
         Bukkit.getScheduler().cancelTasks(handler);
         for(Entity e : this.gameEntities){
             e.remove();
@@ -358,5 +389,12 @@ public class Game {
 
     private static Collection<Entity> getEntitiesAroundPoint(Location location, double radius) {
         return location.getWorld().getNearbyEntities(location, radius, radius, radius);
+    }
+
+    private static String capitalizeFirstLetter(String original) {
+        if (original == null || original.length() == 0) {
+            return original;
+        }
+        return original.substring(0, 1).toUpperCase() + original.substring(1).toLowerCase();
     }
 }

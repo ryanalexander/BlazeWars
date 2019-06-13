@@ -29,7 +29,7 @@ public class Main extends JavaPlugin implements Listener {
       getConfig().options().copyDefaults(true);
       saveConfig();
 
-      game = new Game("BlazeWars", gameType.DESTROY,2,8, this);
+      game = new Game("BlazeWars", gameType.DESTROY,2,8, this,Bukkit.getWorld("world"));
 
       game.setAllow_spectators(true);
 

@@ -2,6 +2,7 @@ package com.stelch.games2.BlazeWars.events;
 
 import com.stelch.games2.BlazeWars.Main;
 import com.stelch.games2.BlazeWars.Utils.text;
+import com.stelch.games2.BlazeWars.varables.lang;
 import javafx.event.EventHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -21,13 +22,13 @@ public class playerJoin implements Listener {
 
         switch(Main.game.getGamestate()){
             case LOBBY:
-                Bukkit.broadcastMessage(text.f(String.format("&aJOIN> &7Welcome &9%s&7, ( &9%s &7/ &9%s &7) for game to start" ,e.getPlayer().getDisplayName(),Bukkit.getOnlinePlayers().size(),Main.game.getMin_players())));
+                Bukkit.broadcastMessage(text.f(String.format(lang.GAME_PLAYER_JOIN.get() ,e.getPlayer().getDisplayName(),Bukkit.getOnlinePlayers().size(),Main.game.getMin_players())));
                 if(Main.game.canStart()){
                     Main.game.start();
                 }
                 break;
             case STARTING:
-                Bukkit.broadcastMessage(text.f(String.format("&aJOIN> &7Welcome &9%s&7, ( &9%s &7/ &9%s &7)" ,e.getPlayer().getDisplayName(),Bukkit.getOnlinePlayers().size(),Main.game.getMin_players())));
+                Bukkit.broadcastMessage(text.f(String.format(lang.GAME_PLAYER_JOIN_STARTING.get() ,e.getPlayer().getDisplayName(),Bukkit.getOnlinePlayers().size(),Main.game.getMin_players())));
                 break;
             case IN_GAME:
                 if(Main.game.isAllow_spectators()){
