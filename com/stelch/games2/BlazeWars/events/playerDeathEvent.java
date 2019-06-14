@@ -43,10 +43,10 @@ public class playerDeathEvent implements Listener {
         switch (e.getEntityType()){
             case PLAYER:
                 Player player = (Player)e.getEntity();
-                if((player.getHealth()-e.getFinalDamage())<1){
-                    doDeath(player,String.format(messages[0],player.getDisplayName(),resolveDamager(e.getDamager()).getDisplayName()));
+                if((player.getHealth()-e.getFinalDamage())<=1){
                     player.setHealth(20);
                     e.setCancelled(true);
+                    doDeath(player,String.format(messages[0],player.getDisplayName(),resolveDamager(e.getDamager()).getDisplayName()));
                 }
                 break;
             default:
@@ -88,11 +88,10 @@ public class playerDeathEvent implements Listener {
                 int timer = 5;
                 @Override
                 public void run() {
-                    player.sendTitle(text.f("&cYou died"),String.format(text.f("&cRespawning in %s Seconds"),timer),0,60,0);
+                    player.sendTitle(text.f("&cYou died"),String.format(text.f("&cRespawning in %s Seconds"),timer),0,20,0);
                     timer--;
 
-                    if(timer<=0){
-                        cancel();
+                    if(timer==0){
                         spec.leave();
                         player.sendTitle("","",0,0,0);
                         FileConfiguration config = plugin.getConfig();
@@ -112,6 +111,7 @@ public class playerDeathEvent implements Listener {
                         for(Player p : Bukkit.getOnlinePlayers()){
                             p.showPlayer(plugin,player);
                         }
+                        cancel();
 
                     }
                 }
