@@ -56,7 +56,7 @@ public class EntityInteract implements Listener {
                     return;
                 }
                 teamColors team = Main.game.getTeamManager().getTeam((Player) e.getPlayer());
-                if (!(team.equals(teamChest))) {
+                if (!(team.equals(teamChest))&&Main.game.getTeamManager().getCanRespawn(teamChest)) {
                     e.getPlayer().sendMessage(text.f(String.format(lang.CHEST_TEAM_NOT_ELIMINATED.get(),Main.game.getTeamManager().getTeamColor(teamChest)+teamChest)));
                     e.setCancelled(true);
                 }

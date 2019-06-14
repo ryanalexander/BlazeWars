@@ -61,6 +61,10 @@ public class playerDeathEvent implements Listener {
             case PLAYER:
                 if(e.getCause().equals(EntityDamageEvent.DamageCause.ENTITY_ATTACK)){return;}
                 Player player = (Player)e.getEntity();
+                if(Main.game.spectators.contains(player)) {
+                    e.setCancelled(true);
+                    return;
+                }
                 if((player.getHealth()-e.getFinalDamage())<1){
                     e.setCancelled(true);
                     player.setHealth(20);
@@ -76,22 +80,21 @@ public class playerDeathEvent implements Listener {
     public void doDeath(Player player, String message) {
         Bukkit.broadcastMessage(text.f(message));
         player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING,1,1);
+        player.setHealth(20);
         player.teleport(Main.game.getMap().getSpawnLocation());
 
         if(Main.game.getTeamManager().getCanRespawn(Main.game.getTeamManager().getTeam(player))){
             Spectator spec = new Spectator(player);
-            for(Player p : Bukkit.getOnlinePlayers()){
-                p.hidePlayer(plugin,player);
-            }
 
             new BukkitRunnable(){
                 int timer = 5;
                 @Override
                 public void run() {
-                    player.sendTitle(text.f("&cYou died"),String.format(text.f("&cRespawning in %s Seconds"),timer),0,20,0);
+                    player.sendTitle(text.f("&cYou died"),String.format(text.f("&aRespawning in %s Seconds"),timer),0,60,0);
                     timer--;
 
-                    if(timer==0){
+                    if(timer<=0){
+                        cancel();
                         spec.leave();
                         player.sendTitle("","",0,0,0);
                         FileConfiguration config = plugin.getConfig();
@@ -111,14 +114,14 @@ public class playerDeathEvent implements Listener {
                         for(Player p : Bukkit.getOnlinePlayers()){
                             p.showPlayer(plugin,player);
                         }
-                        cancel();
 
                     }
                 }
             }.runTaskTimer(plugin,0L,20L);
         }else {
             Spectator spec = new Spectator(player);
-            player.sendTitle(text.f("&cEliminated"),"&cYou may no longer respawn",1,5,1);
+            teamColors team = Main.game.getTeamManager().getTeam(player);
+            player.sendTitle(text.f("&cEliminated"),text.f("&fYou may no longer respawn"),1,60,1);
         }
     }
 
