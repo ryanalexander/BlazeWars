@@ -2,6 +2,7 @@ package com.stelch.games2.BlazeWars;
 
 import com.stelch.games2.BlazeWars.Inventories.shop;
 import com.stelch.games2.BlazeWars.Utils.ScoreboardManager;
+import com.stelch.games2.BlazeWars.Utils.Spectator;
 import com.stelch.games2.BlazeWars.Utils.TeamManager;
 import com.stelch.games2.BlazeWars.Utils.text;
 import com.stelch.games2.BlazeWars.varables.*;
@@ -38,7 +39,7 @@ public class Game {
 
     private HashMap<Location,Block> blockChanges = new HashMap<>();
 
-    public ArrayList<Player> spectators = new ArrayList<>();
+    public HashMap<Player, Spectator> spectators = new HashMap<>();
 
     private TeamManager teamManager;
 
@@ -64,7 +65,7 @@ public class Game {
         this.scoreboard.addLine("&a"+title.toUpperCase());
         this.scoreboard.addBlank();
         this.scoreboard.addLine("&d&lSERVER:");
-        this.scoreboard.addLine("&a"+Bukkit.getServer().getServerName());
+        this.scoreboard.addLine("&a"+handler.getConfig().getString("server.name"));
         this.scoreboard.addBlank();
         this.title=title;
         this.gamemode=gamemode;

@@ -10,15 +10,18 @@ public class Spectator {
     public Spectator(Player player) {
         this.player=player;
 
-        Main.game.spectators.add(player);
+        Main.game.spectators.put(player,this);
         player.getInventory().clear();
-        //player.setFlying(true);
-        //player.setAllowFlight(true);
+        player.setAllowFlight(true);
+        player.setSilent(true);
+
     }
 
     public void leave() {
         Main.game.spectators.remove(player);
         player.setGameMode(GameMode.SURVIVAL);
         player.getInventory().clear();
+        player.setSilent(false);
+        if(player.getGameMode().equals(GameMode.SURVIVAL))player.setAllowFlight(false);
     }
 }

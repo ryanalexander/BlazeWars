@@ -61,7 +61,7 @@ public class playerDeathEvent implements Listener {
             case PLAYER:
                 if(e.getCause().equals(EntityDamageEvent.DamageCause.ENTITY_ATTACK)){return;}
                 Player player = (Player)e.getEntity();
-                if(Main.game.spectators.contains(player)) {
+                if(Main.game.spectators.containsKey(player)) {
                     e.setCancelled(true);
                     return;
                 }
@@ -120,7 +120,6 @@ public class playerDeathEvent implements Listener {
             }.runTaskTimer(plugin,0L,20L);
         }else {
             Spectator spec = new Spectator(player);
-            teamColors team = Main.game.getTeamManager().getTeam(player);
             player.sendTitle(text.f("&cEliminated"),text.f("&fYou may no longer respawn"),1,60,1);
         }
     }

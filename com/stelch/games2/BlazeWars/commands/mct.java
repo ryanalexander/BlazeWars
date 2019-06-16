@@ -27,6 +27,7 @@ public class mct implements CommandExecutor {
                     text.f("&ehave the ability to specify custom map parameters"),
                     " ",
                     text.f("&e- &a/mct set &d{spawn/forge/blaze/core} {team/id}"),
+                    text.f("&e- &a/mct add &d{forge} {mid}"),
                     text.f("&e- &a/mct remove &d{spawn/forge/blaze/core} {team/id}"),
                     "",
                     text.f("&e- &a/mct list &d{spawner/blaze/core}")
@@ -47,6 +48,9 @@ public class mct implements CommandExecutor {
             case "remove":
                 sender.sendMessage(text.f("&aMCT> The &eremove&r command is under construction"));
                 sender.sendMessage(text.f(String.format("&aMCT> &7Removed &e%s&7 location at x:%s y:%s z:%s",args[1],loc.getX(),loc.getY(),loc.getZ())));
+                break;
+            case "add":
+                //plugin.getConfig().getList(String.format("maps.%s.%s")).add();
                 break;
             case "list":
                 sender.sendMessage(text.f("&aMCT> The &elist&r command is under construction"));

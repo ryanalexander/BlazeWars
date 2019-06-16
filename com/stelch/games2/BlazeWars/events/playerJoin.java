@@ -23,11 +23,13 @@ public class playerJoin implements Listener {
         switch(Main.game.getGamestate()){
             case LOBBY:
                 Bukkit.broadcastMessage(text.f(String.format(lang.GAME_PLAYER_JOIN.get() ,e.getPlayer().getDisplayName(),Bukkit.getOnlinePlayers().size(),Main.game.getMin_players())));
+                Main.game.getScoreboard().update();
                 if(Main.game.canStart()){
                     Main.game.start();
                 }
                 break;
             case STARTING:
+                Main.game.getScoreboard().update();
                 Bukkit.broadcastMessage(text.f(String.format(lang.GAME_PLAYER_JOIN_STARTING.get() ,e.getPlayer().getDisplayName(),Bukkit.getOnlinePlayers().size(),Main.game.getMin_players())));
                 break;
             case IN_GAME:

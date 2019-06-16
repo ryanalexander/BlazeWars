@@ -1,6 +1,7 @@
 package com.stelch.games2.BlazeWars.commands;
 
 import com.stelch.games2.BlazeWars.Main;
+import com.stelch.games2.BlazeWars.Utils.Spectator;
 import com.stelch.games2.BlazeWars.Utils.text;
 import com.stelch.games2.BlazeWars.varables.gameState;
 import org.bukkit.Location;
@@ -47,6 +48,14 @@ public class admin implements CommandExecutor {
                     break;
                 case "state":
                     player.sendMessage(text.f(String.format("&aADMIN> &7The current GameState is \"&e%s&7\".",Main.game.getGamestate())));
+                    break;
+                case "specator":
+                    player.sendMessage(text.f(String.format("&aAdmin> &7You have now %s&7 flight",((Main.game.spectators.containsKey(player)?"&cdisabled":"&aenabled")))));
+                    if(Main.game.spectators.containsKey(player)){
+                        Main.game.spectators.get(player).leave();
+                    }else {
+                        new Spectator(player);
+                    }
                     break;
                 default:
                     sender.sendMessage(text.f("&aADMIN> &fThe command specified does not exist."));
