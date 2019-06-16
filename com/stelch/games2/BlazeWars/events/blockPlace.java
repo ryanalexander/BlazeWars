@@ -6,15 +6,15 @@ import com.stelch.games2.BlazeWars.Utils.text;
 import com.stelch.games2.BlazeWars.varables.gameState;
 import com.stelch.games2.BlazeWars.varables.lang;
 import com.stelch.games2.BlazeWars.varables.teamColors;
-import net.minecraft.server.v1_13_R2.EntityLiving;
-import net.minecraft.server.v1_13_R2.EntityTNTPrimed;
+import net.minecraft.server.v1_14_R1.EntityLiving;
+import net.minecraft.server.v1_14_R1.EntityTNTPrimed;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.type.TNT;
-import org.bukkit.craftbukkit.v1_13_R2.entity.CraftLivingEntity;
-import org.bukkit.craftbukkit.v1_13_R2.entity.CraftTNTPrimed;
+import org.bukkit.craftbukkit.v1_14_R1.entity.CraftLivingEntity;
+import org.bukkit.craftbukkit.v1_14_R1.entity.CraftTNTPrimed;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.TNTPrimed;
 import org.bukkit.event.EventHandler;
@@ -32,6 +32,7 @@ public class blockPlace implements Listener {
 
     @EventHandler
     public void blockPlace(BlockPlaceEvent e){
+        if(Main.game.spectators.containsValue(e.getPlayer())){e.setCancelled(true);}
         if(Main.game.getGamestate()==gameState.IN_GAME){
             Main.game.doBlockUpdate(e.getBlock().getLocation(),e.getBlock());
 
@@ -59,6 +60,7 @@ public class blockPlace implements Listener {
 
     @EventHandler
     public void blockBreak(BlockBreakEvent e){
+        if(Main.game.spectators.containsValue(e.getPlayer())){e.setCancelled(true);}
         if(Main.game.getGamestate()==gameState.IN_GAME){
             if(e.getBlock().getType().equals(Material.CLAY)){
                 e.setDropItems(false);
@@ -71,7 +73,7 @@ public class blockPlace implements Listener {
                 e.setCancelled(true);
             }else {
                 if(Main.game.getTeamManager().isCore(e.getBlock())) {
-                    if(Main.game.getTeamManager().getCore(Main.game.getTeamManager().getTeam(e.getPlayer())).equals(e.getBlock())){
+                    if(Main.game.getTeamManager().getCore(Main.game.getTeamManager().getTeam(e.getPlayer())) .equals(e.getBlock())){
                         e.getPlayer().sendMessage(text.f(lang.BLOCK_NOT_BREAKABLE_SABOTAGE));
                         e.setCancelled(true);
                         return;

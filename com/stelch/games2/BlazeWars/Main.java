@@ -34,6 +34,7 @@ public class Main extends JavaPlugin implements Listener {
       game.setAllow_spectators(true);
 
       PluginManager pm = Bukkit.getPluginManager();
+      pm.registerEvents(new com.stelch.games2.BlazeWars.Utils.Forge(this),this);
       pm.registerEvents(new com.stelch.games2.BlazeWars.events.playerJoin(this),this);
       pm.registerEvents(new com.stelch.games2.BlazeWars.events.blockPlace(),this);
       pm.registerEvents(new com.stelch.games2.BlazeWars.events.AsyncChatEvent(),this);

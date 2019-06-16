@@ -32,6 +32,8 @@ public class TeamManager {
 
     private HashMap<teamColors, Block> team_chests = new HashMap<>();
 
+    private HashMap<teamColors, ArrayList<Player>> team_players = new HashMap<>();
+
     private HashMap<teamColors, Entity> team_blaze = new HashMap<>();
 
     public enum Colors {
@@ -88,6 +90,9 @@ public class TeamManager {
     public String getTeamColor(teamColors team){
         return Colors.valueOf(team.toString().toUpperCase()).getColor();
     }
+
+    public void doEliminatePlayer(teamColors team, Player player) { this.team_players.get(team).remove(player); }
+    public int getRemainingPlayers(teamColors team) { return this.team_players.get(team).size(); }
 
     public void addBlaze(teamColors team, Entity blaze){
         this.team_blaze.put(team,blaze);
@@ -156,37 +161,37 @@ public class TeamManager {
             if(iterator==0){
                 players.put(p,teamColors.BLUE);
                 p.setDisplayName(getTeamColor(teamColors.BLUE)+p.getName());
-                if(!(this.active_teams.contains(teamColors.BLUE)))this.active_teams.add(teamColors.BLUE);
+                if(!(this.active_teams.contains(teamColors.BLUE))){this.active_teams.add(teamColors.BLUE);}
                 team=teamColors.BLUE;
                 iterator++;
             }else if(iterator==1){
                 players.put(p,teamColors.ORANGE);
                 p.setDisplayName(getTeamColor(teamColors.ORANGE)+p.getName());
-                if(!(this.active_teams.contains(teamColors.ORANGE)))this.active_teams.add(teamColors.ORANGE);
+                if(!(this.active_teams.contains(teamColors.ORANGE))){this.active_teams.add(teamColors.ORANGE);}
                 team=teamColors.ORANGE;
                 iterator++;
             }else if(iterator==2){
                 players.put(p,teamColors.RED);
                 p.setDisplayName(getTeamColor(teamColors.RED)+p.getName());
-                if(!(this.active_teams.contains(teamColors.RED)))this.active_teams.add(teamColors.RED);
+                if(!(this.active_teams.contains(teamColors.RED))){this.active_teams.add(teamColors.RED);}
                 team=teamColors.RED;
                 iterator++;
             }else if(iterator==3){
                 players.put(p,teamColors.WHITE);
                 p.setDisplayName(getTeamColor(teamColors.WHITE)+p.getName());
-                if(!(this.active_teams.contains(teamColors.WHITE)))this.active_teams.add(teamColors.WHITE);
+                if(!(this.active_teams.contains(teamColors.WHITE))){this.active_teams.add(teamColors.WHITE);}
                 team=teamColors.WHITE;
                 iterator++;
             }else if(iterator==4){
                 players.put(p,teamColors.YELLOW);
                 p.setDisplayName(getTeamColor(teamColors.YELLOW)+p.getName());
-                if(!(this.active_teams.contains(teamColors.YELLOW)))this.active_teams.add(teamColors.YELLOW);
+                if(!(this.active_teams.contains(teamColors.YELLOW))){this.active_teams.add(teamColors.YELLOW);}
                 team=teamColors.YELLOW;
                 iterator++;
             }else {
                 players.put(p,teamColors.GREEN);
                 p.setDisplayName(getTeamColor(teamColors.GREEN)+p.getName());
-                if(!(this.active_teams.contains(teamColors.GREEN)))this.active_teams.add(teamColors.GREEN);
+                if(!(this.active_teams.contains(teamColors.GREEN))){this.active_teams.add(teamColors.GREEN);}
                 team=teamColors.GREEN;
                 iterator=0;
             }

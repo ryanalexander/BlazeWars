@@ -8,6 +8,8 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.List;
+
 public class mct implements CommandExecutor {
 
     Main plugin;
@@ -50,7 +52,10 @@ public class mct implements CommandExecutor {
                 sender.sendMessage(text.f(String.format("&aMCT> &7Removed &e%s&7 location at x:%s y:%s z:%s",args[1],loc.getX(),loc.getY(),loc.getZ())));
                 break;
             case "add":
-                //plugin.getConfig().getList(String.format("maps.%s.%s")).add();
+                List<String> list = plugin.getConfig().getStringList(String.format("maps.%s.%s.list",((Player) sender).getLocation().getWorld(),args[1].toLowerCase()));
+                int id = list.size()+1;
+                list.set(id,loc.toString());
+                sender.sendMessage(text.f(String.format("&aMCT> &7Saved &e%s&7 id &e%s&7 location at x:%s y:%s z:%s",args[1].toUpperCase(),id,loc.getX(),loc.getY(),loc.getZ())));
                 break;
             case "list":
                 sender.sendMessage(text.f("&aMCT> The &elist&r command is under construction"));

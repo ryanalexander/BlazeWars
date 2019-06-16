@@ -38,6 +38,7 @@ public class EntityInteract implements Listener {
 
     @EventHandler
     public void EntityInteractEvent(PlayerInteractEntityEvent e){
+        if(Main.game.spectators.containsValue(e.getPlayer())){e.setCancelled(true);}
         if(Main.game.isFunctionEntity(e.getRightClicked())){
             e.setCancelled(true);
             Game.click action = Main.game.getEntityFunction(e.getRightClicked());

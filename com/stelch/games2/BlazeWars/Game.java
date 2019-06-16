@@ -1,10 +1,7 @@
 package com.stelch.games2.BlazeWars;
 
 import com.stelch.games2.BlazeWars.Inventories.shop;
-import com.stelch.games2.BlazeWars.Utils.ScoreboardManager;
-import com.stelch.games2.BlazeWars.Utils.Spectator;
-import com.stelch.games2.BlazeWars.Utils.TeamManager;
-import com.stelch.games2.BlazeWars.Utils.text;
+import com.stelch.games2.BlazeWars.Utils.*;
 import com.stelch.games2.BlazeWars.varables.*;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -14,6 +11,7 @@ import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Directional;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.*;
+import org.bukkit.entity.Blaze;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
@@ -138,6 +136,7 @@ public class Game {
     public boolean isGameEntity(Entity e) { return this.gameEntities.contains(e); }
 
     public boolean isFunctionEntity(Entity e) { return this.EntityFunctions.containsKey(e); }
+    public void setFunctionEntity(Entity e, click c) { this.EntityFunctions.put(e,c); }
 
     public gameType getGamemode() {
         return gamemode;
@@ -308,15 +307,12 @@ public class Game {
                     scoreboard.addBlank();
                     scoreboard.addLine("&cwww.stelch.gg");
 
-                    Double mfx = Double.parseDouble(config.getString(String.format(("maps.%s.forge.%s.x"),"world","map")));
-                    Double mfy = Double.parseDouble(config.getString(String.format(("maps.%s.forge.%s.y"),"world","map")));
-                    Double mfz = Double.parseDouble(config.getString(String.format(("maps.%s.forge.%s.z"),"world","map")));
-                    if(mfx!=null&&mfy!=null&&mfz!=null){
-                        Location mid_forge =new Location(Bukkit.getWorld("world"),mfx,mfy,mfz,0F,0F);
-                        Game.spawnner spawnner_mid = new spawnner(mid_forge,new ItemStack(Material.BLAZE_POWDER),0);
-                    }else {
-                        Bukkit.broadcastMessage(String.format("&cMCT> &7Failed to load &e%s&7 missing &6%s check config and use MCT to set the island","mid","Mid_Forge"));
-                    }
+                    Double mfx = Double.parseDouble(config.getString(String.format(("maps.%s.forge.%s.x"),"world","MAP")));
+                    Double mfy = Double.parseDouble(config.getString(String.format(("maps.%s.forge.%s.y"),"world","MAP")));
+                    Double mfz = Double.parseDouble(config.getString(String.format(("maps.%s.forge.%s.z"),"world","MAP")));
+                    Location mid_forge =new Location(Bukkit.getWorld("world"),mfx,mfy,mfz,0F,0F);
+                    Forge f = new Forge(mid_forge.add(0,2,0),Material.BLAZE_ROD,0,true,"&c&lBlaze Rod");
+                    Game.spawnner spawnner_mid = new spawnner(mid_forge,new ItemStack(Material.BLAZE_POWDER),0);
 
                 }
                 start_time--;
