@@ -78,6 +78,7 @@ public class playerDeathEvent implements Listener {
 
     @EventHandler
     public void doDeath(Player player, String message) {
+        teamColors team = Main.game.getTeamManager().getTeam(player);
         Bukkit.broadcastMessage(text.f(message));
         player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING,1,1);
         player.setHealth(20);
@@ -98,7 +99,6 @@ public class playerDeathEvent implements Listener {
                         spec.leave();
                         player.sendTitle("","",0,0,0);
                         FileConfiguration config = plugin.getConfig();
-                        teamColors team = Main.game.getTeamManager().getTeam(player);
                         Double x = Double.parseDouble(config.getString(String.format(("maps.%s.spawn.%s.x"),"world",team)));
                         Double y = Double.parseDouble(config.getString(String.format(("maps.%s.spawn.%s.y"),"world",team)));
                         Double z = Double.parseDouble(config.getString(String.format(("maps.%s.spawn.%s.z"),"world",team)));
@@ -121,6 +121,7 @@ public class playerDeathEvent implements Listener {
         }else {
             Spectator spec = new Spectator(player);
             player.sendTitle(text.f("&cEliminated"),text.f("&fYou may no longer respawn"),1,60,1);
+            Main.game.getTeamManager().doEliminatePlayer(team,player);
         }
     }
 

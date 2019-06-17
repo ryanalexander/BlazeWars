@@ -8,6 +8,7 @@ public enum lang {
     GAME_TEAM_ASSIGNED("&aGame> &7You have been assigned to &e%s&7 team."),
 
     GAME_STOPPED_ADMIN("&aGame> &7The game has been &cstopped&7 by an Administrator."),
+    GAME_FINISHED("&aGame> &7The game has finished, returning to lobby."),
 
     GAME_CORE_DESTROYED("%s&c team's core has been destroyed. They can no longer respawn"),
 

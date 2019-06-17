@@ -13,6 +13,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.*;
 import org.bukkit.entity.Blaze;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
@@ -150,6 +151,40 @@ public class Game {
         }
     }
 
+    public void doFinishGame() {
+        teamColors winner = this.teamManager.getActive_teams().get(0);
+        Bukkit.broadcastMessage(text.f(String.format("&eCongratulations to %s!&e You won!",this.teamManager.getTeamColor(winner)+winner)));
+        for(HashMap.Entry<Player,teamColors> ent : this.teamManager.getPlayers().entrySet()){
+            if(ent.getValue().equals(winner)){
+                Location loc = ent.getKey().getLocation();
+                Firework fw = (Firework) loc.getWorld().spawnEntity(loc, EntityType.FIREWORK);
+                FireworkMeta fwm = fw.getFireworkMeta();
+
+                fwm.setPower(2);
+                fwm.addEffect(FireworkEffect.builder().withColor(Color.LIME).flicker(true).build());
+
+                fw.setFireworkMeta(fwm);
+                fw.detonate();
+
+                for(int i = 0;i<24; i++){
+                    Firework fw2 = (Firework) loc.getWorld().spawnEntity(loc, EntityType.FIREWORK);
+                    fw2.setFireworkMeta(fwm);
+                }
+            }
+        }
+
+        new BukkitRunnable(){
+            @Override
+            public void run() {
+                for(Player player : Bukkit.getOnlinePlayers()){
+                    player.sendMessage(text.f("&aGame> &7The game has finished."));
+                    player.kickPlayer("The game has finished");
+                }
+                Main.game.stop(GameReason.FINISHED);
+                Bukkit.shutdown();
+            }
+        }.runTaskLater(handler,200);
+    }
 
     public boolean canStart() {
         boolean canstart = true;
@@ -321,9 +356,9 @@ public class Game {
 
     }
 
-    public void stop() {
+    public void stop(GameReason reason) {
         this.gamestate=gameState.RESTARTING;
-        Bukkit.broadcastMessage(text.f(lang.GAME_STOPPED_ADMIN));
+        Bukkit.broadcastMessage(text.f(((reason==GameReason.ADMINISTARTOR)?lang.GAME_STOPPED_ADMIN:lang.GAME_FINISHED)));
         Bukkit.getScheduler().cancelTasks(handler);
         for(Entity e : this.gameEntities){
             e.remove();
@@ -335,7 +370,7 @@ public class Game {
         for(Map.Entry<Location,Block> b : this.blockChanges.entrySet()){
             b.getKey().getBlock().setType(Material.AIR);
         }
-        this.gamestate=gameState.LOBBY;
+
     }
 
     public static class spawnner {
