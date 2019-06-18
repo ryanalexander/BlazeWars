@@ -153,7 +153,7 @@ public class Game {
 
     public void doFinishGame() {
         teamColors winner = this.teamManager.getActive_teams().get(0);
-        Bukkit.broadcastMessage(text.f(String.format("&eCongratulations to %s!&e You won!",this.teamManager.getTeamColor(winner)+winner)));
+        Bukkit.broadcastMessage(text.f(String.format("&eCongratulations to %s&e team! You won!",this.teamManager.getTeamColor(winner)+winner)));
         for(HashMap.Entry<Player,teamColors> ent : this.teamManager.getPlayers().entrySet()){
             if(ent.getValue().equals(winner)){
                 Location loc = ent.getKey().getLocation();
