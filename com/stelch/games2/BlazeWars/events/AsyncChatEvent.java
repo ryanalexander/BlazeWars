@@ -18,8 +18,6 @@ public class AsyncChatEvent implements Listener {
         if(Main.game.getGamestate()== gameState.IN_GAME) {
             teamColors team = Main.game.getTeamManager().getTeam(e.getPlayer());
             Bukkit.broadcastMessage(text.f(String.format("&7[%s&7] &e%s&7: %s", TeamManager.Colors.valueOf(team.toString().toUpperCase()).getColor() + team.toString().toUpperCase(), e.getPlayer().getDisplayName(), e.getMessage())));
-        }else {
-            Bukkit.broadcastMessage(text.f(String.format("&e%s&7: %s", e.getPlayer().getDisplayName(), e.getMessage())));
         }
     }
 

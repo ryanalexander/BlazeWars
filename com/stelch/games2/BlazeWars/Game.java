@@ -3,6 +3,7 @@ package com.stelch.games2.BlazeWars;
 import com.stelch.games2.BlazeWars.Inventories.shop;
 import com.stelch.games2.BlazeWars.Utils.*;
 import com.stelch.games2.BlazeWars.varables.*;
+import com.stelch.games2.core.BukkitCore;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -349,6 +350,7 @@ public class Game {
                     Forge f = new Forge(mid_forge.add(0,2,0),Material.BLAZE_ROD,0,true,"&c&lBlaze Rod");
                     Game.spawnner spawnner_mid = new spawnner(mid_forge,new ItemStack(Material.BLAZE_POWDER),0);
 
+                    BukkitCore.coreChatManager=true;
                 }
                 start_time--;
             }
@@ -370,6 +372,7 @@ public class Game {
         for(Map.Entry<Location,Block> b : this.blockChanges.entrySet()){
             b.getKey().getBlock().setType(Material.AIR);
         }
+        BukkitCore.coreChatManager=false;
 
     }
 

@@ -6,34 +6,38 @@ import com.stelch.games2.BlazeWars.Utils.text;
 import com.stelch.games2.BlazeWars.varables.GameReason;
 import com.stelch.games2.BlazeWars.varables.gameState;
 import com.stelch.games2.BlazeWars.varables.teamColors;
+import com.stelch.games2.core.Lang.en;
+import com.stelch.games2.core.PlayerUtils.BukkitGamePlayer;
+import com.stelch.games2.core.Utils.Text;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class admin implements CommandExecutor {
+public class game implements CommandExecutor {
 
     Main plugin;
-    public admin(Main main){
+    public game(Main main){
         plugin=main;
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String arg, String[] args) {
         if(!(sender instanceof Player)){sender.sendMessage("You must be a player to execute this command.");return false;}
+        if((sender instanceof Player)&& BukkitGamePlayer.getGamePlayer(sender.getName()).getRank().getLevel()<10){sender.sendMessage(Text.format(en.PERM_NO_PERMISSION));return false;}
+
         Player player = (Player)sender;
         if(args.length<1){
             sender.sendMessage(new String[]{
                     text.f("&d----[ &cAdmin &d]----"),
                     " ",
-                    text.f("&e- &a/admin game &d{start/stop/state}"),
+                    text.f("&e- &a/game &d{start/stop/state}"),
 
             });
             return false;
         }
-        if(args[0].equalsIgnoreCase("game")){
-            switch(args[1]){
+            switch(args[0]){
                 case "stop":
                     if(Main.game.getGamestate()==gameState.IN_GAME){
                         Main.game.stop(GameReason.ADMINISTARTOR);
@@ -55,7 +59,5 @@ public class admin implements CommandExecutor {
                     sender.sendMessage(text.f("&aADMIN> &fThe command specified does not exist."));
             }
             return false;
-        }
-        return false;
     }
 }

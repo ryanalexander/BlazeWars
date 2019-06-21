@@ -1,17 +1,16 @@
 package com.stelch.games2.BlazeWars;
 
 import com.stelch.games2.BlazeWars.Inventories.Item;
-import com.stelch.games2.BlazeWars.Utils.text;
+import com.stelch.games2.BlazeWars.commands.game;
 import com.stelch.games2.BlazeWars.varables.gameState;
 import com.stelch.games2.BlazeWars.varables.gameType;
+import com.stelch.games2.core.BukkitCore;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -31,6 +30,8 @@ public class Main extends JavaPlugin implements Listener {
 
       game = new Game("BlazeWars", gameType.DESTROY,2,8, this,Bukkit.getWorld("world"));
 
+      BukkitCore.coreChatManager=true;
+
       game.setAllow_spectators(true);
 
       PluginManager pm = Bukkit.getPluginManager();
@@ -47,7 +48,7 @@ public class Main extends JavaPlugin implements Listener {
       game.setGamestate(gameState.LOBBY);
 
       getCommand("mct").setExecutor(new com.stelch.games2.BlazeWars.commands.mct(this));
-      getCommand("admin").setExecutor(new com.stelch.games2.BlazeWars.commands.admin(this));
+      getCommand("game").setExecutor(new game(this));
 
   }
   
