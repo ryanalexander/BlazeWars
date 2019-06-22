@@ -1,6 +1,7 @@
 package com.stelch.games2.BlazeWars.Inventories;
 
-import com.stelch.games2.BlazeWars.Utils.text;
+
+import com.stelch.games2.core.Utils.Text;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -22,7 +23,7 @@ public class weapons implements Listener {
     // 11,12,13,14,15,16,17,29,30,31,33,34,35,38,39
 
     public static Inventory getShop(Player player) {
-        weapons.shop = header.format(Bukkit.createInventory(null,9*6, text.f("&cSkully's blocks")),false);
+        weapons.shop = header.format(Bukkit.createInventory(null,9*6, Text.format("&cSkully's blocks")),false);
 
         Item close = new Item(Material.BARRIER,"&cBack");
         close.setOnClick(new Item.click() {
@@ -83,7 +84,7 @@ public class weapons implements Listener {
         ItemMeta super_bowmeta = super_bowis.getItemMeta();
         super_bowmeta.addEnchant(Enchantment.ARROW_DAMAGE,2,true);
         super_bowmeta.addEnchant(Enchantment.ARROW_KNOCKBACK,1,true);
-        super_bowmeta.setDisplayName(text.f("&d"+player.getName()+"'s Super bow"));
+        super_bowmeta.setDisplayName(Text.format("&d"+player.getName()+"'s Super bow"));
         super_bowis.setItemMeta(super_bowmeta);
         super_bow.setOnClick(new Item.click(){public void run(Player p){if(weapons.doCharge(p,Material.BLAZE_POWDER,3))p.getInventory().addItem(super_bowis);}});
 

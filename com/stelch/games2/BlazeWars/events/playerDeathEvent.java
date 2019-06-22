@@ -2,8 +2,8 @@ package com.stelch.games2.BlazeWars.events;
 
 import com.stelch.games2.BlazeWars.Main;
 import com.stelch.games2.BlazeWars.Utils.Spectator;
-import com.stelch.games2.BlazeWars.Utils.text;
 import com.stelch.games2.BlazeWars.varables.teamColors;
+import com.stelch.games2.core.Utils.Text;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -79,7 +79,7 @@ public class playerDeathEvent implements Listener {
     @EventHandler
     public void doDeath(Player player, String message) {
         teamColors team = Main.game.getTeamManager().getTeam(player);
-        Bukkit.broadcastMessage(text.f(message));
+        Bukkit.broadcastMessage(Text.format(message));
         player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING,1,1);
         player.setHealth(20);
         player.teleport(Main.game.getMap().getSpawnLocation());
@@ -91,7 +91,7 @@ public class playerDeathEvent implements Listener {
                 int timer = 5;
                 @Override
                 public void run() {
-                    player.sendTitle(text.f("&cYou died"),String.format(text.f("&aRespawning in %s Seconds"),timer),0,60,0);
+                    player.sendTitle(Text.format("&cYou died"),String.format(Text.format("&aRespawning in %s Seconds"),timer),0,60,0);
                     timer--;
 
                     if(timer<=0){
@@ -120,7 +120,7 @@ public class playerDeathEvent implements Listener {
             }.runTaskTimer(plugin,0L,20L);
         }else {
             Spectator spec = new Spectator(player);
-            player.sendTitle(text.f("&cEliminated"),text.f("&fYou may no longer respawn"),1,60,1);
+            player.sendTitle(Text.format("&cEliminated"),Text.format("&fYou may no longer respawn"),1,60,1);
             Main.game.getTeamManager().doEliminatePlayer(team,player);
         }
     }

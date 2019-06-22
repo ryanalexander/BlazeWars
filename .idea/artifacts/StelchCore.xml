@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="StelchCore">
+    <output-path>$USER_HOME$/Desktop</output-path>
+    <root id="archive" name="StelchCore.jar">
+      <element id="module-output" name="StelchCore" />
+    </root>
+  </artifact>
+</component>

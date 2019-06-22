@@ -1,7 +1,8 @@
 package com.stelch.games2.BlazeWars.Inventories;
 
 import com.stelch.games2.BlazeWars.Main;
-import com.stelch.games2.BlazeWars.Utils.text;
+
+import com.stelch.games2.core.Utils.Text;
 import com.stelch.games2.BlazeWars.varables.menuSource;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -26,7 +27,7 @@ public class shop implements Listener {
     // 11,12,13,14,15,16,17,29,30,31,33,34,35,38,39
 
     public Inventory getShop(Player player) {
-        this.shop = header.format(Bukkit.createInventory(null,9*6, text.f("&cSkully")),true);
+        this.shop = header.format(Bukkit.createInventory(null,9*6, Text.format("&cSkully")),true);
 
         Item islandUpgrades = new Item(Material.NETHER_STAR,"&eIsland Upgrades");
         islandUpgrades.setLore(new String[]{

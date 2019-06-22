@@ -1,6 +1,7 @@
 package com.stelch.games2.BlazeWars.Inventories;
 
-import com.stelch.games2.BlazeWars.Utils.text;
+
+import com.stelch.games2.core.Utils.Text;
 import com.stelch.games2.BlazeWars.varables.itemUpgrades;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -24,7 +25,7 @@ public class specials implements Listener {
     // 11,12,13,14,15,16,17,29,30,31,33,34,35,38,39
 
     public static Inventory getShop(Player player) {
-        specials.shop = header.format(Bukkit.createInventory(null,9*6, text.f("&cSkully's Tools")),false);
+        specials.shop = header.format(Bukkit.createInventory(null,9*6, Text.format("&cSkully's Tools")),false);
 
         Item close = new Item(Material.BARRIER,"&cBack");
         close.setOnClick(new Item.click() {

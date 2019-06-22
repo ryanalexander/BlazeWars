@@ -2,7 +2,6 @@ package com.stelch.games2.BlazeWars.commands;
 
 import com.stelch.games2.BlazeWars.Main;
 import com.stelch.games2.BlazeWars.Utils.Spectator;
-import com.stelch.games2.BlazeWars.Utils.text;
 import com.stelch.games2.BlazeWars.varables.GameReason;
 import com.stelch.games2.BlazeWars.varables.gameState;
 import com.stelch.games2.BlazeWars.varables.teamColors;
@@ -30,9 +29,9 @@ public class game implements CommandExecutor {
         Player player = (Player)sender;
         if(args.length<1){
             sender.sendMessage(new String[]{
-                    text.f("&d----[ &cAdmin &d]----"),
+                    Text.format("&d----[ &cAdmin &d]----"),
                     " ",
-                    text.f("&e- &a/game &d{start/stop/state}"),
+                    Text.format("&e- &a/game &d{start/stop/state}"),
 
             });
             return false;
@@ -42,21 +41,21 @@ public class game implements CommandExecutor {
                     if(Main.game.getGamestate()==gameState.IN_GAME){
                         Main.game.stop(GameReason.ADMINISTARTOR);
                     }else {
-                        player.sendMessage(text.f("&aADMIN> &7There is no current game in progress."));
+                        player.sendMessage(Text.format("&aADMIN> &7There is no current game in progress."));
                     }
                     break;
                 case "start":
                     if(Main.game.getGamestate()==gameState.LOBBY){
                         Main.game.start();
                     }else {
-                        player.sendMessage(text.f("&aADMIN> &7There is already a game in progress."));
+                        player.sendMessage(Text.format("&aADMIN> &7There is already a game in progress."));
                     }
                     break;
                 case "state":
-                    player.sendMessage(text.f(String.format("&aADMIN> &7The current GameState is \"&e%s&7\".",Main.game.getGamestate())));
+                    player.sendMessage(Text.format(String.format("&aADMIN> &7The current GameState is \"&e%s&7\".",Main.game.getGamestate())));
                     break;
                 default:
-                    sender.sendMessage(text.f("&aADMIN> &fThe command specified does not exist."));
+                    sender.sendMessage(Text.format("&aADMIN> &fThe command specified does not exist."));
             }
             return false;
     }

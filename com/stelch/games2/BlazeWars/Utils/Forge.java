@@ -2,6 +2,7 @@ package com.stelch.games2.BlazeWars.Utils;
 
 import com.stelch.games2.BlazeWars.Game;
 import com.stelch.games2.BlazeWars.Main;
+import com.stelch.games2.core.Utils.Text;
 import net.minecraft.server.v1_14_R1.PacketPlayOutEntity;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -36,7 +37,7 @@ public class Forge implements Listener {
         this.e.setCanPickupItems(false);
         this.e.setRemoveWhenFarAway(false);
         this.e.getEquipment().setHelmet(skull);
-        this.e.setCustomName(com.stelch.games2.BlazeWars.Utils.text.f(text));
+        this.e.setCustomName(Text.format(text));
         this.e.setCustomNameVisible(true);
         this.e.setSmall(is_Small);
         Main.game.setFunctionEntity(this.e, new Game.click() {

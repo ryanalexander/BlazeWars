@@ -4,6 +4,7 @@ import com.stelch.games2.BlazeWars.Inventories.shop;
 import com.stelch.games2.BlazeWars.Utils.*;
 import com.stelch.games2.BlazeWars.varables.*;
 import com.stelch.games2.core.BukkitCore;
+import com.stelch.games2.core.Utils.Text;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -136,6 +137,7 @@ public class Game {
     }
 
     public boolean isGameEntity(Entity e) { return this.gameEntities.contains(e); }
+    public ArrayList<Entity> getGameEntities() {return this.gameEntities;}
 
     public boolean isFunctionEntity(Entity e) { return this.EntityFunctions.containsKey(e); }
     public void setFunctionEntity(Entity e, click c) { this.EntityFunctions.put(e,c); }
@@ -154,7 +156,7 @@ public class Game {
 
     public void doFinishGame() {
         teamColors winner = this.teamManager.getActive_teams().get(0);
-        Bukkit.broadcastMessage(text.f(String.format("&eCongratulations to %s&e team! You won!",this.teamManager.getTeamColor(winner)+winner)));
+        Bukkit.broadcastMessage(Text.format(String.format("&eCongratulations to %s&e team! You won!",this.teamManager.getTeamColor(winner)+winner)));
         for(HashMap.Entry<Player,teamColors> ent : this.teamManager.getPlayers().entrySet()){
             if(ent.getValue().equals(winner)){
                 Location loc = ent.getKey().getLocation();
@@ -178,8 +180,8 @@ public class Game {
             @Override
             public void run() {
                 for(Player player : Bukkit.getOnlinePlayers()){
-                    player.sendMessage(text.f("&aGame> &7The game has finished."));
-                    player.kickPlayer("The game has finished");
+                    player.sendMessage(Text.format("&aGame> &7The game has finished."));
+                    player.kickPlayer("[GAMESTATE] The game has finished");
                 }
                 Main.game.stop(GameReason.FINISHED);
                 Bukkit.shutdown();
@@ -206,7 +208,7 @@ public class Game {
                     Bukkit.getScheduler().cancelTasks(handler);
                 }
                 FileConfiguration config = handler.getConfig();
-                Bukkit.broadcastMessage(text.f(String.format(lang.GAME_BEGIN_IN.get(),start_time)));
+                Bukkit.broadcastMessage(Text.format(String.format(lang.GAME_BEGIN_IN.get(),start_time)));
                 for(Player player : Bukkit.getOnlinePlayers()){
                     player.playSound(player.getLocation(),Sound.BLOCK_NOTE_BLOCK_PLING,1,1);
                 }
@@ -360,7 +362,7 @@ public class Game {
 
     public void stop(GameReason reason) {
         this.gamestate=gameState.RESTARTING;
-        Bukkit.broadcastMessage(text.f(((reason==GameReason.ADMINISTARTOR)?lang.GAME_STOPPED_ADMIN:lang.GAME_FINISHED)));
+        Bukkit.broadcastMessage(Text.format(((reason==GameReason.ADMINISTARTOR)?lang.GAME_STOPPED_ADMIN.get():lang.GAME_FINISHED.get())));
         Bukkit.getScheduler().cancelTasks(handler);
         for(Entity e : this.gameEntities){
             e.remove();

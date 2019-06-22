@@ -1,8 +1,8 @@
 package com.stelch.games2.BlazeWars.events;
 
 import com.stelch.games2.BlazeWars.Main;
-import com.stelch.games2.BlazeWars.Utils.text;
 import com.stelch.games2.BlazeWars.varables.lang;
+import com.stelch.games2.core.Utils.Text;
 import javafx.event.EventHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -22,7 +22,7 @@ public class playerJoin implements Listener {
 
         switch(Main.game.getGamestate()){
             case LOBBY:
-                Bukkit.broadcastMessage(text.f(String.format(lang.GAME_PLAYER_JOIN.get() ,e.getPlayer().getDisplayName(),Bukkit.getOnlinePlayers().size(),Main.game.getMin_players())));
+                Bukkit.broadcastMessage(Text.format(String.format(lang.GAME_PLAYER_JOIN.get() ,e.getPlayer().getDisplayName(),Bukkit.getOnlinePlayers().size(),Main.game.getMin_players())));
                 Main.game.getScoreboard().update();
                 if(Main.game.canStart()){
                     Main.game.start();
@@ -30,19 +30,19 @@ public class playerJoin implements Listener {
                 break;
             case STARTING:
                 Main.game.getScoreboard().update();
-                Bukkit.broadcastMessage(text.f(String.format(lang.GAME_PLAYER_JOIN_STARTING.get() ,e.getPlayer().getDisplayName(),Bukkit.getOnlinePlayers().size(),Main.game.getMin_players())));
+                Bukkit.broadcastMessage(Text.format(String.format(lang.GAME_PLAYER_JOIN_STARTING.get() ,e.getPlayer().getDisplayName(),Bukkit.getOnlinePlayers().size(),Main.game.getMin_players())));
                 break;
             case IN_GAME:
                 if(Main.game.isAllow_spectators()){
                     e.getPlayer().setGameMode(GameMode.SPECTATOR);
-                    e.getPlayer().sendTitle(text.f("&cYou are now a spectator"),"This game is already in progress. You may only spectate.");
+                    e.getPlayer().sendTitle(Text.format("&cYou are now a spectator"),"This game is already in progress. You may only spectate.",10,60,10);
                 }else {
-                    e.getPlayer().kickPlayer(text.f("&aJOIN> &7This game has already started. You were returned to the lobby."));
+                    e.getPlayer().kickPlayer(Text.format("&aJOIN> &7This game has already started. You were returned to the lobby."));
                 }
                 break;
 
             default:
-                e.getPlayer().kickPlayer(text.f(String.format("&cERROR> &7Failed to join the requested game. [Game-state: %s]",Main.game.getGamestate())));
+                e.getPlayer().kickPlayer(Text.format(String.format("&cERROR> &7Failed to join the requested game. [Game-state: %s]",Main.game.getGamestate())));
                 break;
         }
 

@@ -42,6 +42,7 @@ public class Main extends JavaPlugin implements Listener {
       pm.registerEvents(new com.stelch.games2.BlazeWars.events.playerDeathEvent(this),this);
       pm.registerEvents(new com.stelch.games2.BlazeWars.events.CommandPreProcessEvent(),this);
       pm.registerEvents(new com.stelch.games2.BlazeWars.events.EntityInteract(),this);
+      pm.registerEvents(new com.stelch.games2.BlazeWars.events.PlayerMoveEvent(),this);
       pm.registerEvents(new com.stelch.games2.BlazeWars.Inventories.shop(),this);
       pm.registerEvents(this,this);
 

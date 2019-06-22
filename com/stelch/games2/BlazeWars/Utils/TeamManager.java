@@ -4,6 +4,7 @@ import com.stelch.games2.BlazeWars.Game;
 import com.stelch.games2.BlazeWars.Main;
 import com.stelch.games2.BlazeWars.varables.lang;
 import com.stelch.games2.BlazeWars.varables.teamColors;
+import com.stelch.games2.core.Utils.Text;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -14,9 +15,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scoreboard.Team;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import static com.stelch.games2.BlazeWars.Utils.TeamManager.Colors.BLUE;
 import static com.stelch.games2.BlazeWars.Utils.TeamManager.Colors.ORANGE;
@@ -39,6 +38,7 @@ public class TeamManager {
     private HashMap<teamColors, Block> team_chests = new HashMap<>();
 
     private HashMap<teamColors, Entity> team_blaze = new HashMap<>();
+    private HashMap<Entity,Long> team_blaze_cooldown = new HashMap<>();
 
     public enum Colors {
         RED("&c"), GREEN("&a"), BLUE("&b"), PINK("&d"), WHITE("&f"), ORANGE("&6"), YELLOW("&e");
@@ -102,7 +102,7 @@ public class TeamManager {
     public int getRemainingPlayers(teamColors team) { return this.team_players.get(team).size(); }
 
     public void doEliminateTeam(teamColors team) {
-        Bukkit.broadcastMessage(text.f(String.format("%s&7 team have been eliminated!",getTeamColor(team)+team)));
+        Bukkit.broadcastMessage(Text.format(String.format("%s&7 team have been eliminated!",getTeamColor(team)+team)));
         this.active_teams.remove(team);
         if(this.getActive_teams().size()==1){
             Main.game.doFinishGame();
@@ -116,6 +116,10 @@ public class TeamManager {
     public Entity getBlaze(teamColors team){
         return this.team_blaze.get(team);
     }
+
+    public boolean getBlazeCooldown(Entity blaze){ return (this.team_blaze_cooldown.get(blaze)< Calendar.getInstance(TimeZone.getTimeZone("UTC")).getTimeInMillis());}
+
+    public void addBlazeCooldown(Entity blaze){this.team_blaze_cooldown.put(blaze,Calendar.getInstance(TimeZone.getTimeZone("UTC")).getTimeInMillis()+30);}
 
     public void addSpawnners(teamColors team, HashMap<Material,Game.spawnner> spawners) {
         this.spawners.put(team,spawners);
@@ -224,7 +228,7 @@ public class TeamManager {
                 iterator=0;
             }
 
-            p.sendMessage(text.f(String.format(lang.GAME_TEAM_ASSIGNED.get(), Colors.valueOf(team.toString().toUpperCase()).getColor()+team.toString().toUpperCase())));
+            p.sendMessage(Text.format(String.format(lang.GAME_TEAM_ASSIGNED.get(), Colors.valueOf(team.toString().toUpperCase()).getColor()+team.toString().toUpperCase())));
         }
         if(BLUE_PLAYERS.size()>0){this.team_players.put(teamColors.BLUE,BLUE_PLAYERS);}
         if(ORANGE_PLAYERS.size()>0){this.team_players.put(teamColors.ORANGE,ORANGE_PLAYERS);}

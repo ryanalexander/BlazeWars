@@ -3,10 +3,10 @@ package com.stelch.games2.BlazeWars.events;
 import com.stelch.games2.BlazeWars.Game;
 import com.stelch.games2.BlazeWars.Inventories.Item;
 import com.stelch.games2.BlazeWars.Main;
-import com.stelch.games2.BlazeWars.Utils.text;
 import com.stelch.games2.BlazeWars.varables.gameState;
 import com.stelch.games2.BlazeWars.varables.lang;
 import com.stelch.games2.BlazeWars.varables.teamColors;
+import com.stelch.games2.core.Utils.Text;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -58,7 +58,7 @@ public class EntityInteract implements Listener {
                 }
                 teamColors team = Main.game.getTeamManager().getTeam((Player) e.getPlayer());
                 if (!(team.equals(teamChest))&&Main.game.getTeamManager().getCanRespawn(teamChest)) {
-                    e.getPlayer().sendMessage(text.f(String.format(lang.CHEST_TEAM_NOT_ELIMINATED.get(),Main.game.getTeamManager().getTeamColor(teamChest)+teamChest)));
+                    e.getPlayer().sendMessage(Text.format(String.format(lang.CHEST_TEAM_NOT_ELIMINATED.get(),Main.game.getTeamManager().getTeamColor(teamChest)+teamChest)));
                     e.setCancelled(true);
                 }
             }
