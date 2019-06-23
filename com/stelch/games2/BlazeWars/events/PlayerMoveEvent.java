@@ -16,12 +16,16 @@ public class PlayerMoveEvent implements Listener {
     public void onMove(org.bukkit.event.player.PlayerMoveEvent e){
         for(Entity entity : Main.game.getGameEntities()) {
             if(entity.getType().equals(EntityType.BLAZE)){
-                if(e.getTo().distanceSquared(entity.getLocation())<100){
+                    if(e.getTo().distanceSquared(entity.getLocation())<300){
                     Blaze blaze = (Blaze)entity;
                     Fireball fb = blaze.launchProjectile(Fireball.class);
-                    Vector v = e.getTo().toVector();
+                    fb.setInvulnerable(true);
+                    fb.setIsIncendiary(true);
+                    Vector v = entity.getLocation().getDirection().subtract(e.getTo().getDirection().add(new Vector(0,1,0)));
                     fb.setVelocity(v.multiply(5));
                     fb.setGlowing(true);
+                    Main.game.getTeamManager().addBlazeCooldown(blaze);
+
                 }
             }
         }

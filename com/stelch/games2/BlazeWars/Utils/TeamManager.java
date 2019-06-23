@@ -119,7 +119,7 @@ public class TeamManager {
 
     public boolean getBlazeCooldown(Entity blaze){ return (this.team_blaze_cooldown.get(blaze)< Calendar.getInstance(TimeZone.getTimeZone("UTC")).getTimeInMillis());}
 
-    public void addBlazeCooldown(Entity blaze){this.team_blaze_cooldown.put(blaze,Calendar.getInstance(TimeZone.getTimeZone("UTC")).getTimeInMillis()+30);}
+    public void addBlazeCooldown(Entity blaze){this.team_blaze_cooldown.put(blaze,Calendar.getInstance(TimeZone.getTimeZone("UTC")).getTimeInMillis()+5000);}
 
     public void addSpawnners(teamColors team, HashMap<Material,Game.spawnner> spawners) {
         this.spawners.put(team,spawners);
