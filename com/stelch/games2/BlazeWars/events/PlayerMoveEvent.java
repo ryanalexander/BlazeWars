@@ -14,7 +14,6 @@ public class PlayerMoveEvent implements Listener {
 
     @EventHandler
     public void onMove(org.bukkit.event.player.PlayerMoveEvent e){
-        /*
         for(Entity entity : Main.game.getGameEntities()) {
             if(entity.getType().equals(EntityType.BLAZE)){
                     if(e.getTo().distanceSquared(entity.getLocation())<300){
@@ -29,7 +28,7 @@ public class PlayerMoveEvent implements Listener {
 
                 }
             }
-        }*/
+        }
     }
 
 }
