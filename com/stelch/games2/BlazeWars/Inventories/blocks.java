@@ -1,13 +1,17 @@
 package com.stelch.games2.BlazeWars.Inventories;
 
+import com.stelch.games2.BlazeWars.Main;
+import com.stelch.games2.BlazeWars.Utils.TeamManager;
 import com.stelch.games2.core.Utils.Text;
 import org.bukkit.Bukkit;
+import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.material.Wool;
 
 import java.util.ArrayList;
 
@@ -30,13 +34,13 @@ public class blocks implements Listener {
             }
         });
 
-        Item wool = new Item(Material.WHITE_WOOL,"&bWool");
+        Item wool = new Item(Material.valueOf(Main.game.getTeamManager().getTeam(player).toString().toUpperCase()+"_WOOL"),"&bWool");
         wool.setLore(new String[]{
                 "&r",
                 "&aCost: &f4 Iron"
         });
         wool.setAmount(16);
-        wool.setOnClick(new Item.click(){public void run(Player p){if(blocks.doCharge(p,Material.IRON_INGOT,4))p.getInventory().addItem(new ItemStack(Material.WHITE_WOOL,16));}});
+        wool.setOnClick(new Item.click(){public void run(Player p){if(blocks.doCharge(p,Material.IRON_INGOT,4))p.getInventory().addItem(new ItemStack(Material.valueOf(Main.game.getTeamManager().getTeam(player).toString().toUpperCase()+"_WOOL"),16));}});
 
         Item wooden_planks = new Item(Material.OAK_PLANKS,"&bWooden Planks");
         wooden_planks.setLore(new String[]{

@@ -1,22 +1,28 @@
 package com.stelch.games2.BlazeWars.Inventories;
 
 
-import com.stelch.games2.core.Utils.Text;
 import com.stelch.games2.BlazeWars.varables.itemUpgrades;
+import com.stelch.games2.core.Utils.Text;
 import org.bukkit.Bukkit;
+import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityPotionEffectEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.potion.Potion;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
+import org.bukkit.potion.PotionType;
 
 import java.util.ArrayList;
 
-import static com.stelch.games2.BlazeWars.varables.itemUpgrades.*;
 import static org.bukkit.Material.*;
 
-public class specials implements Listener {
+public class potions implements Listener {
 
     private static Inventory shop;
 
@@ -25,7 +31,7 @@ public class specials implements Listener {
     // 11,12,13,14,15,16,17,29,30,31,33,34,35,38,39
 
     public static Inventory getShop(Player player) {
-        specials.shop = header.format(Bukkit.createInventory(null,9*6, Text.format("&cSkully's Specials")),false);
+        potions.shop = header.format(Bukkit.createInventory(null,9*6, Text.format("&cSkully's Specials")),false);
 
         Item close = new Item(Material.BARRIER,"&cBack");
         close.setOnClick(new Item.click() {
@@ -35,65 +41,34 @@ public class specials implements Listener {
             }
         });
 
-        Item tnt = new Item(Material.TNT,"&bTNT");
-        tnt.setLore(new String[]{
+        Item invis = new Item(POTION,"&bInvisibility");
+        invis.setLore(new String[]{
                 "&r",
-                "&aCost: &64 Gold"
-        });
-        tnt.setAmount(1);
-        tnt.setOnClick(new Item.click(){public void run(Player p){if(specials.doCharge(p, GOLD_INGOT,4))p.getInventory().addItem(new ItemStack(Material.TNT,1));}});
-
-        Item epearl = new Item(ENDER_PEARL,"&bEnder Pearl");
-        epearl.setLore(new String[]{
+                "&aCost: &c2 Blaze Rod",
                 "&r",
-                "&aCost: &c2 Blaze Rod"
+                "&aDuration: &630 Secs"
         });
-        epearl.setAmount(1);
-        epearl.setOnClick(new Item.click(){public void run(Player p){if(specials.doCharge(p, BLAZE_ROD,2))p.getInventory().addItem(new ItemStack(ENDER_PEARL,1));}});
+        invis.setAmount(1);
+        invis.setOnClick(new Item.click(){public void run(Player p){
+            if(potions.doCharge(p, BLAZE_ROD,2)){
+                ItemStack potion = new ItemStack(Material.POTION, 1);
 
-        Item water = new Item(WATER_BUCKET,"&bWater");
-        water.setLore(new String[]{
-                "&r",
-                "&aCost: &62 Gold"
+                PotionMeta potionmeta = (PotionMeta) potion.getItemMeta();
+                potionmeta.setMainEffect(PotionEffectType.INVISIBILITY);
+                PotionEffect speed = new PotionEffect(PotionEffectType.INVISIBILITY, (30*20), 1);
+                potionmeta.addCustomEffect(speed, true);
+                potionmeta.setDisplayName(Text.format("&bInvisibility"));
+                potion.setItemMeta(potionmeta);
+                p.getInventory().addItem(potion);
+            }
+        }
         });
-        water.setAmount(1);
-        water.setOnClick(new Item.click(){public void run(Player p){if(specials.doCharge(p, GOLD_INGOT,2))p.getInventory().addItem(new ItemStack(WATER_BUCKET,1));}});
 
-        Item fireball = new Item(FIRE_CHARGE,"&bFireball");
-        fireball.setLore(new String[]{
-                "&r",
-                "&aCost: &f40 Iron"
-        });
-        fireball.setAmount(1);
-        fireball.setOnClick(new Item.click(){public void run(Player p){if(specials.doCharge(p, IRON_INGOT,40))p.getInventory().addItem(new ItemStack(FIRE_CHARGE,1));}});
+        potions.shop.setItem(0,close.spigot());
+        potions.shop.setItem(19,invis.spigot());
 
-        Item bridge_egg = new Item(EGG,"&bBridge Egg");
-        bridge_egg.setLore(new String[]{
-                "&r",
-                "&aCost: &c2 Blaze Rod"
-        });
-        bridge_egg.setAmount(1);
-        bridge_egg.setOnClick(new Item.click(){public void run(Player p){if(specials.doCharge(p, BLAZE_ROD,2))p.getInventory().addItem(new ItemStack(EGG,1));}});
-
-        Item golden_apple = new Item(GOLDEN_APPLE,"&bGolden Apple");
-        golden_apple.setLore(new String[]{
-                "&r",
-                "&aCost: &62 Gold"
-        });
-        golden_apple.setAmount(1);
-        golden_apple.setOnClick(new Item.click(){public void run(Player p){if(specials.doCharge(p, GOLD_INGOT,2))p.getInventory().addItem(new ItemStack(GOLDEN_APPLE,1));}});
-
-
-        specials.shop.setItem(0,close.spigot());
-        specials.shop.setItem(19,tnt.spigot());
-        specials.shop.setItem(20,epearl.spigot());
-        //specials.shop.setItem(21,water.spigot());
-        //specials.shop.setItem(22,fireball.spigot());
-        //specials.shop.setItem(23, bridge_egg.spigot());
-        specials.shop.setItem(23,golden_apple.spigot());
-
-        specials.menus.add(specials.shop);
-        return specials.shop;
+        potions.menus.add(potions.shop);
+        return potions.shop;
     }
 
     public static Material nextUpgrade (Player player, itemUpgrades upgrade){

@@ -34,7 +34,7 @@ public class header {
             Weapons.setOnClick(new Item.click(){public void run(Player p){p.openInventory(weapons.getShop(p));}});
             Armor.setOnClick(new Item.click(){public void run(Player p){p.playSound(p.getLocation(), Sound.ENTITY_VILLAGER_TRADE,1,1);}});
             Tools.setOnClick(new Item.click(){public void run(Player p){p.openInventory(tools.getShop(p));}});
-            Potions.setOnClick(new Item.click(){public void run(Player p){p.playSound(p.getLocation(), Sound.ENTITY_VILLAGER_TRADE,1,1);}});
+            Potions.setOnClick(new Item.click(){public void run(Player p){p.openInventory(potions.getShop(p));}});
             Eggs.setOnClick(new Item.click(){public void run(Player p){p.playSound(p.getLocation(), Sound.ENTITY_VILLAGER_TRADE,1,1);}});
             Special.setOnClick(new Item.click(){public void run(Player p){p.openInventory(specials.getShop(p));}});
 

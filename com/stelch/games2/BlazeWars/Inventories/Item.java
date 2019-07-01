@@ -9,6 +9,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.potion.Potion;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
+import org.bukkit.potion.PotionType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +29,7 @@ public class Item {
         im.setUnbreakable(false);
         im.setDisplayName(Text.format(name));
         im.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+        im.addItemFlags(ItemFlag.HIDE_POTION_EFFECTS);
     }
 
     public void setAmount(int amount){
@@ -50,7 +56,6 @@ public class Item {
         this.is.setItemMeta(this.im);
         return this.is;
     }
-
 
 
     public static interface click {

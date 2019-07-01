@@ -10,19 +10,52 @@ import com.stelch.games2.core.Utils.Text;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Fireball;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityInteractEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.util.Vector;
 
+import java.util.Map;
+
 public class EntityInteract implements Listener {
+
+    @EventHandler
+    public void InventorySwitch(PlayerItemHeldEvent e){
+
+        if(Main.game.invis_players.containsKey(e.getPlayer())){
+            Main.game.invis_players.get(e.getPlayer()).setItemInHand(e.getPlayer().getInventory().getItem(e.getNewSlot()));
+        }
+
+    }
+
+    @EventHandler
+    public void EntityDamage(EntityDamageByEntityEvent e){
+        if(e.getEntity() instanceof ArmorStand){
+            if(Main.game.invis_players.containsValue(e.getEntity())){
+                for(Map.Entry<Player,ArmorStand> d : Main.game.invis_players.entrySet()){
+                    if(d.getValue().equals(e.getEntity())){
+                        for (Player player : Bukkit.getOnlinePlayers()) {
+                            player.showPlayer(Main.getPlugin(Main.class), d.getKey());
+                            d.getValue().remove();
+                        }
+                        Main.game.invis_players.remove(d.getKey());
+                        return;
+                    }
+                }
+            }
+        }
+    }
 
     @EventHandler
     public void EntityInteract(PlayerInteractEvent e){

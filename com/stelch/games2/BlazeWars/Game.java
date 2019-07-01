@@ -42,6 +42,8 @@ public class Game {
 
     public HashMap<Player, Spectator> spectators = new HashMap<>();
 
+    public HashMap<Player,ArmorStand> invis_players = new HashMap<>();
+
     private TeamManager teamManager;
 
     private int start_time = 5;

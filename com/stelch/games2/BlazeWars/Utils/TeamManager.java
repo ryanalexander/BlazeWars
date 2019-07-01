@@ -50,6 +50,7 @@ public class TeamManager {
     public teamColors getTeam(Player p){
         return players.get(p);
     }
+    public boolean hasTeam(Player p) { return players.containsKey(p); }
 
     public ArrayList<teamColors> getActive_teams() { return this.active_teams; }
 
