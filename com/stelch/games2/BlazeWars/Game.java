@@ -16,10 +16,13 @@ import org.bukkit.entity.*;
 import org.bukkit.entity.Blaze;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.FireworkMeta;
+import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
 import java.util.*;
+
+import static org.bukkit.Material.*;
 
 public class Game {
 
@@ -60,6 +63,9 @@ public class Game {
         // PLAYERS GAME SERVER
         teamManager=new TeamManager();
         this.scoreboard=new ScoreboardManager("&6&lBLAZE WARS");
+        this.scoreboard.addBlank();
+        this.scoreboard.addLine("&e&lMAP");
+        this.scoreboard.addLine(map.getName());
         this.scoreboard.addBlank();
         this.scoreboard.addLine("&e&lPLAYERS");
         this.scoreboard.addLine(String.format("&a%s &7/ &a%s",Bukkit.getOnlinePlayers().size(),min_players));
@@ -115,6 +121,7 @@ public class Game {
     public click getEntityFunction(Entity e) { return this.EntityFunctions.get(e); }
 
     public World getMap() { return this.map; }
+    public void setMap(World map) { this.map = map; }
 
     public TeamManager getTeamManager() {
         return teamManager;
@@ -228,17 +235,26 @@ public class Game {
                     for(Map.Entry<Player, teamColors> teamPlayer : teamManager.getPlayers().entrySet()){
                         Player player = teamPlayer.getKey();
                         teamColors team = teamPlayer.getValue();
-                        Double x = Double.parseDouble(config.getString(String.format(("maps.%s.spawn.%s.x"),"world",team)));
-                        Double y = Double.parseDouble(config.getString(String.format(("maps.%s.spawn.%s.y"),"world",team)));
-                        Double z = Double.parseDouble(config.getString(String.format(("maps.%s.spawn.%s.z"),"world",team)));
-                        Float yaw = Float.parseFloat(config.getString(String.format(("maps.%s.spawn.%s.yaw"),"world",team)));
+                        Double x = Double.parseDouble(config.getString(String.format(("maps.%s.spawn.%s.x"),Main.game.getMap(),team)));
+                        Double y = Double.parseDouble(config.getString(String.format(("maps.%s.spawn.%s.y"),Main.game.getMap(),team)));
+                        Double z = Double.parseDouble(config.getString(String.format(("maps.%s.spawn.%s.z"),Main.game.getMap(),team)));
+                        Float yaw = Float.parseFloat(config.getString(String.format(("maps.%s.spawn.%s.yaw"),Main.game.getMap(),team)));
                         Float pitch = Float.parseFloat("0.0");
                         Location teamSpawn=new Location(player.getWorld(),x,y,z,yaw,pitch);
+                        player.getInventory().clear();
 
+                        ItemStack armor_helmet = new ItemStack(LEATHER_HELMET);
+                        ItemStack armor_chestplate = new ItemStack(LEATHER_CHESTPLATE);
+                        LeatherArmorMeta armorHelmetItemMeta = (LeatherArmorMeta) armor_helmet.getItemMeta();
+                        LeatherArmorMeta armorChestplateItemMeta = (LeatherArmorMeta) armor_chestplate.getItemMeta();
+                        armorHelmetItemMeta.setColor(Main.game.getTeamManager().getTeam(player).getColor());
+                        armorChestplateItemMeta.setColor(Main.game.getTeamManager().getTeam(player).getColor());
+                        armor_helmet.setItemMeta(armorHelmetItemMeta);
+                        armor_chestplate.setItemMeta(armorChestplateItemMeta);
+                        player.getInventory().setArmorContents(new ItemStack[]{null,null,armor_chestplate,armor_helmet});
                         player.setHealth(20);
                         player.setVelocity(new Vector(0,0,0));
                         player.teleport(teamSpawn);
-                        player.getInventory().clear();
                         player.setGameMode(GameMode.SURVIVAL);
                     }
 
@@ -246,28 +262,28 @@ public class Game {
 
                         teamManager.setScoreboardLine(team,scoreboard.addLine(teamManager.getTeamColor(team)+"&l"+team.toString().charAt(0)+"&r "+(capitalizeFirstLetter(team.toString())+": &a&l✓")));
 
-                        Double x = Double.parseDouble(config.getString(String.format(("maps.%s.core.%s.x"),"world",team)));
-                        Double y = Double.parseDouble(config.getString(String.format(("maps.%s.core.%s.y"),"world",team)));
-                        Double z = Double.parseDouble(config.getString(String.format(("maps.%s.core.%s.z"),"world",team)));
+                        Double x = Double.parseDouble(config.getString(String.format(("maps.%s.core.%s.x"),Main.game.getMap(),team)));
+                        Double y = Double.parseDouble(config.getString(String.format(("maps.%s.core.%s.y"),Main.game.getMap(),team)));
+                        Double z = Double.parseDouble(config.getString(String.format(("maps.%s.core.%s.z"),Main.game.getMap(),team)));
                         if(x!=null&&y!=null&&z!=null){
-                            Location core=new Location(Bukkit.getWorld("world"),x,y,z);
+                            Location core=new Location(Main.game.getMap(),x,y,z);
                             core.getBlock().setType(Material.NETHER_QUARTZ_ORE);
                             Main.game.getTeamManager().addCore(team,core.getBlock());
                             blockChanges.put(core.getBlock().getLocation(),core.getBlock());
                         }else {
-                            Bukkit.broadcastMessage(String.format("&cMCT> &7Failed to load &e%s&7 missing &6%s check config and use MCT to set the island",team,"core"));
+                            Bukkit.broadcastMessage(Text.format(String.format("&cMCT> &7Failed to load &e%s&7 missing &6%s check config and use MCT to set the island",team,"core")));
                         }
 
 
-                        Double bx = Double.parseDouble(config.getString(String.format(("maps.%s.blaze.%s.x"),"world",team)));
-                        Double by = Double.parseDouble(config.getString(String.format(("maps.%s.blaze.%s.y"),"world",team)));
-                        Double bz = Double.parseDouble(config.getString(String.format(("maps.%s.blaze.%s.z"),"world",team)));
-                        Float byaw = Float.parseFloat(config.getString(String.format(("maps.%s.blaze.%s.yaw"),"world",team)));
+                        Double bx = Double.parseDouble(config.getString(String.format(("maps.%s.blaze.%s.x"),Main.game.getMap(),team)));
+                        Double by = Double.parseDouble(config.getString(String.format(("maps.%s.blaze.%s.y"),Main.game.getMap(),team)));
+                        Double bz = Double.parseDouble(config.getString(String.format(("maps.%s.blaze.%s.z"),Main.game.getMap(),team)));
+                        Float byaw = Float.parseFloat(config.getString(String.format(("maps.%s.blaze.%s.yaw"),Main.game.getMap(),team)));
                         Float bpitch = Float.parseFloat("0.0");
 
                         if(bx!=null&&by!=null&&bz!=null){
-                            Location blaze=new Location(Bukkit.getWorld("world"),bx,by,bz,byaw,bpitch);
-                            Blaze b = (Blaze)Bukkit.getWorld("world").spawnEntity(blaze,EntityType.BLAZE);
+                            Location blaze=new Location(Main.game.getMap(),bx,by,bz,byaw,bpitch);
+                            Blaze b = (Blaze)Main.game.getMap().spawnEntity(blaze,EntityType.BLAZE);
                             b.setAI(false);
                             b.setCanPickupItems(false);
                             b.setCollidable(false);
@@ -276,20 +292,21 @@ public class Game {
                             b.setGliding(false);
                             gameEntities.add(b);
                             teamManager.addBlaze(team,b);
+                            teamManager.addBlazeCooldown(b);
                         }else {
-                            Bukkit.broadcastMessage(String.format("&cMCT> &7Failed to load &e%s&7 missing &6%s check config and use MCT to set the island",team,"Blaze"));
+                            Bukkit.broadcastMessage(Text.format(String.format("&cMCT> &7Failed to load &e%s&7 missing &6%s check config and use MCT to set the island",team,"blaze")));
                         }
 
 
-                        Double vx = Double.parseDouble(config.getString(String.format(("maps.%s.shop.%s.x"),"world",team)));
-                        Double vy = Double.parseDouble(config.getString(String.format(("maps.%s.shop.%s.y"),"world",team)));
-                        Double vz = Double.parseDouble(config.getString(String.format(("maps.%s.shop.%s.z"),"world",team)));
-                        Float vyaw = Float.parseFloat(config.getString(String.format(("maps.%s.shop.%s.yaw"),"world",team)));
+                        Double vx = Double.parseDouble(config.getString(String.format(("maps.%s.shop.%s.x"),Main.game.getMap(),team)));
+                        Double vy = Double.parseDouble(config.getString(String.format(("maps.%s.shop.%s.y"),Main.game.getMap(),team)));
+                        Double vz = Double.parseDouble(config.getString(String.format(("maps.%s.shop.%s.z"),Main.game.getMap(),team)));
+                        Float vyaw = Float.parseFloat(config.getString(String.format(("maps.%s.shop.%s.yaw"),Main.game.getMap(),team)));
                         Float vpitch = Float.parseFloat("0.0");
 
                         if(vx!=null&&vy!=null&&vz!=null){
-                            Location villager=new Location(Bukkit.getWorld("world"),vx,vy,vz,vyaw,vpitch);
-                            Skeleton v = (Skeleton)Bukkit.getWorld("world").spawnEntity(villager,EntityType.SKELETON);
+                            Location villager=new Location(Main.game.getMap(),vx,vy,vz,vyaw,vpitch);
+                            Skeleton v = (Skeleton)Main.game.getMap().spawnEntity(villager,EntityType.SKELETON);
                             v.setAI(false);
                             v.setCanPickupItems(false);
                             v.setCollidable(false);
@@ -306,17 +323,17 @@ public class Game {
                             });
                             gameEntities.add(v);
                         }else {
-                            Bukkit.broadcastMessage(String.format("&cMCT> &7Failed to load &e%s&7 missing &6%s check config and use MCT to set the island",team,"Shop"));
+                            Bukkit.broadcastMessage(Text.format(String.format("&cMCT> &7Failed to load &e%s&7 missing &6%s check config and use MCT to set the island",team,"shop")));
                         }
 
-                        Double fx = Double.parseDouble(config.getString(String.format(("maps.%s.forge.%s.x"),"world",team)));
-                        Double fy = Double.parseDouble(config.getString(String.format(("maps.%s.forge.%s.y"),"world",team)));
-                        Double fz = Double.parseDouble(config.getString(String.format(("maps.%s.forge.%s.z"),"world",team)));
+                        Double fx = Double.parseDouble(config.getString(String.format(("maps.%s.forge.%s.x"),Main.game.getMap(),team)));
+                        Double fy = Double.parseDouble(config.getString(String.format(("maps.%s.forge.%s.y"),Main.game.getMap(),team)));
+                        Double fz = Double.parseDouble(config.getString(String.format(("maps.%s.forge.%s.z"),Main.game.getMap(),team)));
 
                         if(fx!=null&&fy!=null&&fz!=null){
-                            Location forge =new Location(Bukkit.getWorld("world"),fx,fy,fz);
-                            Game.spawnner spawnner_iron = new spawnner(forge,new ItemStack(Material.IRON_INGOT),4);
-                            Game.spawnner spawnner_gold = new spawnner(forge,new ItemStack(Material.GOLD_INGOT),3);
+                            Location forge =new Location(Main.game.getMap(),fx,fy,fz);
+                            Game.spawnner spawnner_iron = new spawnner(forge,new ItemStack(Material.IRON_INGOT),4,24);
+                            Game.spawnner spawnner_gold = new spawnner(forge,new ItemStack(Material.GOLD_INGOT),3,10);
 
                             HashMap<Material, Game.spawnner> spawners = new HashMap<>();
                             teamManager.setForge_location(team,forge);
@@ -326,35 +343,59 @@ public class Game {
 
                             teamManager.addSpawnners(team,spawners);
                         }else {
-                            Bukkit.broadcastMessage(String.format("&cMCT> &7Failed to load &e%s&7 missing &6%s check config and use MCT to set the island",team,"Forge"));
+                            Bukkit.broadcastMessage(Text.format(String.format("&cMCT> &7Failed to load &e%s&7 missing &6%s check config and use MCT to set the island",team,"forge")));
                         }
 
-                        Double cx = Double.parseDouble(config.getString(String.format(("maps.%s.chest.%s.x"),"world",team)));
-                        Double cy = Double.parseDouble(config.getString(String.format(("maps.%s.chest.%s.y"),"world",team)));
-                        Double cz = Double.parseDouble(config.getString(String.format(("maps.%s.chest.%s.z"),"world",team)));
-                        String cd = (config.getString(String.format(("maps.%s.chest.%s.direction"),"world",team)));
+                        Double cx = Double.parseDouble(config.getString(String.format(("maps.%s.chest.%s.x"),Main.game.getMap(),team)));
+                        Double cy = Double.parseDouble(config.getString(String.format(("maps.%s.chest.%s.y"),Main.game.getMap(),team)));
+                        Double cz = Double.parseDouble(config.getString(String.format(("maps.%s.chest.%s.z"),Main.game.getMap(),team)));
+                        String cd = (config.getString(String.format(("maps.%s.chest.%s.direction"),Main.game.getMap(),team)));
                         if(cx!=null&&cy!=null&&cz!=null&&cd!=null){
-                            Chest c = (Chest) PlaceBlockWithType(Bukkit.getWorld("world"),cx,cy,cz,Material.CHEST,BlockFace.valueOf(cd)).getState();
+                            Chest c = (Chest) PlaceBlockWithType(Main.game.getMap(),cx,cy,cz,Material.CHEST,BlockFace.valueOf(cd)).getState();
                             c.getInventory().clear();
 
                             blockChanges.put(c.getBlock().getLocation(),c.getBlock());
                             Main.game.getTeamManager().setTeam_chests(team,c.getBlock());
                         }else {
-                            Bukkit.broadcastMessage(String.format("&cMCT> &7Failed to load &e%s&7 missing &6%s check config and use MCT to set the island",team,"Chest"));
+                            Bukkit.broadcastMessage(Text.format(String.format("&cMCT> &7Failed to load &e%s&7 missing &6%s check config and use MCT to set the island",team,"chest")));
                         }
+                    }
+
+                    List<String> BLAZE_POWDER = config.getStringList(String.format("maps.%s.BLAZE_POWDER",Main.game.getMap()));
+                    for(String s : BLAZE_POWDER){
+                        String[] args = s.split(":");
+                        Location location = new Location((Main.game.getMap()),Double.parseDouble(args[1]),Double.parseDouble(args[2]),Double.parseDouble(args[3]));
+                        Forge f = new Forge(location.add(0,1,0), NETHER_BRICK_FENCE,0,false,"&c&lBlaze Powder");
+                        Game.spawnner spawnner_mid = new spawnner(location,new ItemStack(Material.BLAZE_POWDER),2,4);
+                    }
+
+
+                    List<String> MID_FORGE = config.getStringList(String.format("maps.%s.MID_FORGE",Main.game.getMap()));
+                    for(String s : MID_FORGE){
+                        String[] args = s.split(":");
+                        Location location = new Location((Main.game.getMap()),Double.parseDouble(args[1]),Double.parseDouble(args[2]),Double.parseDouble(args[3]));
+                        Forge f = new Forge(location.add(0,1,0), GLOWSTONE,0,false,"&c&lBlaze Rod");
+                        Game.spawnner spawnner_mid = new spawnner(location,new ItemStack(BLAZE_ROD),2,4);
                     }
 
                     scoreboard.addBlank();
                     scoreboard.addLine("&cwww.stelch.gg");
 
-                    Double mfx = Double.parseDouble(config.getString(String.format(("maps.%s.forge.%s.x"),"world","MAP")));
-                    Double mfy = Double.parseDouble(config.getString(String.format(("maps.%s.forge.%s.y"),"world","MAP")));
-                    Double mfz = Double.parseDouble(config.getString(String.format(("maps.%s.forge.%s.z"),"world","MAP")));
-                    Location mid_forge =new Location(Bukkit.getWorld("world"),mfx,mfy,mfz,0F,0F);
-                    Forge f = new Forge(mid_forge.add(0,2,0),Material.BLAZE_ROD,0,true,"&c&lBlaze Rod");
-                    Game.spawnner spawnner_mid = new spawnner(mid_forge,new ItemStack(Material.BLAZE_POWDER),0);
+                    BukkitCore.coreChatManager=false;
 
-                    BukkitCore.coreChatManager=true;
+                    /* Remove waiting lobby */
+                    /*
+                    double startx=Double.parseDouble(config.getString(String.format(("maps.%s.lobby.%s.x"),"lobby","pos1"))), starty=Double.parseDouble(config.getString(String.format(("maps.%s.lobby.%s.y"),"lobby","pos1"))), startz=Double.parseDouble(config.getString(String.format(("maps.%s.lobby.%s.z"),Main.game.getMap(),"pos1")));
+                    double endx=Double.parseDouble(config.getString(String.format(("maps.%s.lobby.%s.x"),"lobby","pos1"))), endy=Double.parseDouble(config.getString(String.format(("maps.%s.lobby.%s.y"),"lobby","pos1"))), endz=Double.parseDouble(config.getString(String.format(("maps.%s.lobby.%s.z"),Main.game.getMap(),"pos1")));
+                    for (double x = startx; x < endx; x++) {
+                        for (double y = starty; y < endy; y++) {
+                            for (double z = startz; z < endz; z++) {
+                                Block block = new Location(Main.game.getMap(),x, y, z).getBlock();
+                                block.setType(Material.AIR);
+                            }
+                        }
+                    }
+                    */
                 }
                 start_time--;
             }
@@ -369,14 +410,14 @@ public class Game {
         for(Entity e : this.gameEntities){
             e.remove();
         }
-        for(Entity e : Bukkit.getServer().getWorld("world").getEntities()){
+        for(Entity e : (Main.game.getMap()).getEntities()){
             if(!(e.getType().equals(EntityType.PLAYER)))
                 e.remove();
         }
         for(Map.Entry<Location,Block> b : this.blockChanges.entrySet()){
             b.getKey().getBlock().setType(Material.AIR);
         }
-        BukkitCore.coreChatManager=false;
+        BukkitCore.coreChatManager=true;
 
     }
 
@@ -386,12 +427,14 @@ public class Game {
         private Long[] levels = new Long[]{1200L,600L,300L,160L,80L,40L,20L,10L,5L};
 
         private int level = 0;
-        public spawnner(final Location l, final ItemStack m,int level) {
+        public spawnner(final Location l, final ItemStack m,int level,int max_holding) {
             this.level=level;
             (new BukkitRunnable() {
                 public void run() {
                     if (Game.spawnner.this.stopped || Main.game.getGamestate() != gameState.IN_GAME)
                         cancel();
+                    if(getEntitiesAroundPoint(l,max_holding,m)>=10)
+                        return;
                     l.getWorld().dropItem(l, m);
                 }
             }).runTaskTimer(Main.game.handler, 0L, this.levels[this.level]);
@@ -426,8 +469,14 @@ public class Game {
         void run(Player param1Player);
     }
 
-    private static Collection<Entity> getEntitiesAroundPoint(Location location, double radius) {
-        return location.getWorld().getNearbyEntities(location, radius, radius, radius);
+    private static Integer getEntitiesAroundPoint(Location location, double radius, ItemStack type) {
+        int count = 0;
+        for(Entity e : location.getWorld().getNearbyEntities(location, radius, radius, radius)){
+            if(e instanceof Item){
+                count++;
+            }
+        }
+        return count;
     }
 
     private static String capitalizeFirstLetter(String original) {

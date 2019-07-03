@@ -20,6 +20,7 @@ import org.bukkit.entity.TNTPrimed;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockFromToEvent;
 import org.bukkit.event.block.BlockIgniteEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
@@ -29,6 +30,12 @@ import org.bukkit.inventory.ItemStack;
 import java.lang.reflect.Field;
 
 public class blockPlace implements Listener {
+
+    @EventHandler
+    public void BlockFromToEvent(BlockFromToEvent e){
+        if(Main.game.getGamestate()==gameState.IN_GAME)
+            Main.game.doBlockUpdate(e.getBlock().getLocation(),e.getBlock());
+    }
 
     @EventHandler
     public void blockPlace(BlockPlaceEvent e){

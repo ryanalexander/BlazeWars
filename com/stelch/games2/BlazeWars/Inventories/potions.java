@@ -41,7 +41,7 @@ public class potions implements Listener {
             }
         });
 
-        Item invis = new Item(POTION,"&bInvisibility");
+        Item invis = new Item(POTION,"&bInvisibility Potion");
         invis.setLore(new String[]{
                 "&r",
                 "&aCost: &c2 Blaze Rod",
@@ -57,7 +57,32 @@ public class potions implements Listener {
                 potionmeta.setMainEffect(PotionEffectType.INVISIBILITY);
                 PotionEffect speed = new PotionEffect(PotionEffectType.INVISIBILITY, (30*20), 1);
                 potionmeta.addCustomEffect(speed, true);
-                potionmeta.setDisplayName(Text.format("&bInvisibility"));
+                potionmeta.setDisplayName(Text.format("&bInvisibility Potion"));
+                potion.setItemMeta(potionmeta);
+                p.getInventory().addItem(potion);
+            }
+        }
+        });
+
+
+        Item jump = new Item(POTION,"&bJump Juice");
+        jump.setLore(new String[]{
+                "&r",
+                "&aCost: &c2 Blaze Rod",
+                "&r",
+                "&aDuration: &630 Secs"
+        });
+        jump.setAmount(1);
+        jump.setOnClick(new Item.click(){public void run(Player p){
+            if(potions.doCharge(p, BLAZE_ROD,2)){
+                ItemStack potion = new ItemStack(Material.POTION, 1);
+
+                PotionMeta potionmeta = (PotionMeta) potion.getItemMeta();
+                potionmeta.setMainEffect(PotionEffectType.JUMP);
+                PotionEffect speed = new PotionEffect(PotionEffectType.JUMP, (30*20), 3);
+                potionmeta.addCustomEffect(speed, true);
+                potionmeta.setColor(Color.LIME);
+                potionmeta.setDisplayName(Text.format("&bJump Juice"));
                 potion.setItemMeta(potionmeta);
                 p.getInventory().addItem(potion);
             }
@@ -66,88 +91,12 @@ public class potions implements Listener {
 
         potions.shop.setItem(0,close.spigot());
         potions.shop.setItem(19,invis.spigot());
+        potions.shop.setItem(20,jump.spigot());
 
         potions.menus.add(potions.shop);
         return potions.shop;
     }
 
-    public static Material nextUpgrade (Player player, itemUpgrades upgrade){
-        switch (upgrade) {
-            case PICAXE:
-                if(player.getInventory().contains(DIAMOND_PICKAXE)){return DIAMOND_PICKAXE;}
-                if(player.getInventory().contains(GOLDEN_PICKAXE)){return DIAMOND_PICKAXE;}
-                if(player.getInventory().contains(IRON_PICKAXE)){return GOLDEN_PICKAXE;}
-                if(player.getInventory().contains(WOODEN_PICKAXE)){return IRON_PICKAXE;}
-                return WOODEN_PICKAXE;
-            case AXE:
-                if(player.getInventory().contains(DIAMOND_AXE)){return DIAMOND_AXE;}
-                if(player.getInventory().contains(GOLDEN_AXE)){return DIAMOND_AXE;}
-                if(player.getInventory().contains(IRON_AXE)){return GOLDEN_AXE;}
-                if(player.getInventory().contains(WOODEN_AXE)){return IRON_AXE;}
-                return WOODEN_AXE;
-            case SHOVEL:
-                if(player.getInventory().contains(DIAMOND_SHOVEL)){return DIAMOND_SHOVEL;}
-                if(player.getInventory().contains(GOLDEN_SHOVEL)){return DIAMOND_SHOVEL;}
-                if(player.getInventory().contains(IRON_SHOVEL)){return GOLDEN_SHOVEL;}
-                if(player.getInventory().contains(WOODEN_SHOVEL)){return IRON_SHOVEL;}
-                return WOODEN_SHOVEL;
-            default:
-                break;
-        }
-        return null;
-    }
-
-    public static Material lastUpgrade (Player player, itemUpgrades upgrade) {
-        switch (upgrade) {
-            case PICAXE:
-                if(player.getInventory().contains(DIAMOND_PICKAXE)){return DIAMOND_PICKAXE;}
-                if(player.getInventory().contains(GOLDEN_PICKAXE)){return GOLDEN_PICKAXE;}
-                if(player.getInventory().contains(IRON_PICKAXE)){return IRON_PICKAXE;}
-                if(player.getInventory().contains(WOODEN_PICKAXE)){return WOODEN_PICKAXE;}
-                return null;
-            case AXE:
-                if(player.getInventory().contains(DIAMOND_AXE)){return DIAMOND_AXE;}
-                if(player.getInventory().contains(GOLDEN_AXE)){return GOLDEN_AXE;}
-                if(player.getInventory().contains(IRON_AXE)){return IRON_AXE;}
-                if(player.getInventory().contains(WOODEN_AXE)){return WOODEN_AXE;}
-                return null;
-            case SHOVEL:
-                if(player.getInventory().contains(DIAMOND_SHOVEL)){return DIAMOND_SHOVEL;}
-                if(player.getInventory().contains(GOLDEN_SHOVEL)){return GOLDEN_SHOVEL;}
-                if(player.getInventory().contains(IRON_SHOVEL)){return IRON_SHOVEL;}
-                if(player.getInventory().contains(WOODEN_SHOVEL)){return WOODEN_SHOVEL;}
-                return null;
-            default:
-                break;
-        }
-        return null;
-    }
-
-    public static ItemStack getPrice (Player player, itemUpgrades upgrade) {
-        switch (upgrade) {
-            case PICAXE:
-                if(player.getInventory().contains(DIAMOND_PICKAXE)){return null;}
-                if(player.getInventory().contains(GOLDEN_PICKAXE)){return new ItemStack(Material.GOLD_INGOT,16);}
-                if(player.getInventory().contains(IRON_PICKAXE)){return new ItemStack(Material.GOLD_INGOT,8);}
-                if(player.getInventory().contains(WOODEN_PICKAXE)){return new ItemStack(Material.IRON_INGOT,20);}
-                return new ItemStack(IRON_INGOT,10);
-            case AXE:
-                if(player.getInventory().contains(DIAMOND_AXE)){return null;}
-                if(player.getInventory().contains(GOLDEN_AXE)){return new ItemStack(Material.GOLD_INGOT,16);}
-                if(player.getInventory().contains(IRON_AXE)){return new ItemStack(Material.GOLD_INGOT,8);}
-                if(player.getInventory().contains(WOODEN_AXE)){return new ItemStack(Material.IRON_INGOT,20);}
-                return new ItemStack(IRON_INGOT,10);
-            case SHOVEL:
-                if(player.getInventory().contains(DIAMOND_SHOVEL)){return null;}
-                if(player.getInventory().contains(GOLDEN_SHOVEL)){return new ItemStack(Material.GOLD_INGOT,16);}
-                if(player.getInventory().contains(IRON_SHOVEL)){return new ItemStack(Material.GOLD_INGOT,8);}
-                if(player.getInventory().contains(WOODEN_SHOVEL)){return new ItemStack(Material.IRON_INGOT,20);}
-                return new ItemStack(IRON_INGOT,10);
-            default:
-                break;
-        }
-        return null;
-    }
 
     public static boolean doCharge (Player player, Material mat, int amount) {
 

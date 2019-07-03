@@ -56,10 +56,12 @@ public class mct implements CommandExecutor {
                 sender.sendMessage(Text.format(String.format("&aMCT> &7Removed &e%s&7 location at x:%s y:%s z:%s",args[1],loc.getX(),loc.getY(),loc.getZ())));
                 break;
             case "add":
-                List<String> list = plugin.getConfig().getStringList(String.format("maps.%s.%s.list",((Player) sender).getLocation().getWorld(),args[1].toLowerCase()));
-                int id = list.size()+1;
-                list.set(id,loc.toString());
-                sender.sendMessage(Text.format(String.format("&aMCT> &7Saved &e%s&7 id &e%s&7 location at x:%s y:%s z:%s",args[1].toUpperCase(),id,loc.getX(),loc.getY(),loc.getZ())));
+                String key = String.format("maps.%s.%s",((Player) sender).getLocation().getWorld().getName(),args[1].toUpperCase());
+                List<String> list = plugin.getConfig().getStringList(key);
+                list.add(String.format("%s:%s:%s:%s",loc.getWorld().getName(),Double.parseDouble(""+loc.getX()),Double.parseDouble(""+loc.getY()),Double.parseDouble(""+loc.getZ())));
+                plugin.getConfig().set(key, list);
+                sender.sendMessage(Text.format(String.format("&aMCT> &7Saved &e%s&7 location at x:&e%s&7 y:&e%s&7 z:&e%s&7 key: &e%s",args[1].toUpperCase(),Double.parseDouble(""+loc.getX()),Double.parseDouble(""+loc.getY()),Double.parseDouble(""+loc.getZ()),key)));
+                plugin.saveConfig();
                 break;
             case "list":
                 sender.sendMessage(Text.format("&aMCT> The &elist&r command is under construction"));

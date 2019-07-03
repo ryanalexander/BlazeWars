@@ -41,7 +41,7 @@ public class TeamManager {
     private HashMap<Entity,Long> team_blaze_cooldown = new HashMap<>();
 
     public enum Colors {
-        RED("&c"), GREEN("&a"), BLUE("&b"), PINK("&d"), WHITE("&f"), ORANGE("&6"), YELLOW("&e");
+        WHITE("&f"), PINK("&d"), RED("&c"), BLUE("&b"), GREEN("&a"), YELLOW("&c"), ORANGE("&6"), GREY("&7");
         private String color;
         public String getColor() {return this.color;}
         private Colors(String color){this.color = color.toUpperCase();}
@@ -118,9 +118,9 @@ public class TeamManager {
         return this.team_blaze.get(team);
     }
 
-    public boolean getBlazeCooldown(Entity blaze){ return (this.team_blaze_cooldown.get(blaze)< Calendar.getInstance(TimeZone.getTimeZone("UTC")).getTimeInMillis());}
+    public boolean getBlazeCooldown(Entity blaze){return (this.team_blaze_cooldown.get(blaze)< Calendar.getInstance(TimeZone.getTimeZone("UTC")).getTimeInMillis());}
 
-    public void addBlazeCooldown(Entity blaze){this.team_blaze_cooldown.put(blaze,Calendar.getInstance(TimeZone.getTimeZone("UTC")).getTimeInMillis()+5000);}
+    public void addBlazeCooldown(Entity blaze){this.team_blaze_cooldown.put(blaze,Calendar.getInstance(TimeZone.getTimeZone("UTC")).getTimeInMillis()+2000);}
 
     public void addSpawnners(teamColors team, HashMap<Material,Game.spawnner> spawners) {
         this.spawners.put(team,spawners);
@@ -161,7 +161,7 @@ public class TeamManager {
                 this.spawner_level.put(team,level);
                 this.spawners.get(team).get(Material.IRON_INGOT).setLevel(7);
                 this.spawners.get(team).get(Material.GOLD_INGOT).setLevel(6);
-                this.spawners.get(team).put(Material.BLAZE_ROD,new Game.spawnner(this.forge_location.get(team),new ItemStack(Material.BLAZE_ROD),0));
+                this.spawners.get(team).put(Material.BLAZE_ROD,new Game.spawnner(this.forge_location.get(team),new ItemStack(Material.BLAZE_ROD),0,4));
                 break;
             case 4:
                 this.spawner_level.put(team,level);
@@ -177,15 +177,18 @@ public class TeamManager {
         teamColors team;
         int iterator = 0;
 
-        ArrayList<Player> BLUE_PLAYERS=new ArrayList<>();
-        ArrayList<Player> ORANGE_PLAYERS=new ArrayList<>();
-        ArrayList<Player> RED_PLAYERS=new ArrayList<>();
-        ArrayList<Player> WHITE_PLAYERS=new ArrayList<>();
-        ArrayList<Player> YELLOW_PLAYERS=new ArrayList<>();
-        ArrayList<Player> GREEN_PLAYERS=new ArrayList<>();
+        ArrayList<Player> WHITE_PLAYERS = new ArrayList<>();
+        ArrayList<Player> PURPLE_PLAYERS = new ArrayList<>();
+        ArrayList<Player> RED_PLAYERS = new ArrayList<>();
+        ArrayList<Player> BLUE_PLAYERS = new ArrayList<>();
+        ArrayList<Player> GREEN_PLAYERS = new ArrayList<>();
+        ArrayList<Player> YELLOW_PLAYERS = new ArrayList<>();
+        ArrayList<Player> ORANGE_PLAYERS = new ArrayList<>();
+        ArrayList<Player> GREY_PLAYERS = new ArrayList<>();
 
         for(Player p : Bukkit.getOnlinePlayers()){
             if(iterator==0){
+                // BLUE TEAM
                 BLUE_PLAYERS.add(p);
                 players.put(p,teamColors.BLUE);
                 p.setDisplayName(getTeamColor(teamColors.BLUE)+p.getName());
@@ -193,6 +196,7 @@ public class TeamManager {
                 team=teamColors.BLUE;
                 iterator++;
             }else if(iterator==1){
+                // ORANGE TEAM
                 ORANGE_PLAYERS.add(p);
                 players.put(p,teamColors.ORANGE);
                 p.setDisplayName(getTeamColor(teamColors.ORANGE)+p.getName());
@@ -200,6 +204,7 @@ public class TeamManager {
                 team=teamColors.ORANGE;
                 iterator++;
             }else if(iterator==2){
+                // RED TEAM
                 RED_PLAYERS.add(p);
                 players.put(p,teamColors.RED);
                 p.setDisplayName(getTeamColor(teamColors.RED)+p.getName());
@@ -207,6 +212,7 @@ public class TeamManager {
                 team=teamColors.RED;
                 iterator++;
             }else if(iterator==3){
+                // WHITE TEAM
                 WHITE_PLAYERS.add(p);
                 players.put(p,teamColors.WHITE);
                 p.setDisplayName(getTeamColor(teamColors.WHITE)+p.getName());
@@ -214,13 +220,31 @@ public class TeamManager {
                 team=teamColors.WHITE;
                 iterator++;
             }else if(iterator==4){
+                // YELLOW TEAM
                 YELLOW_PLAYERS.add(p);
                 players.put(p,teamColors.YELLOW);
                 p.setDisplayName(getTeamColor(teamColors.YELLOW)+p.getName());
                 if(!(this.active_teams.contains(teamColors.YELLOW))){this.active_teams.add(teamColors.YELLOW);}
                 team=teamColors.YELLOW;
                 iterator++;
+            }else if(iterator==5){
+                // PURPLE TEAM
+                PURPLE_PLAYERS.add(p);
+                players.put(p,teamColors.PURPLE);
+                p.setDisplayName(getTeamColor(teamColors.PURPLE)+p.getName());
+                if(!(this.active_teams.contains(teamColors.PURPLE))){this.active_teams.add(teamColors.PURPLE);}
+                team=teamColors.PURPLE;
+                iterator++;
+            }else if(iterator==6){
+                // GREY TEAM
+                GREY_PLAYERS.add(p);
+                players.put(p,teamColors.GREY);
+                p.setDisplayName(getTeamColor(teamColors.GREY)+p.getName());
+                if(!(this.active_teams.contains(teamColors.GREY))){this.active_teams.add(teamColors.GREY);}
+                team=teamColors.GREY;
+                iterator++;
             }else {
+                // GREEN TEAM
                 GREEN_PLAYERS.add(p);
                 players.put(p,teamColors.GREEN);
                 p.setDisplayName(getTeamColor(teamColors.GREEN)+p.getName());
@@ -236,6 +260,8 @@ public class TeamManager {
         if(RED_PLAYERS.size()>0){this.team_players.put(teamColors.RED,RED_PLAYERS);}
         if(WHITE_PLAYERS.size()>0){this.team_players.put(teamColors.WHITE,WHITE_PLAYERS);}
         if(YELLOW_PLAYERS.size()>0){this.team_players.put(teamColors.YELLOW,YELLOW_PLAYERS);}
+        if(PURPLE_PLAYERS.size()>0){this.team_players.put(teamColors.PURPLE,PURPLE_PLAYERS);}
+        if(GREY_PLAYERS.size()>0){this.team_players.put(teamColors.GREY,GREY_PLAYERS);}
         if(GREEN_PLAYERS.size()>0){this.team_players.put(teamColors.GREEN,GREEN_PLAYERS);}
 
     }

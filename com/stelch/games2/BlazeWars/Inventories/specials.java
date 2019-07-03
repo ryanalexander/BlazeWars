@@ -6,10 +6,12 @@ import com.stelch.games2.BlazeWars.varables.itemUpgrades;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Sound;
+import org.bukkit.entity.MagmaCube;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffectType;
 
 import java.util.ArrayList;
 
@@ -87,91 +89,13 @@ public class specials implements Listener {
         specials.shop.setItem(0,close.spigot());
         specials.shop.setItem(19,tnt.spigot());
         specials.shop.setItem(20,epearl.spigot());
-        //specials.shop.setItem(21,water.spigot());
+        specials.shop.setItem(21,water.spigot());
         //specials.shop.setItem(22,fireball.spigot());
         //specials.shop.setItem(23, bridge_egg.spigot());
         specials.shop.setItem(23,golden_apple.spigot());
 
         specials.menus.add(specials.shop);
         return specials.shop;
-    }
-
-    public static Material nextUpgrade (Player player, itemUpgrades upgrade){
-        switch (upgrade) {
-            case PICAXE:
-                if(player.getInventory().contains(DIAMOND_PICKAXE)){return DIAMOND_PICKAXE;}
-                if(player.getInventory().contains(GOLDEN_PICKAXE)){return DIAMOND_PICKAXE;}
-                if(player.getInventory().contains(IRON_PICKAXE)){return GOLDEN_PICKAXE;}
-                if(player.getInventory().contains(WOODEN_PICKAXE)){return IRON_PICKAXE;}
-                return WOODEN_PICKAXE;
-            case AXE:
-                if(player.getInventory().contains(DIAMOND_AXE)){return DIAMOND_AXE;}
-                if(player.getInventory().contains(GOLDEN_AXE)){return DIAMOND_AXE;}
-                if(player.getInventory().contains(IRON_AXE)){return GOLDEN_AXE;}
-                if(player.getInventory().contains(WOODEN_AXE)){return IRON_AXE;}
-                return WOODEN_AXE;
-            case SHOVEL:
-                if(player.getInventory().contains(DIAMOND_SHOVEL)){return DIAMOND_SHOVEL;}
-                if(player.getInventory().contains(GOLDEN_SHOVEL)){return DIAMOND_SHOVEL;}
-                if(player.getInventory().contains(IRON_SHOVEL)){return GOLDEN_SHOVEL;}
-                if(player.getInventory().contains(WOODEN_SHOVEL)){return IRON_SHOVEL;}
-                return WOODEN_SHOVEL;
-            default:
-                break;
-        }
-        return null;
-    }
-
-    public static Material lastUpgrade (Player player, itemUpgrades upgrade) {
-        switch (upgrade) {
-            case PICAXE:
-                if(player.getInventory().contains(DIAMOND_PICKAXE)){return DIAMOND_PICKAXE;}
-                if(player.getInventory().contains(GOLDEN_PICKAXE)){return GOLDEN_PICKAXE;}
-                if(player.getInventory().contains(IRON_PICKAXE)){return IRON_PICKAXE;}
-                if(player.getInventory().contains(WOODEN_PICKAXE)){return WOODEN_PICKAXE;}
-                return null;
-            case AXE:
-                if(player.getInventory().contains(DIAMOND_AXE)){return DIAMOND_AXE;}
-                if(player.getInventory().contains(GOLDEN_AXE)){return GOLDEN_AXE;}
-                if(player.getInventory().contains(IRON_AXE)){return IRON_AXE;}
-                if(player.getInventory().contains(WOODEN_AXE)){return WOODEN_AXE;}
-                return null;
-            case SHOVEL:
-                if(player.getInventory().contains(DIAMOND_SHOVEL)){return DIAMOND_SHOVEL;}
-                if(player.getInventory().contains(GOLDEN_SHOVEL)){return GOLDEN_SHOVEL;}
-                if(player.getInventory().contains(IRON_SHOVEL)){return IRON_SHOVEL;}
-                if(player.getInventory().contains(WOODEN_SHOVEL)){return WOODEN_SHOVEL;}
-                return null;
-            default:
-                break;
-        }
-        return null;
-    }
-
-    public static ItemStack getPrice (Player player, itemUpgrades upgrade) {
-        switch (upgrade) {
-            case PICAXE:
-                if(player.getInventory().contains(DIAMOND_PICKAXE)){return null;}
-                if(player.getInventory().contains(GOLDEN_PICKAXE)){return new ItemStack(Material.GOLD_INGOT,16);}
-                if(player.getInventory().contains(IRON_PICKAXE)){return new ItemStack(Material.GOLD_INGOT,8);}
-                if(player.getInventory().contains(WOODEN_PICKAXE)){return new ItemStack(Material.IRON_INGOT,20);}
-                return new ItemStack(IRON_INGOT,10);
-            case AXE:
-                if(player.getInventory().contains(DIAMOND_AXE)){return null;}
-                if(player.getInventory().contains(GOLDEN_AXE)){return new ItemStack(Material.GOLD_INGOT,16);}
-                if(player.getInventory().contains(IRON_AXE)){return new ItemStack(Material.GOLD_INGOT,8);}
-                if(player.getInventory().contains(WOODEN_AXE)){return new ItemStack(Material.IRON_INGOT,20);}
-                return new ItemStack(IRON_INGOT,10);
-            case SHOVEL:
-                if(player.getInventory().contains(DIAMOND_SHOVEL)){return null;}
-                if(player.getInventory().contains(GOLDEN_SHOVEL)){return new ItemStack(Material.GOLD_INGOT,16);}
-                if(player.getInventory().contains(IRON_SHOVEL)){return new ItemStack(Material.GOLD_INGOT,8);}
-                if(player.getInventory().contains(WOODEN_SHOVEL)){return new ItemStack(Material.IRON_INGOT,20);}
-                return new ItemStack(IRON_INGOT,10);
-            default:
-                break;
-        }
-        return null;
     }
 
     public static boolean doCharge (Player player, Material mat, int amount) {

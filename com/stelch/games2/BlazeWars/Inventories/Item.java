@@ -2,6 +2,7 @@ package com.stelch.games2.BlazeWars.Inventories;
 
 import com.stelch.games2.BlazeWars.Main;
 import com.stelch.games2.core.Utils.Text;
+import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.enchantments.Enchantment;

@@ -19,11 +19,11 @@ public class playerJoin implements Listener {
     @org.bukkit.event.EventHandler
     public void playerJoin(PlayerJoinEvent e){
         e.setJoinMessage(null);
+        Main.game.getScoreboard().update();
 
         switch(Main.game.getGamestate()){
             case LOBBY:
                 Bukkit.broadcastMessage(Text.format(String.format(lang.GAME_PLAYER_JOIN.get() ,e.getPlayer().getDisplayName(),Bukkit.getOnlinePlayers().size(),Main.game.getMin_players())));
-                Main.game.getScoreboard().update();
                 if(Main.game.canStart()){
                     Main.game.start();
                 }

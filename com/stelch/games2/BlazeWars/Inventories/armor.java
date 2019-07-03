@@ -1,22 +1,27 @@
 package com.stelch.games2.BlazeWars.Inventories;
 
 
-import com.stelch.games2.core.Utils.Text;
+import com.stelch.games2.BlazeWars.Main;
 import com.stelch.games2.BlazeWars.varables.itemUpgrades;
+import com.stelch.games2.core.Utils.Text;
 import org.bukkit.Bukkit;
+import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.LeatherArmorMeta;
+import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 import java.util.ArrayList;
 
-import static com.stelch.games2.BlazeWars.varables.itemUpgrades.*;
 import static org.bukkit.Material.*;
 
-public class tools implements Listener {
+public class armor implements Listener {
 
     private static Inventory shop;
 
@@ -25,7 +30,7 @@ public class tools implements Listener {
     // 11,12,13,14,15,16,17,29,30,31,33,34,35,38,39
 
     public static Inventory getShop(Player player) {
-        tools.shop = header.format(Bukkit.createInventory(null,9*6, Text.format("&cSkully's Tools")),false);
+        armor.shop = header.format(Bukkit.createInventory(null,9*6, Text.format("&cSkully's Clothes Collection")),false);
 
         Item close = new Item(Material.BARRIER,"&cBack");
         close.setOnClick(new Item.click() {
@@ -35,81 +40,96 @@ public class tools implements Listener {
             }
         });
 
-        Item shears = new Item(Material.SHEARS,"&bShears");
-        shears.setLore(new String[]{
+        Item armor_leather = new Item(LEATHER_CHESTPLATE,"&3Leather Armor");
+        armor_leather.setLore(new String[]{
                 "&r",
-                "&aCost: &f20 Iron"
+                "&aCost: &f10 Iron",
         });
-        shears.setAmount(1);
-        shears.setOnClick(new Item.click(){public void run(Player p){if(tools.doCharge(p,Material.IRON_INGOT,20))p.getInventory().addItem(new ItemStack(Material.SHEARS,1));}});
-
-
-        Item pickaxe = new Item(nextUpgrade(player,PICAXE),"&bPickaxe");
-        ItemStack pickaxe_cost = getPrice(player,PICAXE);
-        pickaxe.setLore(new String[]{
-                "&r",
-                "&aCost: &f"+((pickaxe_cost!=null)?pickaxe_cost.getAmount()+" "+pickaxe_cost.getType().name().replaceAll("_"," ").toLowerCase():"&cFully Upgraded")
-        });
-        pickaxe.setAmount(1);
-        pickaxe.setOnClick(new Item.click(){public void run(Player p){
-            if(pickaxe_cost!=null){
-                if(tools.doCharge(p,pickaxe_cost.getType(),pickaxe_cost.getAmount())) {
-                    Material last = lastUpgrade(player, PICAXE);
-                    Material next = nextUpgrade(player, PICAXE);
-                    if(last!=null){p.getInventory().remove(last);}
-                    p.getInventory().addItem(new ItemStack(next));
-                    p.openInventory(tools.getShop(p));
-                }
+        armor_leather.setAmount(1);
+        armor_leather.setOnClick(new Item.click(){public void run(Player p){
+            if(armor.doCharge(p, IRON_INGOT,10)){
+                ItemStack armor_leggings = new ItemStack(LEATHER_LEGGINGS);
+                ItemStack armor_boots = new ItemStack(LEATHER_BOOTS);
+                LeatherArmorMeta leggingsItemMeta = (LeatherArmorMeta) armor_leggings.getItemMeta();
+                LeatherArmorMeta bootsItemMeta = (LeatherArmorMeta) armor_boots.getItemMeta();
+                leggingsItemMeta.setColor(Main.game.getTeamManager().getTeam(player).getColor());
+                bootsItemMeta.setColor(Main.game.getTeamManager().getTeam(player).getColor());
+                armor_leggings.setItemMeta(leggingsItemMeta);
+                armor_boots.setItemMeta(bootsItemMeta);
+                player.getInventory().setArmorContents(new ItemStack[]{armor_boots,armor_leggings,player.getInventory().getChestplate(),player.getInventory().getHelmet()});
             }
-        }});
-
-        Item axe = new Item(nextUpgrade(player,AXE),"&bAXE");
-        ItemStack axe_cost = getPrice(player,AXE);
-        axe.setLore(new String[]{
-                "&r",
-                "&aCost: &f"+((axe_cost!=null)?axe_cost.getAmount()+" "+axe_cost.getType().name().replaceAll("_"," ").toLowerCase():"&cFully Upgraded")
+        }
         });
-        axe.setAmount(1);
-        axe.setOnClick(new Item.click(){public void run(Player p){
-            if(axe_cost!=null){
-                if(tools.doCharge(p,axe_cost.getType(),axe_cost.getAmount())) {
-                    Material last = lastUpgrade(player, AXE);
-                    Material next = nextUpgrade(player, AXE);
-                    if(last!=null){p.getInventory().remove(last);}
-                    p.getInventory().addItem(new ItemStack(next));
-                    p.openInventory(tools.getShop(p));
-                }
-            }
-        }});
 
-        Item shovel = new Item(nextUpgrade(player,SHOVEL),"&bSHOVEL");
-        ItemStack shovel_cost = getPrice(player,SHOVEL);
-        shovel.setLore(new String[]{
+        Item armor_chain = new Item(CHAINMAIL_CHESTPLATE,"&7Chainmail Armor");
+        armor_chain.setLore(new String[]{
                 "&r",
-                "&aCost: &f"+((shovel_cost!=null)?shovel_cost.getAmount()+" "+shovel_cost.getType().name().replaceAll("_"," ").toLowerCase():"&cFully Upgraded")
+                "&aCost: &f25 Iron",
         });
-        shovel.setAmount(1);
-        shovel.setOnClick(new Item.click(){public void run(Player p){
-            if(shovel_cost!=null){
-                if(tools.doCharge(p,shovel_cost.getType(),shovel_cost.getAmount())) {
-                    Material last = lastUpgrade(player, SHOVEL);
-                    Material next = nextUpgrade(player, SHOVEL);
-                    if(last!=null){p.getInventory().remove(last);}
-                    p.getInventory().addItem(new ItemStack(next));
-                    p.openInventory(tools.getShop(p));
-                }
+        armor_chain.setAmount(1);
+        armor_chain.setOnClick(new Item.click(){public void run(Player p){
+            if(armor.doCharge(p, IRON_INGOT,25)){
+                ItemStack armor_leggings = new ItemStack(CHAINMAIL_LEGGINGS);
+                ItemStack armor_boots = new ItemStack(CHAINMAIL_BOOTS);
+                player.getInventory().setArmorContents(new ItemStack[]{armor_boots,armor_leggings,player.getInventory().getChestplate(),player.getInventory().getHelmet()});
             }
-        }});
+        }
+        });
 
-        tools.shop.setItem(0,close.spigot());
-        if(!(player.getInventory().contains(Material.SHEARS)))
-            tools.shop.setItem(19,shears.spigot());
-        tools.shop.setItem(20,pickaxe.spigot());
-        tools.shop.setItem(21,axe.spigot());
-        tools.shop.setItem(22,shovel.spigot());
+        Item armor_iron = new Item(IRON_CHESTPLATE,"&fIron Armor");
+        armor_iron.setLore(new String[]{
+                "&r",
+                "&aCost: &610 Gold",
+        });
+        armor_iron.setAmount(1);
+        armor_iron.setOnClick(new Item.click(){public void run(Player p){
+            if(armor.doCharge(p, GOLD_INGOT,10)){
+                ItemStack armor_leggings = new ItemStack(IRON_LEGGINGS);
+                ItemStack armor_boots = new ItemStack(IRON_BOOTS);
+                player.getInventory().setArmorContents(new ItemStack[]{armor_boots,armor_leggings,player.getInventory().getChestplate(),player.getInventory().getHelmet()});
+            }
+        }
+        });
 
-        tools.menus.add(tools.shop);
-        return tools.shop;
+        Item armor_gold = new Item(GOLDEN_CHESTPLATE,"&6Golden Armor");
+        armor_gold.setLore(new String[]{
+                "&r",
+                "&aCost: &625 Gold",
+        });
+        armor_gold.setAmount(1);
+        armor_gold.setOnClick(new Item.click(){public void run(Player p){
+            if(armor.doCharge(p, GOLD_INGOT,25)){
+                ItemStack armor_leggings = new ItemStack(GOLDEN_LEGGINGS);
+                ItemStack armor_boots = new ItemStack(GOLDEN_BOOTS);
+                player.getInventory().setArmorContents(new ItemStack[]{armor_boots,armor_leggings,player.getInventory().getChestplate(),player.getInventory().getHelmet()});
+            }
+        }
+        });
+
+        Item armor_diamond = new Item(DIAMOND_CHESTPLATE,"&bDiamond Armor");
+        armor_diamond.setLore(new String[]{
+                "&r",
+                "&aCost: &c6 Blaze Rod",
+        });
+        armor_diamond.setAmount(1);
+        armor_diamond.setOnClick(new Item.click(){public void run(Player p){
+            if(armor.doCharge(p, BLAZE_ROD,6)){
+                ItemStack armor_leggings = new ItemStack(DIAMOND_LEGGINGS);
+                ItemStack armor_boots = new ItemStack(DIAMOND_BOOTS);
+                player.getInventory().setArmorContents(new ItemStack[]{armor_boots,armor_leggings,player.getInventory().getChestplate(),player.getInventory().getHelmet()});
+            }
+        }
+        });
+
+        armor.shop.setItem(0,close.spigot());
+        armor.shop.setItem(20,armor_leather.spigot());
+        armor.shop.setItem(21,armor_chain.spigot());
+        armor.shop.setItem(22,armor_iron.spigot());
+        armor.shop.setItem(23,armor_gold.spigot());
+        armor.shop.setItem(24,armor_diamond.spigot());
+
+        armor.menus.add(armor.shop);
+        return armor.shop;
     }
 
     public static Material nextUpgrade (Player player, itemUpgrades upgrade){

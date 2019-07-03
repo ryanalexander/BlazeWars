@@ -21,9 +21,9 @@ public class PotionEvent implements Listener {
 
     @EventHandler
     public void PotionEvent (EntityPotionEffectEvent e){
-        e.setCancelled(true);
 
         if(e.getNewEffect().getType().equals(PotionEffectType.INVISIBILITY)){
+            e.setCancelled(true);
             ArmorStand as = (ArmorStand) e.getEntity().getWorld().spawnEntity(e.getEntity().getLocation(), EntityType.ARMOR_STAND);
             as.setVisible(false);
             as.setItemInHand(((Player)e.getEntity()).getItemOnCursor());

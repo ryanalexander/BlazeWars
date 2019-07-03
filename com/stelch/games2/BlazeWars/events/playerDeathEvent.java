@@ -2,6 +2,7 @@ package com.stelch.games2.BlazeWars.events;
 
 import com.stelch.games2.BlazeWars.Main;
 import com.stelch.games2.BlazeWars.Utils.Spectator;
+import com.stelch.games2.BlazeWars.varables.gameState;
 import com.stelch.games2.BlazeWars.varables.teamColors;
 import com.stelch.games2.core.Utils.Text;
 import org.bukkit.Bukkit;
@@ -18,6 +19,8 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
+import java.util.Random;
+
 public class playerDeathEvent implements Listener {
 
     private String[] messages = new String[]{
@@ -25,6 +28,13 @@ public class playerDeathEvent implements Listener {
         "%s&7 has been clapped by %s",
         "%s&7 has been wasted by %s",
         "%s&7 has been rekt by %s"
+    };
+
+    private String[] fall = new String[]{
+            "%s&7 fell and hit their head",
+            "&7Balance is not %s&7's strong point",
+            "%s&7 didn't notice the edge",
+            "%s&7 was given swift end by the ground"
     };
 
     Main plugin;
@@ -40,6 +50,7 @@ public class playerDeathEvent implements Listener {
 
     @EventHandler
     public void EntityDamageEntity(EntityDamageByEntityEvent e){
+        if(!(Main.game.getGamestate().equals(gameState.IN_GAME))) return;
         switch (e.getEntityType()){
             case PLAYER:
                 Player player = (Player)e.getEntity();
@@ -57,6 +68,7 @@ public class playerDeathEvent implements Listener {
     @EventHandler
     public void EntityDamageEvent(EntityDamageEvent e){
         if(e.getCause().equals(EntityDamageEvent.DamageCause.LIGHTNING)){e.setCancelled(true);}
+        if(!(Main.game.getGamestate().equals(gameState.IN_GAME))) return;
         switch (e.getEntityType()){
             case PLAYER:
                 if(e.getCause().equals(EntityDamageEvent.DamageCause.ENTITY_ATTACK)){return;}
@@ -68,7 +80,13 @@ public class playerDeathEvent implements Listener {
                 if((player.getHealth()-e.getFinalDamage())<1){
                     e.setCancelled(true);
                     player.setHealth(20);
-                    doDeath(player,String.format(messages[0],player.getDisplayName(),e.getCause()));
+                    if(e.getCause().equals(EntityDamageEvent.DamageCause.VOID)||e.getCause().equals(EntityDamageEvent.DamageCause.FALL)){
+                        Random rand = new Random();
+                        doDeath(player,String.format(fall[rand.nextInt(fall.length)],player.getDisplayName(),e.getCause()));
+                    }else {
+                        Random rand = new Random();
+                        doDeath(player,String.format(messages[rand.nextInt(messages.length)],player.getDisplayName(),e.getCause()));
+                    }
                 }
                 break;
             default:
@@ -83,6 +101,8 @@ public class playerDeathEvent implements Listener {
         player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING,1,1);
         player.setHealth(20);
         player.teleport(Main.game.getMap().getSpawnLocation());
+        player.setAllowFlight(true);
+        player.setFlying(true);
 
         if(Main.game.getTeamManager().getCanRespawn(Main.game.getTeamManager().getTeam(player))){
             Spectator spec = new Spectator(player);
@@ -111,6 +131,8 @@ public class playerDeathEvent implements Listener {
                         player.teleport(teamSpawn);
                         player.getInventory().clear();
                         player.setGameMode(GameMode.SURVIVAL);
+                        player.setAllowFlight(false);
+                        player.setFlying(false);
                         for(Player p : Bukkit.getOnlinePlayers()){
                             p.showPlayer(plugin,player);
                         }
