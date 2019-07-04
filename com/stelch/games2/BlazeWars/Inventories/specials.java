@@ -48,18 +48,18 @@ public class specials implements Listener {
         Item epearl = new Item(ENDER_PEARL,"&bEnder Pearl");
         epearl.setLore(new String[]{
                 "&r",
-                "&aCost: &c2 Blaze Rod"
+                "&aCost: &c4 Blaze Rod"
         });
         epearl.setAmount(1);
-        epearl.setOnClick(new Item.click(){public void run(Player p){if(specials.doCharge(p, BLAZE_ROD,2))p.getInventory().addItem(new ItemStack(ENDER_PEARL,1));}});
+        epearl.setOnClick(new Item.click(){public void run(Player p){if(specials.doCharge(p, BLAZE_ROD,4))p.getInventory().addItem(new ItemStack(ENDER_PEARL,1));}});
 
         Item water = new Item(WATER_BUCKET,"&bWater");
         water.setLore(new String[]{
                 "&r",
-                "&aCost: &62 Gold"
+                "&aCost: &64 Gold"
         });
         water.setAmount(1);
-        water.setOnClick(new Item.click(){public void run(Player p){if(specials.doCharge(p, GOLD_INGOT,2))p.getInventory().addItem(new ItemStack(WATER_BUCKET,1));}});
+        water.setOnClick(new Item.click(){public void run(Player p){if(specials.doCharge(p, GOLD_INGOT,4))p.getInventory().addItem(new ItemStack(WATER_BUCKET,1));}});
 
         Item fireball = new Item(FIRE_CHARGE,"&bFireball");
         fireball.setLore(new String[]{
@@ -72,18 +72,18 @@ public class specials implements Listener {
         Item bridge_egg = new Item(EGG,"&bBridge Egg");
         bridge_egg.setLore(new String[]{
                 "&r",
-                "&aCost: &c2 Blaze Rod"
+                "&aCost: &c3 Blaze Rod"
         });
         bridge_egg.setAmount(1);
-        bridge_egg.setOnClick(new Item.click(){public void run(Player p){if(specials.doCharge(p, BLAZE_ROD,2))p.getInventory().addItem(new ItemStack(EGG,1));}});
+        bridge_egg.setOnClick(new Item.click(){public void run(Player p){if(specials.doCharge(p, BLAZE_ROD,3))p.getInventory().addItem(new ItemStack(EGG,1));}});
 
         Item golden_apple = new Item(GOLDEN_APPLE,"&bGolden Apple");
         golden_apple.setLore(new String[]{
                 "&r",
-                "&aCost: &62 Gold"
+                "&aCost: &63 Gold"
         });
         golden_apple.setAmount(1);
-        golden_apple.setOnClick(new Item.click(){public void run(Player p){if(specials.doCharge(p, GOLD_INGOT,2))p.getInventory().addItem(new ItemStack(GOLDEN_APPLE,1));}});
+        golden_apple.setOnClick(new Item.click(){public void run(Player p){if(specials.doCharge(p, GOLD_INGOT,3))p.getInventory().addItem(new ItemStack(GOLDEN_APPLE,1));}});
 
 
         specials.shop.setItem(0,close.spigot());
@@ -92,7 +92,7 @@ public class specials implements Listener {
         specials.shop.setItem(21,water.spigot());
         //specials.shop.setItem(22,fireball.spigot());
         //specials.shop.setItem(23, bridge_egg.spigot());
-        specials.shop.setItem(23,golden_apple.spigot());
+        specials.shop.setItem(24,golden_apple.spigot());
 
         specials.menus.add(specials.shop);
         return specials.shop;
@@ -106,7 +106,7 @@ public class specials implements Listener {
                 player.getInventory().removeItem(payload);
             }
             player.getInventory().remove(payload);
-            player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_CHIME,1,1);
+            player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING,1,1);
             return true;
         }else {
             player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO,1,1);

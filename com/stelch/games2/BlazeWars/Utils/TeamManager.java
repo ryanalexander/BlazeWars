@@ -149,25 +149,25 @@ public class TeamManager {
                 break;
             case 1:
                 this.spawner_level.put(team,level);
-                this.spawners.get(team).get(Material.IRON_INGOT).setLevel(5);
-                this.spawners.get(team).get(Material.GOLD_INGOT).setLevel(4);
+                this.spawners.get(team).get(Material.IRON_INGOT).setLevel(8);
+                this.spawners.get(team).get(Material.GOLD_INGOT).setLevel(6);
                 break;
             case 2:
                 this.spawner_level.put(team,level);
-                this.spawners.get(team).get(Material.IRON_INGOT).setLevel(6);
-                this.spawners.get(team).get(Material.GOLD_INGOT).setLevel(5);
+                this.spawners.get(team).get(Material.IRON_INGOT).setLevel(9);
+                this.spawners.get(team).get(Material.GOLD_INGOT).setLevel(7);
                 break;
             case 3:
                 this.spawner_level.put(team,level);
-                this.spawners.get(team).get(Material.IRON_INGOT).setLevel(7);
-                this.spawners.get(team).get(Material.GOLD_INGOT).setLevel(6);
-                this.spawners.get(team).put(Material.BLAZE_ROD,new Game.spawnner(this.forge_location.get(team),new ItemStack(Material.BLAZE_ROD),0,4));
+                this.spawners.get(team).get(Material.IRON_INGOT).setLevel(9);
+                this.spawners.get(team).get(Material.GOLD_INGOT).setLevel(7);
+                this.spawners.get(team).put(Material.BLAZE_ROD,new Game.spawnner(this.forge_location.get(team),new ItemStack(Material.BLAZE_ROD),1,4));
                 break;
             case 4:
                 this.spawner_level.put(team,level);
-                this.spawners.get(team).get(Material.IRON_INGOT).setLevel(8);
+                this.spawners.get(team).get(Material.IRON_INGOT).setLevel(9);
                 this.spawners.get(team).get(Material.GOLD_INGOT).setLevel(7);
-                this.spawners.get(team).get(Material.BLAZE_ROD).setLevel(1);
+                this.spawners.get(team).get(Material.BLAZE_ROD).setLevel(2);
                 break;
             default:
                 break;

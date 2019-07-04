@@ -36,26 +36,18 @@ public class weapons implements Listener {
         Item stone_sword = new Item(Material.STONE_SWORD,"&bStone Sword");
         stone_sword.setLore(new String[]{
                 "&r",
-                "&aCost: &f6 Iron"
+                "&aCost: &f10 Iron"
         });
         stone_sword.setAmount(1);
-        stone_sword.setOnClick(new Item.click(){public void run(Player p){if(weapons.doCharge(p,Material.IRON_INGOT,6))p.getInventory().addItem(new ItemStack(Material.STONE_SWORD,1));}});
+        stone_sword.setOnClick(new Item.click(){public void run(Player p){if(weapons.doCharge(p,Material.IRON_INGOT,10))p.getInventory().addItem(new ItemStack(Material.STONE_SWORD,1));}});
 
         Item iron_sword = new Item(Material.IRON_SWORD,"&bIron Sword");
         iron_sword.setLore(new String[]{
                 "&r",
-                "&aCost: &66 Gold"
+                "&aCost: &67 Gold"
         });
         iron_sword.setAmount(1);
-        iron_sword.setOnClick(new Item.click(){public void run(Player p){if(weapons.doCharge(p,Material.GOLD_INGOT,6))p.getInventory().addItem(new ItemStack(Material.IRON_SWORD,1));}});
-
-        Item gold_sword = new Item(Material.GOLDEN_SWORD,"&bGolden Sword");
-        gold_sword.setLore(new String[]{
-                "&r",
-                "&aCost: &612 Gold"
-        });
-        gold_sword.setAmount(1);
-        gold_sword.setOnClick(new Item.click(){public void run(Player p){if(weapons.doCharge(p,Material.GOLD_INGOT,12))p.getInventory().addItem(new ItemStack(Material.GOLDEN_SWORD,1));}});
+        iron_sword.setOnClick(new Item.click(){public void run(Player p){if(weapons.doCharge(p,Material.GOLD_INGOT,7))p.getInventory().addItem(new ItemStack(Material.IRON_SWORD,1));}});
 
         Item diamond_sword = new Item(Material.DIAMOND_SWORD,"&bDiamond Sword");
         diamond_sword.setLore(new String[]{
@@ -77,7 +69,7 @@ public class weapons implements Listener {
         super_bow.setEnchanted(true);
         super_bow.setLore(new String[]{
                 "&r",
-                "&aCost: &e3 Blaze Power"
+                "&aCost: &c6 Blaze Rod"
         });
         super_bow.setAmount(1);
         ItemStack super_bowis = new ItemStack(Material.BOW);
@@ -86,7 +78,7 @@ public class weapons implements Listener {
         super_bowmeta.addEnchant(Enchantment.ARROW_KNOCKBACK,1,true);
         super_bowmeta.setDisplayName(Text.format("&d"+player.getName()+"'s Super bow"));
         super_bowis.setItemMeta(super_bowmeta);
-        super_bow.setOnClick(new Item.click(){public void run(Player p){if(weapons.doCharge(p,Material.BLAZE_POWDER,3))p.getInventory().addItem(super_bowis);}});
+        super_bow.setOnClick(new Item.click(){public void run(Player p){if(weapons.doCharge(p,Material.BLAZE_ROD,6))p.getInventory().addItem(super_bowis);}});
 
         Item arrows = new Item(Material.ARROW,"&bArrow");
         arrows.setLore(new String[]{
@@ -99,7 +91,6 @@ public class weapons implements Listener {
         weapons.shop.setItem(0,close.spigot());
         weapons.shop.setItem(19,stone_sword.spigot());
         weapons.shop.setItem(20,iron_sword.spigot());
-        weapons.shop.setItem(21,gold_sword.spigot());
         weapons.shop.setItem(22,diamond_sword.spigot());
         weapons.shop.setItem(23,bow.spigot());
         weapons.shop.setItem(24,super_bow.spigot());
@@ -117,7 +108,7 @@ public class weapons implements Listener {
                 player.getInventory().removeItem(payload);
             }
             player.getInventory().remove(payload);
-            player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_CHIME,1,1);
+            player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING,1,1);
             return true;
         }else {
             player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO,1,1);

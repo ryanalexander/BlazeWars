@@ -235,6 +235,33 @@ public class Game {
                     scoreboard.clear();
                     scoreboard.addBlank();
                     scoreboard.addBlank();
+                    scoreboard.addBlank();
+
+                    scoreboard.editLine(1,"Loading.");
+
+                    new BukkitRunnable(){
+                        /* Main game loop */
+                        forgeType[] upgrades = new forgeType[]{forgeType.BLAZE_ROD,forgeType.BLAZE_POWDER,forgeType.BLAZE_ROD,forgeType.BLAZE_POWDER,forgeType.BLAZE_ROD,forgeType.BLAZE_POWDER,forgeType.BLAZE_POWDER};
+                        int forge_upgrade_level = 0;
+                        int forge_upgrade_time = 30;
+                        @Override
+                        public void run() {
+                            if(forge_upgrade_level>=upgrades.length){cancel();}
+                            if(forge_upgrade_time<=0){
+                                forge_upgrade_time=30;
+                                forge_upgrade_level++;
+                            }else {
+                                forge_upgrade_time--;
+                            }
+                            scoreboard.editLine(1,upgrades[forge_upgrade_level]+" upgrades in "+forge_upgrade_time+" seconds");
+
+                        }
+                    }.runTaskTimer(handler,0L,20L);
+
+                    for(Entity e : (Main.game.getMap()).getEntities()){
+                        if(!(e.getType().equals(EntityType.PLAYER)))
+                            e.remove();
+                    }
 
                     for(Map.Entry<Player, teamColors> teamPlayer : teamManager.getPlayers().entrySet()){
                         Player player = teamPlayer.getKey();
@@ -336,8 +363,8 @@ public class Game {
 
                         if(fx!=null&&fy!=null&&fz!=null){
                             Location forge =new Location(Main.game.getMap(),fx,fy,fz);
-                            Game.spawnner spawnner_iron = new spawnner(forge,new ItemStack(Material.IRON_INGOT),4,24);
-                            Game.spawnner spawnner_gold = new spawnner(forge,new ItemStack(Material.GOLD_INGOT),3,10);
+                            Game.spawnner spawnner_iron = new spawnner(forge,new ItemStack(Material.IRON_INGOT),8,24);
+                            Game.spawnner spawnner_gold = new spawnner(forge,new ItemStack(Material.GOLD_INGOT),6,10);
 
                             HashMap<Material, Game.spawnner> spawners = new HashMap<>();
                             teamManager.setForge_location(team,forge);
@@ -370,7 +397,8 @@ public class Game {
                         String[] args = s.split(":");
                         Location location = new Location((Main.game.getMap()),Double.parseDouble(args[1]),Double.parseDouble(args[2]),Double.parseDouble(args[3]));
                         Forge f = new Forge(location.add(0,1,0), NETHER_BRICK_FENCE,0,false,"&c&lBlaze Powder");
-                        Game.spawnner spawnner_mid = new spawnner(location,new ItemStack(Material.BLAZE_POWDER),2,4);
+                        Game.spawnner spawnner_mid = new spawnner(location,new ItemStack(Material.BLAZE_POWDER),0,4);
+                        f.setSpawner(spawnner_mid);
                     }
 
 
@@ -379,7 +407,8 @@ public class Game {
                         String[] args = s.split(":");
                         Location location = new Location((Main.game.getMap()),Double.parseDouble(args[1]),Double.parseDouble(args[2]),Double.parseDouble(args[3]));
                         Forge f = new Forge(location.add(0,1,0), GLOWSTONE,0,false,"&c&lBlaze Rod");
-                        Game.spawnner spawnner_mid = new spawnner(location,new ItemStack(BLAZE_ROD),2,4);
+                        Game.spawnner spawnner_mid = new spawnner(location,new ItemStack(BLAZE_ROD),0,4);
+                        f.setSpawner(spawnner_mid);
                     }
 
                     scoreboard.addBlank();
@@ -433,7 +462,9 @@ public class Game {
 
         private Location location;
 
-        private Long[] levels = new Long[]{1200L,600L,300L,160L,80L,40L,20L,10L,5L};
+        private long nextDrop=0;
+
+        private Long[] levels = new Long[]{1300L, 1100L, 1000L, 800L, 700L, 400L, 200L, 120L, 80L, 40L};
 
         private Material type;
 
@@ -445,13 +476,21 @@ public class Game {
             this.type=m.getType();
             (new BukkitRunnable() {
                 public void run() {
+                    nextDrop--;
                     if (Game.spawnner.this.stopped || Main.game.getGamestate() != gameState.IN_GAME)
                         cancel();
                     if(getEntitiesAroundPoint(l,max_holding,m)>=10)
                         return;
-                    l.getWorld().dropItem(l, m);
+                    if(nextDrop<=0){
+                        nextDrop=((levels[spawnner.this.level])/20);
+                        l.getWorld().dropItem(l, m);
+                    }
                 }
-            }).runTaskTimer(Main.game.handler, 0L, this.levels[this.level]);
+            }).runTaskTimer(Main.game.handler, 0L, 25L);
+        }
+
+        public long getNextDrop() {
+            return nextDrop;
         }
 
         public void setLevel(int level) {

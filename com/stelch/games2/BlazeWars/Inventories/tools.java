@@ -168,10 +168,10 @@ public class tools implements Listener {
         switch (upgrade) {
             case PICAXE:
                 if(player.getInventory().contains(DIAMOND_PICKAXE)){return null;}
-                if(player.getInventory().contains(GOLDEN_PICKAXE)){return new ItemStack(Material.GOLD_INGOT,16);}
-                if(player.getInventory().contains(IRON_PICKAXE)){return new ItemStack(Material.GOLD_INGOT,8);}
-                if(player.getInventory().contains(WOODEN_PICKAXE)){return new ItemStack(Material.IRON_INGOT,20);}
-                return new ItemStack(IRON_INGOT,10);
+                if(player.getInventory().contains(GOLDEN_PICKAXE)){return new ItemStack(Material.GOLD_INGOT,6);} // DIAMOND PICKAXE
+                if(player.getInventory().contains(IRON_PICKAXE)){return new ItemStack(Material.GOLD_INGOT,3);} // GOLDEN PICKAXE
+                if(player.getInventory().contains(WOODEN_PICKAXE)){return new ItemStack(Material.IRON_INGOT,10);} // IRON PICKAXE
+                return new ItemStack(IRON_INGOT,10); // TO WOODEN PICKAXE
             case AXE:
                 if(player.getInventory().contains(DIAMOND_AXE)){return null;}
                 if(player.getInventory().contains(GOLDEN_AXE)){return new ItemStack(Material.GOLD_INGOT,16);}
@@ -198,7 +198,7 @@ public class tools implements Listener {
                 player.getInventory().removeItem(payload);
             }
             player.getInventory().remove(payload);
-            player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_CHIME,1,1);
+            player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING,1,1);
             return true;
         }else {
             player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO,1,1);

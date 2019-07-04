@@ -45,28 +45,28 @@ public class blocks implements Listener {
         Item wooden_planks = new Item(Material.OAK_PLANKS,"&bWooden Planks");
         wooden_planks.setLore(new String[]{
                 "&r",
-                "&aCost: &65 Gold"
+                "&aCost: &64 Gold"
         });
         wooden_planks.setAmount(8);
-        wooden_planks.setOnClick(new Item.click(){public void run(Player p){if(blocks.doCharge(p,Material.GOLD_INGOT,5))p.getInventory().addItem(new ItemStack(Material.OAK_PLANKS,8));}});
+        wooden_planks.setOnClick(new Item.click(){public void run(Player p){if(blocks.doCharge(p,Material.GOLD_INGOT,4))p.getInventory().addItem(new ItemStack(Material.OAK_PLANKS,8));}});
 
         Item clay = new Item(Material.CLAY,"&bClay");
         clay.setLore(new String[]{
                 "&r",
-                "&aCost: &63 Gold",
+                "&aCost: &612 Iron",
         });
         clay.setAmount(12);
-        clay.setOnClick(new Item.click(){public void run(Player p){if(blocks.doCharge(p,Material.GOLD_INGOT,3))p.getInventory().addItem(new ItemStack(Material.CLAY,12));}});
+        clay.setOnClick(new Item.click(){public void run(Player p){if(blocks.doCharge(p,Material.IRON_INGOT,12))p.getInventory().addItem(new ItemStack(Material.CLAY,12));}});
 
         Item sand = new Item(Material.SAND,"&bSand");
         sand.setLore(new String[]{
                 "&r",
-                "&aCost: &68 Gold",
+                "&aCost: &624 Iron",
                 "&r",
                 "&dFalls"
         });
         sand.setAmount(4);
-        sand.setOnClick(new Item.click(){public void run(Player p){if(blocks.doCharge(p,Material.GOLD_INGOT,8))p.getInventory().addItem(new ItemStack(Material.SAND,4));}});
+        sand.setOnClick(new Item.click(){public void run(Player p){if(blocks.doCharge(p,Material.IRON_INGOT,24))p.getInventory().addItem(new ItemStack(Material.SAND,4));}});
 
         Item glass = new Item(Material.GLASS,"&bGlass");
         glass.setLore(new String[]{
@@ -89,7 +89,7 @@ public class blocks implements Listener {
         Item obsidian = new Item(Material.OBSIDIAN,"&bObsidian");
         obsidian.setLore(new String[]{
                 "&r",
-                "&aCost: &c8 Blaze Rods",
+                "&aCost: &c4 Blaze Rod",
                 "&r",
                 "&bBlast Proof"
         });
@@ -117,7 +117,7 @@ public class blocks implements Listener {
                 player.getInventory().removeItem(payload);
             }
             player.getInventory().remove(payload);
-            player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_CHIME,1,1);
+            player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING,1,1);
             return true;
         }else {
             player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO,1,1);

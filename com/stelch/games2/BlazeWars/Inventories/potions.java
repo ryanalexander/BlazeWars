@@ -51,7 +51,7 @@ public class potions implements Listener {
         invis.setAmount(1);
         invis.setOnClick(new Item.click(){public void run(Player p){
             if(potions.doCharge(p, BLAZE_ROD,2)){
-                ItemStack potion = new ItemStack(Material.POTION, 1);
+                ItemStack potion = new ItemStack(Material.POTION, 2);
 
                 PotionMeta potionmeta = (PotionMeta) potion.getItemMeta();
                 potionmeta.setMainEffect(PotionEffectType.INVISIBILITY);
@@ -68,13 +68,13 @@ public class potions implements Listener {
         Item jump = new Item(POTION,"&bJump Juice");
         jump.setLore(new String[]{
                 "&r",
-                "&aCost: &c2 Blaze Rod",
+                "&aCost: &c1 Blaze Rod",
                 "&r",
                 "&aDuration: &630 Secs"
         });
         jump.setAmount(1);
         jump.setOnClick(new Item.click(){public void run(Player p){
-            if(potions.doCharge(p, BLAZE_ROD,2)){
+            if(potions.doCharge(p, BLAZE_ROD,1)){
                 ItemStack potion = new ItemStack(Material.POTION, 1);
 
                 PotionMeta potionmeta = (PotionMeta) potion.getItemMeta();
@@ -106,7 +106,7 @@ public class potions implements Listener {
                 player.getInventory().removeItem(payload);
             }
             player.getInventory().remove(payload);
-            player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_CHIME,1,1);
+            player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING,1,1);
             return true;
         }else {
             player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO,1,1);

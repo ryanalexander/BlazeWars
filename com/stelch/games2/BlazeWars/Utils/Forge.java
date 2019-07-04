@@ -21,6 +21,10 @@ public class Forge implements Listener {
 
     private ArmorStand e = null;
 
+    private ArmorStand e1;
+
+    private Game.spawnner spawner=null;
+
     private boolean deleted = false;
 
     private static Main plugin;
@@ -41,18 +45,21 @@ public class Forge implements Listener {
         this.e.setCustomName(Text.format(text));
         this.e.setCustomNameVisible(true);
         this.e.setSmall(is_Small);
+        this.addLine("Spawning in 0");
         Main.game.setFunctionEntity(this.e, new Game.click() {
             @Override
             public void run(Player player) {}});
         (new BukkitRunnable() {
             double ticks = 0.0D;
-
             Location loc = Forge.this.e.getLocation();
 
             public void run() {
                 if (Forge.this.deleted)
                     cancel();
                 this.ticks++;
+                if(Forge.this.spawner!=null){
+                    Forge.this.editLine(Forge.this.spawner.getNextDrop()+" Seconds");
+                }
                 double change = Math.cos(this.ticks / 10.0D);
                 PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook packet = new PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook(Forge.this.e.getEntityId(), ((short)0), (byte)(int)(change * 2.0D), ((short)0), (byte)(int)(this.loc.getYaw() + 0.0D), (byte)(int)((this.loc.getPitch() + 180.0D) / 360.0D), true);
                 this.loc.setYaw(this.loc.getYaw() + 7.0F);
@@ -62,6 +69,25 @@ public class Forge implements Listener {
                 }
             }
         }).runTaskTimerAsynchronously(plugin, 0L, 1L);
-    }
+        }
 
+        public void setSpawner (Game.spawnner spawner){
+            this.spawner=spawner;
+        }
+
+        public void addLine(String line) {
+            Location l1 = e.getLocation().clone();
+            l1.add(0,.5,0);
+            this.e1 = (ArmorStand) Bukkit.getWorld(e.getLocation().getWorld().getName()).spawnEntity(l1, EntityType.ARMOR_STAND);
+            this.e1.setVisible(false);
+            this.e1.setGravity(false);
+            this.e1.teleport(l1);
+            this.e1.setCanPickupItems(false);
+            this.e1.setRemoveWhenFarAway(false);
+            this.e1.setCustomName(Text.format(line));
+            this.e1.setCustomNameVisible(true);
+        }
+        public void editLine(String line) {
+            this.e1.setCustomName(Text.format(line+" &a[UP]"));
+        }
 }

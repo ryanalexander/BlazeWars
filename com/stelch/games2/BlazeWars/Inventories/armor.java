@@ -40,35 +40,14 @@ public class armor implements Listener {
             }
         });
 
-        Item armor_leather = new Item(LEATHER_CHESTPLATE,"&3Leather Armor");
-        armor_leather.setLore(new String[]{
-                "&r",
-                "&aCost: &f10 Iron",
-        });
-        armor_leather.setAmount(1);
-        armor_leather.setOnClick(new Item.click(){public void run(Player p){
-            if(armor.doCharge(p, IRON_INGOT,10)){
-                ItemStack armor_leggings = new ItemStack(LEATHER_LEGGINGS);
-                ItemStack armor_boots = new ItemStack(LEATHER_BOOTS);
-                LeatherArmorMeta leggingsItemMeta = (LeatherArmorMeta) armor_leggings.getItemMeta();
-                LeatherArmorMeta bootsItemMeta = (LeatherArmorMeta) armor_boots.getItemMeta();
-                leggingsItemMeta.setColor(Main.game.getTeamManager().getTeam(player).getColor());
-                bootsItemMeta.setColor(Main.game.getTeamManager().getTeam(player).getColor());
-                armor_leggings.setItemMeta(leggingsItemMeta);
-                armor_boots.setItemMeta(bootsItemMeta);
-                player.getInventory().setArmorContents(new ItemStack[]{armor_boots,armor_leggings,player.getInventory().getChestplate(),player.getInventory().getHelmet()});
-            }
-        }
-        });
-
         Item armor_chain = new Item(CHAINMAIL_CHESTPLATE,"&7Chainmail Armor");
         armor_chain.setLore(new String[]{
                 "&r",
-                "&aCost: &f25 Iron",
+                "&aCost: &f40 Iron",
         });
         armor_chain.setAmount(1);
         armor_chain.setOnClick(new Item.click(){public void run(Player p){
-            if(armor.doCharge(p, IRON_INGOT,25)){
+            if(armor.doCharge(p, IRON_INGOT,40)){
                 ItemStack armor_leggings = new ItemStack(CHAINMAIL_LEGGINGS);
                 ItemStack armor_boots = new ItemStack(CHAINMAIL_BOOTS);
                 player.getInventory().setArmorContents(new ItemStack[]{armor_boots,armor_leggings,player.getInventory().getChestplate(),player.getInventory().getHelmet()});
@@ -79,28 +58,13 @@ public class armor implements Listener {
         Item armor_iron = new Item(IRON_CHESTPLATE,"&fIron Armor");
         armor_iron.setLore(new String[]{
                 "&r",
-                "&aCost: &610 Gold",
+                "&aCost: &612 Gold",
         });
         armor_iron.setAmount(1);
         armor_iron.setOnClick(new Item.click(){public void run(Player p){
-            if(armor.doCharge(p, GOLD_INGOT,10)){
+            if(armor.doCharge(p, GOLD_INGOT,12)){
                 ItemStack armor_leggings = new ItemStack(IRON_LEGGINGS);
                 ItemStack armor_boots = new ItemStack(IRON_BOOTS);
-                player.getInventory().setArmorContents(new ItemStack[]{armor_boots,armor_leggings,player.getInventory().getChestplate(),player.getInventory().getHelmet()});
-            }
-        }
-        });
-
-        Item armor_gold = new Item(GOLDEN_CHESTPLATE,"&6Golden Armor");
-        armor_gold.setLore(new String[]{
-                "&r",
-                "&aCost: &625 Gold",
-        });
-        armor_gold.setAmount(1);
-        armor_gold.setOnClick(new Item.click(){public void run(Player p){
-            if(armor.doCharge(p, GOLD_INGOT,25)){
-                ItemStack armor_leggings = new ItemStack(GOLDEN_LEGGINGS);
-                ItemStack armor_boots = new ItemStack(GOLDEN_BOOTS);
                 player.getInventory().setArmorContents(new ItemStack[]{armor_boots,armor_leggings,player.getInventory().getChestplate(),player.getInventory().getHelmet()});
             }
         }
@@ -122,11 +86,9 @@ public class armor implements Listener {
         });
 
         armor.shop.setItem(0,close.spigot());
-        armor.shop.setItem(20,armor_leather.spigot());
-        armor.shop.setItem(21,armor_chain.spigot());
-        armor.shop.setItem(22,armor_iron.spigot());
-        armor.shop.setItem(23,armor_gold.spigot());
-        armor.shop.setItem(24,armor_diamond.spigot());
+        armor.shop.setItem(19,armor_chain.spigot());
+        armor.shop.setItem(20,armor_iron.spigot());
+        armor.shop.setItem(21,armor_diamond.spigot());
 
         armor.menus.add(armor.shop);
         return armor.shop;
@@ -218,7 +180,7 @@ public class armor implements Listener {
                 player.getInventory().removeItem(payload);
             }
             player.getInventory().remove(payload);
-            player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_CHIME,1,1);
+            player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING,1,1);
             return true;
         }else {
             player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO,1,1);

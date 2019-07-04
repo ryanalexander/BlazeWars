@@ -40,7 +40,7 @@ public class islandUpgrades implements Listener {
             }
         });
 
-        int[] costs = {2, 5, 10, 16};
+        int[] costs = {2, 4, 6, 8};
 
         Item forge_upgrade = new Item(Material.BREWING_STAND,"Upgrade Forge");
         teamColors team = Main.game.getTeamManager().getTeam(player);
@@ -83,7 +83,7 @@ public class islandUpgrades implements Listener {
                 player.getInventory().removeItem(payload);
             }
             player.getInventory().remove(payload);
-            player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_CHIME,1,1);
+            player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING,1,1);
             return true;
         }else {
             player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO,1,1);
