@@ -146,6 +146,10 @@ public class Game {
     }
 
     public boolean isGameEntity(Entity e) { return this.gameEntities.contains(e); }
+    public void removeGameEntity(Entity e) {
+        this.gameEntities.remove(e);
+        e.remove();
+    }
     public ArrayList<Entity> getGameEntities() {return this.gameEntities;}
 
     public boolean isFunctionEntity(Entity e) { return this.EntityFunctions.containsKey(e); }
@@ -235,10 +239,10 @@ public class Game {
                     for(Map.Entry<Player, teamColors> teamPlayer : teamManager.getPlayers().entrySet()){
                         Player player = teamPlayer.getKey();
                         teamColors team = teamPlayer.getValue();
-                        Double x = Double.parseDouble(config.getString(String.format(("maps.%s.spawn.%s.x"),Main.game.getMap(),team)));
-                        Double y = Double.parseDouble(config.getString(String.format(("maps.%s.spawn.%s.y"),Main.game.getMap(),team)));
-                        Double z = Double.parseDouble(config.getString(String.format(("maps.%s.spawn.%s.z"),Main.game.getMap(),team)));
-                        Float yaw = Float.parseFloat(config.getString(String.format(("maps.%s.spawn.%s.yaw"),Main.game.getMap(),team)));
+                        Double x = Double.parseDouble(config.getString(String.format(("maps.%s.spawn.%s.x"),Main.game.getMap().getName(),team)));
+                        Double y = Double.parseDouble(config.getString(String.format(("maps.%s.spawn.%s.y"),Main.game.getMap().getName(),team)));
+                        Double z = Double.parseDouble(config.getString(String.format(("maps.%s.spawn.%s.z"),Main.game.getMap().getName(),team)));
+                        Float yaw = Float.parseFloat(config.getString(String.format(("maps.%s.spawn.%s.yaw"),Main.game.getMap().getName(),team)));
                         Float pitch = Float.parseFloat("0.0");
                         Location teamSpawn=new Location(player.getWorld(),x,y,z,yaw,pitch);
                         player.getInventory().clear();
@@ -262,9 +266,9 @@ public class Game {
 
                         teamManager.setScoreboardLine(team,scoreboard.addLine(teamManager.getTeamColor(team)+"&l"+team.toString().charAt(0)+"&r "+(capitalizeFirstLetter(team.toString())+": &a&l✓")));
 
-                        Double x = Double.parseDouble(config.getString(String.format(("maps.%s.core.%s.x"),Main.game.getMap(),team)));
-                        Double y = Double.parseDouble(config.getString(String.format(("maps.%s.core.%s.y"),Main.game.getMap(),team)));
-                        Double z = Double.parseDouble(config.getString(String.format(("maps.%s.core.%s.z"),Main.game.getMap(),team)));
+                        Double x = Double.parseDouble(config.getString(String.format(("maps.%s.core.%s.x"),Main.game.getMap().getName(),team)));
+                        Double y = Double.parseDouble(config.getString(String.format(("maps.%s.core.%s.y"),Main.game.getMap().getName(),team)));
+                        Double z = Double.parseDouble(config.getString(String.format(("maps.%s.core.%s.z"),Main.game.getMap().getName(),team)));
                         if(x!=null&&y!=null&&z!=null){
                             Location core=new Location(Main.game.getMap(),x,y,z);
                             core.getBlock().setType(Material.NETHER_QUARTZ_ORE);
@@ -275,10 +279,10 @@ public class Game {
                         }
 
 
-                        Double bx = Double.parseDouble(config.getString(String.format(("maps.%s.blaze.%s.x"),Main.game.getMap(),team)));
-                        Double by = Double.parseDouble(config.getString(String.format(("maps.%s.blaze.%s.y"),Main.game.getMap(),team)));
-                        Double bz = Double.parseDouble(config.getString(String.format(("maps.%s.blaze.%s.z"),Main.game.getMap(),team)));
-                        Float byaw = Float.parseFloat(config.getString(String.format(("maps.%s.blaze.%s.yaw"),Main.game.getMap(),team)));
+                        Double bx = Double.parseDouble(config.getString(String.format(("maps.%s.blaze.%s.x"),Main.game.getMap().getName(),team)));
+                        Double by = Double.parseDouble(config.getString(String.format(("maps.%s.blaze.%s.y"),Main.game.getMap().getName(),team)));
+                        Double bz = Double.parseDouble(config.getString(String.format(("maps.%s.blaze.%s.z"),Main.game.getMap().getName(),team)));
+                        Float byaw = Float.parseFloat(config.getString(String.format(("maps.%s.blaze.%s.yaw"),Main.game.getMap().getName(),team)));
                         Float bpitch = Float.parseFloat("0.0");
 
                         if(bx!=null&&by!=null&&bz!=null){
@@ -298,10 +302,10 @@ public class Game {
                         }
 
 
-                        Double vx = Double.parseDouble(config.getString(String.format(("maps.%s.shop.%s.x"),Main.game.getMap(),team)));
-                        Double vy = Double.parseDouble(config.getString(String.format(("maps.%s.shop.%s.y"),Main.game.getMap(),team)));
-                        Double vz = Double.parseDouble(config.getString(String.format(("maps.%s.shop.%s.z"),Main.game.getMap(),team)));
-                        Float vyaw = Float.parseFloat(config.getString(String.format(("maps.%s.shop.%s.yaw"),Main.game.getMap(),team)));
+                        Double vx = Double.parseDouble(config.getString(String.format(("maps.%s.shop.%s.x"),Main.game.getMap().getName(),team)));
+                        Double vy = Double.parseDouble(config.getString(String.format(("maps.%s.shop.%s.y"),Main.game.getMap().getName(),team)));
+                        Double vz = Double.parseDouble(config.getString(String.format(("maps.%s.shop.%s.z"),Main.game.getMap().getName(),team)));
+                        Float vyaw = Float.parseFloat(config.getString(String.format(("maps.%s.shop.%s.yaw"),Main.game.getMap().getName(),team)));
                         Float vpitch = Float.parseFloat("0.0");
 
                         if(vx!=null&&vy!=null&&vz!=null){
@@ -326,9 +330,9 @@ public class Game {
                             Bukkit.broadcastMessage(Text.format(String.format("&cMCT> &7Failed to load &e%s&7 missing &6%s check config and use MCT to set the island",team,"shop")));
                         }
 
-                        Double fx = Double.parseDouble(config.getString(String.format(("maps.%s.forge.%s.x"),Main.game.getMap(),team)));
-                        Double fy = Double.parseDouble(config.getString(String.format(("maps.%s.forge.%s.y"),Main.game.getMap(),team)));
-                        Double fz = Double.parseDouble(config.getString(String.format(("maps.%s.forge.%s.z"),Main.game.getMap(),team)));
+                        Double fx = Double.parseDouble(config.getString(String.format(("maps.%s.forge.%s.x"),Main.game.getMap().getName(),team)));
+                        Double fy = Double.parseDouble(config.getString(String.format(("maps.%s.forge.%s.y"),Main.game.getMap().getName(),team)));
+                        Double fz = Double.parseDouble(config.getString(String.format(("maps.%s.forge.%s.z"),Main.game.getMap().getName(),team)));
 
                         if(fx!=null&&fy!=null&&fz!=null){
                             Location forge =new Location(Main.game.getMap(),fx,fy,fz);
@@ -346,10 +350,10 @@ public class Game {
                             Bukkit.broadcastMessage(Text.format(String.format("&cMCT> &7Failed to load &e%s&7 missing &6%s check config and use MCT to set the island",team,"forge")));
                         }
 
-                        Double cx = Double.parseDouble(config.getString(String.format(("maps.%s.chest.%s.x"),Main.game.getMap(),team)));
-                        Double cy = Double.parseDouble(config.getString(String.format(("maps.%s.chest.%s.y"),Main.game.getMap(),team)));
-                        Double cz = Double.parseDouble(config.getString(String.format(("maps.%s.chest.%s.z"),Main.game.getMap(),team)));
-                        String cd = (config.getString(String.format(("maps.%s.chest.%s.direction"),Main.game.getMap(),team)));
+                        Double cx = Double.parseDouble(config.getString(String.format(("maps.%s.chest.%s.x"),Main.game.getMap().getName(),team)));
+                        Double cy = Double.parseDouble(config.getString(String.format(("maps.%s.chest.%s.y"),Main.game.getMap().getName(),team)));
+                        Double cz = Double.parseDouble(config.getString(String.format(("maps.%s.chest.%s.z"),Main.game.getMap().getName(),team)));
+                        String cd = (config.getString(String.format(("maps.%s.chest.%s.direction"),Main.game.getMap().getName(),team)));
                         if(cx!=null&&cy!=null&&cz!=null&&cd!=null){
                             Chest c = (Chest) PlaceBlockWithType(Main.game.getMap(),cx,cy,cz,Material.CHEST,BlockFace.valueOf(cd)).getState();
                             c.getInventory().clear();
@@ -361,7 +365,7 @@ public class Game {
                         }
                     }
 
-                    List<String> BLAZE_POWDER = config.getStringList(String.format("maps.%s.BLAZE_POWDER",Main.game.getMap()));
+                    List<String> BLAZE_POWDER = config.getStringList(String.format("maps.%s.BLAZE_POWDER",Main.game.getMap().getName()));
                     for(String s : BLAZE_POWDER){
                         String[] args = s.split(":");
                         Location location = new Location((Main.game.getMap()),Double.parseDouble(args[1]),Double.parseDouble(args[2]),Double.parseDouble(args[3]));
@@ -370,7 +374,7 @@ public class Game {
                     }
 
 
-                    List<String> MID_FORGE = config.getStringList(String.format("maps.%s.MID_FORGE",Main.game.getMap()));
+                    List<String> MID_FORGE = config.getStringList(String.format("maps.%s.MID_FORGE",Main.game.getMap().getName()));
                     for(String s : MID_FORGE){
                         String[] args = s.split(":");
                         Location location = new Location((Main.game.getMap()),Double.parseDouble(args[1]),Double.parseDouble(args[2]),Double.parseDouble(args[3]));
@@ -385,12 +389,12 @@ public class Game {
 
                     /* Remove waiting lobby */
                     /*
-                    double startx=Double.parseDouble(config.getString(String.format(("maps.%s.lobby.%s.x"),"lobby","pos1"))), starty=Double.parseDouble(config.getString(String.format(("maps.%s.lobby.%s.y"),"lobby","pos1"))), startz=Double.parseDouble(config.getString(String.format(("maps.%s.lobby.%s.z"),Main.game.getMap(),"pos1")));
-                    double endx=Double.parseDouble(config.getString(String.format(("maps.%s.lobby.%s.x"),"lobby","pos1"))), endy=Double.parseDouble(config.getString(String.format(("maps.%s.lobby.%s.y"),"lobby","pos1"))), endz=Double.parseDouble(config.getString(String.format(("maps.%s.lobby.%s.z"),Main.game.getMap(),"pos1")));
+                    double startx=Double.parseDouble(config.getString(String.format(("maps.%s.lobby.%s.x"),"lobby","pos1"))), starty=Double.parseDouble(config.getString(String.format(("maps.%s.lobby.%s.y"),"lobby","pos1"))), startz=Double.parseDouble(config.getString(String.format(("maps.%s.lobby.%s.z"),Main.game.getMap().getName(),"pos1")));
+                    double endx=Double.parseDouble(config.getString(String.format(("maps.%s.lobby.%s.x"),"lobby","pos1"))), endy=Double.parseDouble(config.getString(String.format(("maps.%s.lobby.%s.y"),"lobby","pos1"))), endz=Double.parseDouble(config.getString(String.format(("maps.%s.lobby.%s.z"),Main.game.getMap().getName(),"pos1")));
                     for (double x = startx; x < endx; x++) {
                         for (double y = starty; y < endy; y++) {
                             for (double z = startz; z < endz; z++) {
-                                Block block = new Location(Main.game.getMap(),x, y, z).getBlock();
+                                Block block = new Location(Main.game.getMap().getName(),x, y, z).getBlock();
                                 block.setType(Material.AIR);
                             }
                         }
@@ -417,6 +421,9 @@ public class Game {
         for(Map.Entry<Location,Block> b : this.blockChanges.entrySet()){
             b.getKey().getBlock().setType(Material.AIR);
         }
+        if(reason.equals(GameReason.ADMINISTARTOR)){
+            this.setGamestate(gameState.LOBBY);
+        }
         BukkitCore.coreChatManager=true;
 
     }
@@ -424,11 +431,18 @@ public class Game {
     public static class spawnner {
         private boolean stopped = false;
 
+        private Location location;
+
         private Long[] levels = new Long[]{1200L,600L,300L,160L,80L,40L,20L,10L,5L};
+
+        private Material type;
 
         private int level = 0;
         public spawnner(final Location l, final ItemStack m,int level,int max_holding) {
+            System.out.println(String.format("[SPAWNER] Created %s spawner at x: %s y: %s z: %s with level: %s",m.getType().name(),l.getX(),l.getY(),l.getZ(),level));
+            this.location=l;
             this.level=level;
+            this.type=m.getType();
             (new BukkitRunnable() {
                 public void run() {
                     if (Game.spawnner.this.stopped || Main.game.getGamestate() != gameState.IN_GAME)
@@ -441,6 +455,7 @@ public class Game {
         }
 
         public void setLevel(int level) {
+            System.out.println(String.format("[SPAWNER] Updated %s spawner at x: %s y: %s z: %s with level: %s",type.name(),location.getX(),location.getY(),location.getZ(),level));
             this.level = level;
         }
         public long getSpeed() {

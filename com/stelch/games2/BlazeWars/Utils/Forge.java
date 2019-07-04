@@ -31,6 +31,7 @@ public class Forge implements Listener {
         if(plugin==null){Bukkit.broadcastMessage("&aForge> &cPlugin not specified");}
         ItemStack skull = new ItemStack(material,1);
         this.e = (ArmorStand) Bukkit.getWorld(location.getWorld().getName()).spawnEntity(location, EntityType.ARMOR_STAND);
+        System.out.println(String.format("[SPINNING_BLOCK] Created %s block at x: %s y: %s z: %s with speed: %s",material.name(),location.getX(),location.getY(),location.getZ(),"?"));
         this.e.setVisible(false);
         this.e.setGravity(false);
         this.e.teleport(this.e.getLocation());

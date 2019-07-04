@@ -89,7 +89,7 @@ public class blockPlace implements Listener {
                         e.setCancelled(true);
                         teamColors team = Main.game.getTeamManager().getCore(e.getBlock());
                         Main.game.getTeamManager().setCantRespawn(team, true);
-                        Main.game.getTeamManager().getBlaze(team).remove();
+                        Main.game.removeGameEntity(Main.game.getTeamManager().getBlaze(team));
                         e.getPlayer().getWorld().strikeLightning(e.getBlock().getLocation());
                         e.getPlayer().getWorld().playSound(e.getPlayer().getLocation(), Sound.ENTITY_LIGHTNING_BOLT_THUNDER, 1, 1);
                         e.getBlock().setType(Material.AIR);

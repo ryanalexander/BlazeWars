@@ -38,6 +38,7 @@ public class game implements CommandExecutor {
         }
             switch(args[0]){
                 case "stop":
+                    if(arg.contains("-f")){Main.game.stop(GameReason.ADMINISTARTOR);return false;}
                     if(Main.game.getGamestate()==gameState.IN_GAME){
                         Main.game.stop(GameReason.ADMINISTARTOR);
                     }else {
@@ -45,6 +46,7 @@ public class game implements CommandExecutor {
                     }
                     break;
                 case "start":
+                    if(arg.contains("-f")){Main.game.start();return false;}
                     if(Main.game.getGamestate()==gameState.LOBBY){
                         Main.game.start();
                     }else {
