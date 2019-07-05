@@ -22,6 +22,8 @@ import org.bukkit.util.Vector;
 
 import java.util.*;
 
+import static com.stelch.games2.core.API.setGame;
+import static com.stelch.games2.core.API.setState;
 import static org.bukkit.Material.*;
 
 public class Game {
@@ -82,6 +84,8 @@ public class Game {
         this.max_players=max_players;
         this.handler=handler;
         this.map=map;
+        setGame("BLAZEWARS");
+        setState("STARTING");
     }
 
     public void setTitle(String title) {
