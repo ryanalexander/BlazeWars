@@ -35,6 +35,8 @@ public class TeamManager {
     private HashMap<teamColors, HashMap<Material,Game.spawnner>> spawners = new HashMap<>();
     private HashMap<teamColors, Integer> spawner_level = new HashMap<>();
 
+    private HashMap<teamColors, Boolean> healPool = new HashMap<>();
+
     private HashMap<teamColors, Block> team_chests = new HashMap<>();
 
     private HashMap<teamColors, Entity> team_blaze = new HashMap<>();

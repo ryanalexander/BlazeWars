@@ -42,6 +42,12 @@ public class islandUpgrades implements Listener {
 
         int[] costs = {2, 4, 6, 8};
 
+        Item safe_zone = new Item(Material.BEACON,"Safe Zone");
+        safe_zone.setLore(new String[]{
+                "&r",
+                ""
+        });
+
         Item forge_upgrade = new Item(Material.BREWING_STAND,"Upgrade Forge");
         teamColors team = Main.game.getTeamManager().getTeam(player);
         int level = Main.game.getTeamManager().getSpawner_level(team);

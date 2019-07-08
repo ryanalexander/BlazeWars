@@ -34,7 +34,7 @@ public class ScoreboardManager {
     public void setDisplayname(String name) { this.objective.setDisplayName(Text.format(name)); }
 
     public int addLine(String message) { this.objective.getScore(Text.format(message)).setScore(counter);counter--;this.lines.put(counter, Text.format(message)); this.update();return counter;}
-    public int addBlank() {String message="";for(int i=payload_count;i>0;i--){message+=payload;}addLine(message);this.lines.put(counter,message);payload_count++; this.update();return counter;}
+    public int addBlank() {String message="";for(int i=payload_count;i>0;i--){message+=payload;}addLine(message.replaceAll(":player_count:",Bukkit.getServer().getOnlinePlayers().size()+""));this.lines.put(counter,message);payload_count++; this.update();return counter;}
 
     public void editLine(int line, String message){ this.lines.put(line,Text.format(message)); this.update();}
 
@@ -46,7 +46,7 @@ public class ScoreboardManager {
         this.objective.setDisplaySlot(DisplaySlot.SIDEBAR);
 
         for(Map.Entry<Integer,String> line : lines.entrySet()){
-            this.objective.getScore(line.getValue()).setScore(line.getKey());
+            this.objective.getScore(line.getValue().replaceAll(":player_count:",Bukkit.getServer().getOnlinePlayers().size()+"")).setScore(line.getKey());
         }
         for(Player player : Bukkit.getOnlinePlayers()){
             player.setScoreboard(this.board);

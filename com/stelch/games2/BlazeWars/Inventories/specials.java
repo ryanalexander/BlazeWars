@@ -90,8 +90,8 @@ public class specials implements Listener {
         specials.shop.setItem(19,tnt.spigot());
         specials.shop.setItem(20,epearl.spigot());
         specials.shop.setItem(21,water.spigot());
-        //specials.shop.setItem(22,fireball.spigot());
-        //specials.shop.setItem(23, bridge_egg.spigot());
+        specials.shop.setItem(22,fireball.spigot());
+        specials.shop.setItem(23, bridge_egg.spigot());
         specials.shop.setItem(24,golden_apple.spigot());
 
         specials.menus.add(specials.shop);

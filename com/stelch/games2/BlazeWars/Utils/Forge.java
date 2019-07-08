@@ -42,10 +42,10 @@ public class Forge implements Listener {
         this.e.setCanPickupItems(false);
         this.e.setRemoveWhenFarAway(false);
         this.e.getEquipment().setHelmet(skull);
-        this.e.setCustomName(Text.format(text));
+        this.addLine(Text.format(text));
         this.e.setCustomNameVisible(true);
         this.e.setSmall(is_Small);
-        this.addLine("Spawning in 0");
+        this.setName("Spawning in 0");
         Main.game.setFunctionEntity(this.e, new Game.click() {
             @Override
             public void run(Player player) {}});
@@ -58,7 +58,7 @@ public class Forge implements Listener {
                     cancel();
                 this.ticks++;
                 if(Forge.this.spawner!=null){
-                    Forge.this.editLine(Forge.this.spawner.getNextDrop()+" Seconds");
+                    Forge.this.setName(Forge.this.spawner.getNextDrop()+" Seconds");
                 }
                 double change = Math.cos(this.ticks / 10.0D);
                 PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook packet = new PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook(Forge.this.e.getEntityId(), ((short)0), (byte)(int)(change * 2.0D), ((short)0), (byte)(int)(this.loc.getYaw() + 0.0D), (byte)(int)((this.loc.getPitch() + 180.0D) / 360.0D), true);
@@ -88,6 +88,7 @@ public class Forge implements Listener {
             this.e1.setCustomNameVisible(true);
         }
         public void editLine(String line) {
-            this.e1.setCustomName(Text.format(line+" &a[UP]"));
+            this.e1.setCustomName(Text.format(line));
         }
+        public void setName(String name) {this.e.setCustomName(Text.format(name));}
 }

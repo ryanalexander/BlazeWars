@@ -10,10 +10,7 @@ import com.stelch.games2.core.Utils.Text;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.entity.ArmorStand;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Fireball;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -21,12 +18,16 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityInteractEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.event.player.PlayerEggThrowEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemHeldEvent;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
 import java.util.Map;
+
+import static org.bukkit.Material.FIRE_CHARGE;
 
 public class EntityInteract implements Listener {
 
@@ -59,13 +60,54 @@ public class EntityInteract implements Listener {
 
     @EventHandler
     public void EntityInteract(PlayerInteractEvent e){
-        if(e.getMaterial().equals(Material.FIRE_CHARGE)){
+        if(!Main.game.getGamestate().equals(gameState.IN_GAME)){return;}
+        /*
+         * EGG BRIDGE
+         */
+        if(e.getItem().getType().equals(Material.EGG)){
             e.setCancelled(true);
-            Fireball fb = (Fireball) e.getPlayer().getWorld().spawnEntity(e.getPlayer().getLocation(), EntityType.FIREBALL);
-            fb.setDirection(e.getPlayer().getLocation().getDirection());
-            fb.setBounce(false);
-            fb.setVelocity(fb.getVelocity().multiply(2));
-            fb.setShooter(e.getPlayer());
+            Egg egg = e.getPlayer().launchProjectile(Egg.class);
+            egg.teleport(egg.getLocation().subtract(0,1,0));
+            new BukkitRunnable(){
+                @Override
+                public void run() {
+                    if(!egg.isDead()){
+                        Location l = egg.getLocation().clone();
+                        new BukkitRunnable(){
+                            @Override
+                            public void run() {
+
+                                for(int i=0;i<2;i++){
+                                    Location x = l.clone().add(i,0,0);
+                                    Location y = l.clone().add(0,i,0);
+                                    Location z = l.clone().add(0,0,i);
+                                    x.getBlock().setType(Material.WHITE_WOOL);
+                                    y.getBlock().setType(Material.WHITE_WOOL);
+                                    z.getBlock().setType(Material.WHITE_WOOL);
+
+                                    Main.game.doBlockUpdate(x,x.getBlock());
+                                    Main.game.doBlockUpdate(y,y.getBlock());
+                                    Main.game.doBlockUpdate(z,z.getBlock());
+                                }
+                            }
+                        }.runTaskLater(Main.getPlugin(Main.class),2L);
+                    }else {
+                        cancel();
+                    }
+                }
+            }.runTaskTimer(Main.getPlugin(Main.class),0L,0L);
+        }
+
+
+        /*
+         * FIREBALL
+         */
+        if(e.getItem().getType().equals(FIRE_CHARGE)){
+            e.setCancelled(true);
+            org.bukkit.entity.Fireball fb = e.getPlayer().launchProjectile(org.bukkit.entity.Fireball.class);
+            fb.setInvulnerable(true);
+            Vector v = e.getPlayer().getLocation().getDirection().multiply(2);
+            fb.setVelocity(v);
         }
     }
 
@@ -96,6 +138,11 @@ public class EntityInteract implements Listener {
                 }
             }
         }
+    }
+
+    @EventHandler
+    public void eggThrow(PlayerEggThrowEvent e){
+        e.setHatching(false);
     }
 
 }

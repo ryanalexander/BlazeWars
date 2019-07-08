@@ -3,6 +3,7 @@ package com.stelch.games2.BlazeWars;
 import com.stelch.games2.BlazeWars.Inventories.shop;
 import com.stelch.games2.BlazeWars.Utils.*;
 import com.stelch.games2.BlazeWars.varables.*;
+import com.stelch.games2.core.API;
 import com.stelch.games2.core.BukkitCore;
 import com.stelch.games2.core.Utils.Text;
 import org.bukkit.*;
@@ -64,28 +65,15 @@ public class Game {
     public Game(String title, gameType gamemode, int min_players, int max_players, Main handler, World map){
         // PLAYERS GAME SERVER
         teamManager=new TeamManager();
-        this.scoreboard=new ScoreboardManager("&6&lBLAZE WARS");
-        this.scoreboard.addBlank();
-        this.scoreboard.addLine("&e&lMAP");
-        this.scoreboard.addLine(map.getName());
-        this.scoreboard.addBlank();
-        this.scoreboard.addLine("&e&lPLAYERS");
-        this.scoreboard.addLine(String.format("&a%s &7/ &a%s",Bukkit.getOnlinePlayers().size(),min_players));
-        this.scoreboard.addBlank();
-        this.scoreboard.addLine("&b&lGAME:");
-        this.scoreboard.addLine("&a"+title.toUpperCase());
-        this.scoreboard.addBlank();
-        this.scoreboard.addLine("&d&lSERVER:");
-        this.scoreboard.addLine("&a"+handler.getConfig().getString("server.name"));
-        this.scoreboard.addBlank();
         this.title=title;
         this.gamemode=gamemode;
         this.min_players=min_players;
         this.max_players=max_players;
         this.handler=handler;
         this.map=map;
-        setGame("BLAZEWARS");
-        setState("STARTING");
+        buildDefaultScoreboard();
+        API.setGame("Blaze Wars");
+        setState("LOBBY");
     }
 
     public void setTitle(String title) {
@@ -215,6 +203,7 @@ public class Game {
     }
 
     public void start() {
+        setState("STARTING");
         setGamestate(gameState.STARTING);
 
         // Start countdown
@@ -232,6 +221,7 @@ public class Game {
                 if(start_time==0){
                     start_time=5;
                     setGamestate(gameState.IN_GAME);
+                    setState("IN-GAME");
                     Bukkit.getScheduler().cancelTasks(handler);
 
                     teamManager.assignTeams();
@@ -240,8 +230,10 @@ public class Game {
                     scoreboard.addBlank();
                     scoreboard.addBlank();
                     scoreboard.addBlank();
+                    scoreboard.addBlank();
 
-                    scoreboard.editLine(1,"Loading.");
+                    scoreboard.editLine(19," ");
+                    scoreboard.editLine(18,"Loading.");
 
                     new BukkitRunnable(){
                         /* Main game loop */
@@ -257,7 +249,8 @@ public class Game {
                             }else {
                                 forge_upgrade_time--;
                             }
-                            scoreboard.editLine(1,upgrades[forge_upgrade_level]+" upgrades in "+forge_upgrade_time+" seconds");
+                            scoreboard.editLine(18,upgrades[forge_upgrade_level]+" upgrades in");
+                            scoreboard.editLine(17,"&a"+forge_upgrade_time+" seconds");
 
                         }
                     }.runTaskTimer(handler,0L,20L);
@@ -416,7 +409,7 @@ public class Game {
                     }
 
                     scoreboard.addBlank();
-                    scoreboard.addLine("&cwww.stelch.gg");
+                    scoreboard.addLine("&cwww.stelch.gg                      ");
 
                     BukkitCore.coreChatManager=false;
 
@@ -442,6 +435,9 @@ public class Game {
 
     public void stop(GameReason reason) {
         this.gamestate=gameState.RESTARTING;
+        this.scoreboard.clear();
+        buildDefaultScoreboard();
+        setState("RESTARTING");
         Bukkit.broadcastMessage(Text.format(((reason==GameReason.ADMINISTARTOR)?lang.GAME_STOPPED_ADMIN.get():lang.GAME_FINISHED.get())));
         Bukkit.getScheduler().cancelTasks(handler);
         for(Entity e : this.gameEntities){
@@ -456,6 +452,7 @@ public class Game {
         }
         if(reason.equals(GameReason.ADMINISTARTOR)){
             this.setGamestate(gameState.LOBBY);
+            setState("LOBBY");
         }
         BukkitCore.coreChatManager=true;
 
@@ -512,6 +509,22 @@ public class Game {
         public void stop() { this.stopped = true; }
     }
 
+    private void buildDefaultScoreboard() {
+        this.scoreboard=new ScoreboardManager("&6&lBLAZE WARS");
+        this.scoreboard.addBlank();
+        this.scoreboard.addLine("&e&lMAP");
+        this.scoreboard.addLine(this.map.getName());
+        this.scoreboard.addBlank();
+        this.scoreboard.addLine("&e&lPLAYERS");
+        this.scoreboard.addLine(String.format("&a:player_count: &7/ &a%s",min_players));
+        this.scoreboard.addBlank();
+        this.scoreboard.addLine("&b&lGAME:");
+        this.scoreboard.addLine("&a"+title.toUpperCase());
+        this.scoreboard.addBlank();
+        this.scoreboard.addLine("&d&lSERVER:");
+        this.scoreboard.addLine("&a"+handler.getConfig().getString("server.name"));
+        this.scoreboard.addBlank();
+    }
 
     private Block PlaceBlockWithType(World w,double x, double y, double z, Material BLK, BlockFace blockFace) {
         Block b = new Location(w,x,y,z).getBlock();
