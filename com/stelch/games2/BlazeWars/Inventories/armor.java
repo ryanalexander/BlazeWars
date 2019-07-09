@@ -50,7 +50,7 @@ public class armor implements Listener {
             if(armor.doCharge(p, IRON_INGOT,40)){
                 ItemStack armor_leggings = new ItemStack(CHAINMAIL_LEGGINGS);
                 ItemStack armor_boots = new ItemStack(CHAINMAIL_BOOTS);
-                player.getInventory().setArmorContents(new ItemStack[]{armor_boots,armor_leggings,player.getInventory().getChestplate(),player.getInventory().getHelmet()});
+                p.getInventory().setArmorContents(new ItemStack[]{armor_boots,armor_leggings,player.getInventory().getChestplate(),player.getInventory().getHelmet()});
             }
         }
         });
@@ -65,7 +65,7 @@ public class armor implements Listener {
             if(armor.doCharge(p, GOLD_INGOT,12)){
                 ItemStack armor_leggings = new ItemStack(IRON_LEGGINGS);
                 ItemStack armor_boots = new ItemStack(IRON_BOOTS);
-                player.getInventory().setArmorContents(new ItemStack[]{armor_boots,armor_leggings,player.getInventory().getChestplate(),player.getInventory().getHelmet()});
+                p.getInventory().setArmorContents(new ItemStack[]{armor_boots,armor_leggings,player.getInventory().getChestplate(),player.getInventory().getHelmet()});
             }
         }
         });
@@ -80,7 +80,7 @@ public class armor implements Listener {
             if(armor.doCharge(p, BLAZE_ROD,6)){
                 ItemStack armor_leggings = new ItemStack(DIAMOND_LEGGINGS);
                 ItemStack armor_boots = new ItemStack(DIAMOND_BOOTS);
-                player.getInventory().setArmorContents(new ItemStack[]{armor_boots,armor_leggings,player.getInventory().getChestplate(),player.getInventory().getHelmet()});
+                p.getInventory().setArmorContents(new ItemStack[]{armor_boots,armor_leggings,player.getInventory().getChestplate(),player.getInventory().getHelmet()});
             }
         }
         });

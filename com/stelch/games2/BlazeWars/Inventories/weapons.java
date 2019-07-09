@@ -52,10 +52,10 @@ public class weapons implements Listener {
         Item diamond_sword = new Item(Material.DIAMOND_SWORD,"&bDiamond Sword");
         diamond_sword.setLore(new String[]{
                 "&r",
-                "&aCost: &e4 Blaze Powder"
+                "&aCost: &e4 Blaze Rod"
         });
         diamond_sword.setAmount(1);
-        diamond_sword.setOnClick(new Item.click(){public void run(Player p){if(weapons.doCharge(p,Material.BLAZE_POWDER,4))p.getInventory().addItem(new ItemStack(Material.DIAMOND_SWORD,1));}});
+        diamond_sword.setOnClick(new Item.click(){public void run(Player p){if(weapons.doCharge(p,Material.BLAZE_ROD,4))p.getInventory().addItem(new ItemStack(Material.DIAMOND_SWORD,1));}});
 
         Item bow = new Item(Material.BOW,"&bBow");
         bow.setLore(new String[]{

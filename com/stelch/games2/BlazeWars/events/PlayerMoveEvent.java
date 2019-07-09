@@ -25,6 +25,7 @@ public class PlayerMoveEvent implements Listener {
         for (Entity entity : Main.game.getGameEntities()) {
             if (entity.getType().equals(EntityType.BLAZE)) {
                 if (e.getTo().distanceSquared(entity.getLocation()) < 500&&Main.game.getTeamManager().getBlazeCooldown(entity)) {
+                    if(Main.game.spectators.containsKey(e.getPlayer())){continue;}
                     if(Main.game.getTeamManager().getBlaze(Main.game.getTeamManager().getTeam((Player)e.getPlayer()))==entity)
                         return;
                     Blaze blaze = (Blaze) entity;

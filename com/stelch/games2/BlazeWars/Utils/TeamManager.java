@@ -254,7 +254,7 @@ public class TeamManager {
                 team=teamColors.GREEN;
                 iterator=0;
             }
-
+            p.setPlayerListName(Text.format(Colors.valueOf(team.toString().toUpperCase()).getColor()+p.getName()));
             p.sendMessage(Text.format(String.format(lang.GAME_TEAM_ASSIGNED.get(), Colors.valueOf(team.toString().toUpperCase()).getColor()+team.toString().toUpperCase())));
         }
         if(BLUE_PLAYERS.size()>0){this.team_players.put(teamColors.BLUE,BLUE_PLAYERS);}

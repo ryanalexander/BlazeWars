@@ -41,6 +41,7 @@ public class Forge implements Listener {
         this.e.teleport(this.e.getLocation());
         this.e.setCanPickupItems(false);
         this.e.setRemoveWhenFarAway(false);
+        this.e.setMarker(true);
         this.e.getEquipment().setHelmet(skull);
         this.addLine(Text.format(text));
         this.e.setCustomNameVisible(true);
@@ -82,6 +83,7 @@ public class Forge implements Listener {
             this.e1.setVisible(false);
             this.e1.setGravity(false);
             this.e1.teleport(l1);
+            this.e.setMarker(true);
             this.e1.setCanPickupItems(false);
             this.e1.setRemoveWhenFarAway(false);
             this.e1.setCustomName(Text.format(line));

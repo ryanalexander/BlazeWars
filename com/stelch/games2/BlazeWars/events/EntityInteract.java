@@ -18,10 +18,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityInteractEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.inventory.InventoryType;
-import org.bukkit.event.player.PlayerEggThrowEvent;
-import org.bukkit.event.player.PlayerInteractEntityEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerItemHeldEvent;
+import org.bukkit.event.player.*;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
@@ -30,6 +27,11 @@ import java.util.Map;
 import static org.bukkit.Material.FIRE_CHARGE;
 
 public class EntityInteract implements Listener {
+
+    @EventHandler
+    public void itemPickup(PlayerPickupItemEvent e){
+        if(Main.game.spectators.containsKey(e.getPlayer())){e.setCancelled(true);}
+    }
 
     @EventHandler
     public void InventorySwitch(PlayerItemHeldEvent e){
@@ -42,6 +44,8 @@ public class EntityInteract implements Listener {
 
     @EventHandler
     public void EntityDamage(EntityDamageByEntityEvent e){
+        if(e.getEntity().getType().equals(EntityType.PLAYER)&&Main.game.spectators.containsKey((Player)e.getEntity())){e.setCancelled(true);}
+        if(e.getDamager().getType().equals(EntityType.PLAYER)&&Main.game.spectators.containsKey((Player)e.getDamager())){e.setCancelled(true);}
         if(e.getEntity() instanceof ArmorStand){
             if(Main.game.invis_players.containsValue(e.getEntity())){
                 for(Map.Entry<Player,ArmorStand> d : Main.game.invis_players.entrySet()){
@@ -60,14 +64,17 @@ public class EntityInteract implements Listener {
 
     @EventHandler
     public void EntityInteract(PlayerInteractEvent e){
+        if(Main.game.spectators.containsKey(e.getPlayer())){e.setCancelled(true);}
         if(!Main.game.getGamestate().equals(gameState.IN_GAME)){return;}
         /*
          * EGG BRIDGE
          */
-        if(e.getItem().getType().equals(Material.EGG)){
+        if(e.getItem()!=null&&e.getItem().getType().equals(Material.EGG)){
             e.setCancelled(true);
             Egg egg = e.getPlayer().launchProjectile(Egg.class);
-            egg.teleport(egg.getLocation().subtract(0,1,0));
+            Location eyeLocation = e.getPlayer().getEyeLocation();
+            Vector vec = e.getPlayer().getLocation().getDirection();
+            egg.teleport(eyeLocation.add(vec));
             new BukkitRunnable(){
                 @Override
                 public void run() {
@@ -124,6 +131,7 @@ public class EntityInteract implements Listener {
 
     @EventHandler
     public void chestOpen(InventoryOpenEvent e){
+        if(Main.game.spectators.containsKey(e.getPlayer())){e.setCancelled(true);}
         if (e.getInventory().getHolder()==null) {return;}
         if(e.getInventory().getType().equals(InventoryType.CHEST)){
             if(Main.game.getGamestate()== gameState.IN_GAME&&e.getInventory().getLocation().getBlock()!=null) {

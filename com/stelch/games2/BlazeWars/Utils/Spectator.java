@@ -1,6 +1,7 @@
 package com.stelch.games2.BlazeWars.Utils;
 
 import com.stelch.games2.BlazeWars.Main;
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 
@@ -9,6 +10,9 @@ public class Spectator {
     Player player;
     public Spectator(Player player) {
         this.player=player;
+        for(Player p : Bukkit.getOnlinePlayers()){
+            p.hidePlayer(Main.getPlugin(Main.class),(Player)this.player);
+        }
 
         Main.game.spectators.put(player,this);
         player.getInventory().clear();
@@ -18,6 +22,9 @@ public class Spectator {
     }
 
     public void leave() {
+        for(Player p : Bukkit.getOnlinePlayers()){
+            player.showPlayer(Main.getPlugin(Main.class),(Player)this.player);
+        }
         Main.game.spectators.remove(player);
         player.setGameMode(GameMode.SURVIVAL);
         player.getInventory().clear();
