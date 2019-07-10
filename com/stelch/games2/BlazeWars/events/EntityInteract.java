@@ -44,7 +44,12 @@ public class EntityInteract implements Listener {
     }
 
     @EventHandler
-    public void EntityDamage(EntityDamageByEntityEvent e){
+    public void EntityDamage(EntityDamageEvent e){
+        if(Main.game.getGamestate().equals(gameState.LOBBY)){e.setCancelled(true);}
+    }
+
+    @EventHandler
+    public void EntityDamageEntity(EntityDamageByEntityEvent e){
         if(e.getEntity().getType().equals(EntityType.PLAYER)&&Main.game.spectators.containsKey((Player)e.getEntity())){e.setCancelled(true);}
         if(e.getDamager().getType().equals(EntityType.PLAYER)&&Main.game.spectators.containsKey((Player)e.getDamager())){e.setCancelled(true);}
         if(e.getEntity() instanceof ArmorStand){

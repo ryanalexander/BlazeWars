@@ -26,8 +26,6 @@ public class header {
             Item Eggs = new Item(Material.MAGMA_CUBE_SPAWN_EGG,"&6Eggs");
             Item Special = new Item(Material.TNT,"&6Special");
 
-            Eggs.setLore(new String[]{"&r","&eComing Soon"});
-
             Blocks.setOnClick(new Item.click(){public void run(Player p){p.openInventory(blocks.getShop(p));}});
             Weapons.setOnClick(new Item.click(){public void run(Player p){p.openInventory(weapons.getShop(p));}});
             Armor.setOnClick(new Item.click(){public void run(Player p){p.openInventory(armor.getShop(p));}});

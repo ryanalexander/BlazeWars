@@ -65,10 +65,7 @@ public class eggs  implements Listener {
     public static boolean doCharge (Player player, Material mat, int amount) {
 
         if(player.getInventory().contains(mat,amount)){
-            ItemStack payload = new ItemStack(mat);
-            for (int i = 1; i < amount; i++) {
-                player.getInventory().removeItem(payload);
-            }
+            ItemStack payload = new ItemStack(mat,amount);
             player.getInventory().remove(payload);
             player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING,1,1);
             return true;

@@ -2,6 +2,7 @@ package com.stelch.games2.BlazeWars.Inventories;
 
 
 import com.stelch.games2.core.Utils.Text;
+import net.minecraft.server.v1_14_R1.ItemCompass;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Sound;

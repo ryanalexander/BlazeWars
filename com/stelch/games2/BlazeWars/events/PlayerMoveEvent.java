@@ -25,10 +25,10 @@ public class PlayerMoveEvent implements Listener {
         for (Entity entity : Main.game.getGameEntities()) {
             if (entity.getType().equals(EntityType.BLAZE)) {
                 if (e.getTo().distanceSquared(entity.getLocation()) < 500&&Main.game.getTeamManager().getBlazeCooldown(entity)) {
-                    if(Main.game.spectators.containsKey(e.getPlayer())){continue;}
-                    if(Main.game.getTeamManager().getBlaze(Main.game.getTeamManager().getTeam((Player)e.getPlayer()))==entity)
-                        return;
+                    if(Main.game.spectators.containsKey(e.getPlayer()))continue;
+                    if(Main.game.getTeamManager().getBlaze(Main.game.getTeamManager().getTeam((Player)e.getPlayer()))==entity)continue;
                     Blaze blaze = (Blaze) entity;
+                    if(!blaze.hasLineOfSight(e.getPlayer()))continue;
                     Fireball fb = blaze.launchProjectile(Fireball.class);
                     fb.setInvulnerable(true);
                     Vector from = new Vector(blaze.getLocation().getX(), blaze.getLocation().getY(), blaze.getLocation().getZ());
