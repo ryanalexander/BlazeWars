@@ -33,7 +33,7 @@ public class header {
             Armor.setOnClick(new Item.click(){public void run(Player p){p.openInventory(armor.getShop(p));}});
             Tools.setOnClick(new Item.click(){public void run(Player p){p.openInventory(tools.getShop(p));}});
             Potions.setOnClick(new Item.click(){public void run(Player p){p.openInventory(potions.getShop(p));}});
-            Eggs.setOnClick(new Item.click(){public void run(Player p){p.playSound(p.getLocation(), Sound.ENTITY_VILLAGER_TRADE,1,1);}});
+            Eggs.setOnClick(new Item.click(){public void run(Player p){p.openInventory(eggs.getShop(p));}});
             Special.setOnClick(new Item.click(){public void run(Player p){p.openInventory(specials.getShop(p));}});
 
             inv.setItem(10,Blocks.spigot());

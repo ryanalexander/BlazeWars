@@ -53,7 +53,7 @@ public class blocks implements Listener {
         Item clay = new Item(Material.CLAY,"&bClay");
         clay.setLore(new String[]{
                 "&r",
-                "&aCost: &612 Iron",
+                "&aCost: &f12 Iron",
         });
         clay.setAmount(12);
         clay.setOnClick(new Item.click(){public void run(Player p){if(blocks.doCharge(p,Material.IRON_INGOT,12))p.getInventory().addItem(new ItemStack(Material.CLAY,12));}});
@@ -61,7 +61,7 @@ public class blocks implements Listener {
         Item sand = new Item(Material.SAND,"&bSand");
         sand.setLore(new String[]{
                 "&r",
-                "&aCost: &624 Iron",
+                "&aCost: &f24 Iron",
                 "&r",
                 "&dFalls"
         });
@@ -94,7 +94,7 @@ public class blocks implements Listener {
                 "&bBlast Proof"
         });
         obsidian.setAmount(4);
-        obsidian.setOnClick(new Item.click(){public void run(Player p){if(blocks.doCharge(p,Material.BLAZE_ROD,8))p.getInventory().addItem(new ItemStack(Material.OBSIDIAN,4));}});
+        obsidian.setOnClick(new Item.click(){public void run(Player p){if(blocks.doCharge(p,Material.BLAZE_ROD,4))p.getInventory().addItem(new ItemStack(Material.OBSIDIAN,4));}});
 
         blocks.shop.setItem(0,close.spigot());
         blocks.shop.setItem(19,wool.spigot());
@@ -113,7 +113,7 @@ public class blocks implements Listener {
 
         if(player.getInventory().contains(mat,amount)){
             ItemStack payload = new ItemStack(mat);
-            for (int i = 0; i < amount; i++) {
+            for (int i = 1; i < amount; i++) {
                 player.getInventory().removeItem(payload);
             }
             player.getInventory().remove(payload);

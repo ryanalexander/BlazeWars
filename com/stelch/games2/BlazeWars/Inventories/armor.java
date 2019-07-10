@@ -176,7 +176,7 @@ public class armor implements Listener {
 
         if(player.getInventory().contains(mat,amount)){
             ItemStack payload = new ItemStack(mat);
-            for (int i = 0; i < amount; i++) {
+            for (int i = 1; i < amount; i++) {
                 player.getInventory().removeItem(payload);
             }
             player.getInventory().remove(payload);

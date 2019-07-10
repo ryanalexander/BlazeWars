@@ -25,6 +25,7 @@ import org.bukkit.util.Vector;
 import java.util.Map;
 
 import static org.bukkit.Material.FIRE_CHARGE;
+import static org.bukkit.Material.MAGMA_CUBE_SPAWN_EGG;
 
 public class EntityInteract implements Listener {
 
@@ -59,6 +60,21 @@ public class EntityInteract implements Listener {
                     }
                 }
             }
+        }else if(e.getEntityType().equals(EntityType.MAGMA_CUBE)){
+            MagmaCube magmaCube = (MagmaCube)e.getEntity();
+            String name = "";
+            magmaCube.setHealth(e.getDamage()-magmaCube.getHealth());
+            double h = magmaCube.getHealth();
+            for(int i=0;i<magmaCube.getMaxHealth();i++){
+                h--;
+                if(h>=i){
+                    name+="&a:&r";
+                }else {
+                    name+="&7:&r";
+                }
+            }
+            magmaCube.setCustomName(Text.format(name));
+            magmaCube.setCustomNameVisible(true);
         }
     }
 
@@ -67,10 +83,30 @@ public class EntityInteract implements Listener {
         if(Main.game.spectators.containsKey(e.getPlayer())){e.setCancelled(true);}
         if(!Main.game.getGamestate().equals(gameState.IN_GAME)){return;}
         /*
+         * CUSTOM MAGMA CUBE
+         */
+        if(e.getItem()!=null&&e.getItem().getType().equals(MAGMA_CUBE_SPAWN_EGG)){
+            e.setCancelled(true);
+            e.getPlayer().getInventory().remove(e.getItem());
+            for(int i1=0;i1<=3;i1++) {
+                MagmaCube magmaCube = (MagmaCube) e.getPlayer().getLocation().getWorld().spawnEntity(e.getPlayer().getLocation(), EntityType.MAGMA_CUBE);
+                magmaCube.setAI(true);
+                magmaCube.setHealth(7);
+                magmaCube.setSize(1);
+                String name = "";
+                for (int i = 0; i < magmaCube.getHealth(); i++) {
+                    name += "&a:&r";
+                }
+                magmaCube.setCustomName(Text.format(name));
+                magmaCube.setCustomNameVisible(true);
+            }
+        }
+        /*
          * EGG BRIDGE
          */
         if(e.getItem()!=null&&e.getItem().getType().equals(Material.EGG)){
             e.setCancelled(true);
+            e.getPlayer().getInventory().remove(e.getItem());
             Egg egg = e.getPlayer().launchProjectile(Egg.class);
             Location eyeLocation = e.getPlayer().getEyeLocation();
             Vector vec = e.getPlayer().getLocation().getDirection();
@@ -111,6 +147,7 @@ public class EntityInteract implements Listener {
          */
         if(e.getItem().getType().equals(FIRE_CHARGE)){
             e.setCancelled(true);
+            e.getPlayer().getInventory().remove(e.getItem());
             org.bukkit.entity.Fireball fb = e.getPlayer().launchProjectile(org.bukkit.entity.Fireball.class);
             fb.setInvulnerable(true);
             Vector v = e.getPlayer().getLocation().getDirection().multiply(2);

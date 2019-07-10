@@ -51,7 +51,7 @@ public class potions implements Listener {
         invis.setAmount(1);
         invis.setOnClick(new Item.click(){public void run(Player p){
             if(potions.doCharge(p, BLAZE_ROD,2)){
-                ItemStack potion = new ItemStack(Material.POTION, 2);
+                ItemStack potion = new ItemStack(Material.POTION, 1);
 
                 PotionMeta potionmeta = (PotionMeta) potion.getItemMeta();
                 potionmeta.setMainEffect(PotionEffectType.INVISIBILITY);
@@ -97,12 +97,11 @@ public class potions implements Listener {
         return potions.shop;
     }
 
-
     public static boolean doCharge (Player player, Material mat, int amount) {
 
         if(player.getInventory().contains(mat,amount)){
             ItemStack payload = new ItemStack(mat);
-            for (int i = 0; i < amount; i++) {
+            for (int i = 1; i < amount; i++) {
                 player.getInventory().removeItem(payload);
             }
             player.getInventory().remove(payload);
