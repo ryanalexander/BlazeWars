@@ -1,3 +1,17 @@
+/*
+ *
+ * *
+ *  *
+ *  * © Stelch Games 2019, distribution is strictly prohibited
+ *  *
+ *  * Changes to this file must be documented on push.
+ *  * Unauthorised changes to this file are prohibited.
+ *  *
+ *  * @author Ryan Wood
+ *  * @since 14/7/2019
+ *
+ */
+
 package com.stelch.games2.BlazeWars.Inventories;
 
 
@@ -47,7 +61,7 @@ public class armor implements Listener {
         });
         armor_chain.setAmount(1);
         armor_chain.setOnClick(new Item.click(){public void run(Player p){
-            if(armor.doCharge(p, IRON_INGOT,40)){
+            if(com.stelch.games2.BlazeWars.Inventories.shop.doCharge(p, IRON_INGOT,40)){
                 ItemStack armor_leggings = new ItemStack(CHAINMAIL_LEGGINGS);
                 ItemStack armor_boots = new ItemStack(CHAINMAIL_BOOTS);
                 p.getInventory().setArmorContents(new ItemStack[]{armor_boots,armor_leggings,player.getInventory().getChestplate(),player.getInventory().getHelmet()});
@@ -62,7 +76,7 @@ public class armor implements Listener {
         });
         armor_iron.setAmount(1);
         armor_iron.setOnClick(new Item.click(){public void run(Player p){
-            if(armor.doCharge(p, GOLD_INGOT,12)){
+            if(com.stelch.games2.BlazeWars.Inventories.shop.doCharge(p, GOLD_INGOT,12)){
                 ItemStack armor_leggings = new ItemStack(IRON_LEGGINGS);
                 ItemStack armor_boots = new ItemStack(IRON_BOOTS);
                 p.getInventory().setArmorContents(new ItemStack[]{armor_boots,armor_leggings,player.getInventory().getChestplate(),player.getInventory().getHelmet()});
@@ -77,7 +91,7 @@ public class armor implements Listener {
         });
         armor_diamond.setAmount(1);
         armor_diamond.setOnClick(new Item.click(){public void run(Player p){
-            if(armor.doCharge(p, BLAZE_ROD,6)){
+            if(com.stelch.games2.BlazeWars.Inventories.shop.doCharge(p, BLAZE_ROD,6)){
                 ItemStack armor_leggings = new ItemStack(DIAMOND_LEGGINGS);
                 ItemStack armor_boots = new ItemStack(DIAMOND_BOOTS);
                 p.getInventory().setArmorContents(new ItemStack[]{armor_boots,armor_leggings,player.getInventory().getChestplate(),player.getInventory().getHelmet()});
@@ -170,21 +184,5 @@ public class armor implements Listener {
                 break;
         }
         return null;
-    }
-
-    public static boolean doCharge (Player player, Material mat, int amount) {
-
-        if(player.getInventory().contains(mat,amount)){
-            ItemStack payload = new ItemStack(mat);
-            for (int i = 1; i < amount; i++) {
-                player.getInventory().removeItem(payload);
-            }
-            player.getInventory().remove(payload);
-            player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING,1,1);
-            return true;
-        }else {
-            player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO,1,1);
-            return false;
-        }
     }
 }

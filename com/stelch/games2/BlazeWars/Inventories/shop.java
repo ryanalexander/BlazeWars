@@ -1,3 +1,17 @@
+/*
+ *
+ * *
+ *  *
+ *  * © Stelch Games 2019, distribution is strictly prohibited
+ *  *
+ *  * Changes to this file must be documented on push.
+ *  * Unauthorised changes to this file are prohibited.
+ *  *
+ *  * @author Ryan Wood
+ *  * @since 14/7/2019
+ *
+ */
+
 package com.stelch.games2.BlazeWars.Inventories;
 
 import com.stelch.games2.BlazeWars.Main;
@@ -6,6 +20,7 @@ import com.stelch.games2.core.Utils.Text;
 import com.stelch.games2.BlazeWars.varables.menuSource;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -48,5 +63,21 @@ public class shop implements Listener {
 
         this.menus.add(this.shop);
         return this.shop;
+    }
+
+
+    public static boolean doCharge (Player player, Material mat, int amount) {
+
+        if(player.getInventory().contains(mat,amount)){
+            ItemStack payload = new ItemStack(mat);
+            for (int i = 0; i < amount; i++) {
+                player.getInventory().removeItem(payload);
+            }
+            player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING,1,1);
+            return true;
+        }else {
+            player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO,1,1);
+            return false;
+        }
     }
 }

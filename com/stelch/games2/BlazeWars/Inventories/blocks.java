@@ -1,3 +1,17 @@
+/*
+ *
+ * *
+ *  *
+ *  * © Stelch Games 2019, distribution is strictly prohibited
+ *  *
+ *  * Changes to this file must be documented on push.
+ *  * Unauthorised changes to this file are prohibited.
+ *  *
+ *  * @author Ryan Wood
+ *  * @since 14/7/2019
+ *
+ */
+
 package com.stelch.games2.BlazeWars.Inventories;
 
 import com.stelch.games2.BlazeWars.Main;
@@ -40,7 +54,7 @@ public class blocks implements Listener {
                 "&aCost: &f4 Iron"
         });
         wool.setAmount(16);
-        wool.setOnClick(new Item.click(){public void run(Player p){if(blocks.doCharge(p,Material.IRON_INGOT,4))p.getInventory().addItem(new ItemStack(Material.valueOf(Main.game.getTeamManager().getTeam(player).toString().toUpperCase()+"_WOOL"),16));}});
+        wool.setOnClick(new Item.click(){public void run(Player p){if(com.stelch.games2.BlazeWars.Inventories.shop.doCharge(p,Material.IRON_INGOT,4))p.getInventory().addItem(new ItemStack(Material.valueOf(Main.game.getTeamManager().getTeam(player).toString().toUpperCase()+"_WOOL"),16));}});
 
         Item wooden_planks = new Item(Material.OAK_PLANKS,"&bWooden Planks");
         wooden_planks.setLore(new String[]{
@@ -48,7 +62,7 @@ public class blocks implements Listener {
                 "&aCost: &64 Gold"
         });
         wooden_planks.setAmount(8);
-        wooden_planks.setOnClick(new Item.click(){public void run(Player p){if(blocks.doCharge(p,Material.GOLD_INGOT,4))p.getInventory().addItem(new ItemStack(Material.OAK_PLANKS,8));}});
+        wooden_planks.setOnClick(new Item.click(){public void run(Player p){if(com.stelch.games2.BlazeWars.Inventories.shop.doCharge(p,Material.GOLD_INGOT,4))p.getInventory().addItem(new ItemStack(Material.OAK_PLANKS,8));}});
 
         Item clay = new Item(Material.CLAY,"&bClay");
         clay.setLore(new String[]{
@@ -56,7 +70,7 @@ public class blocks implements Listener {
                 "&aCost: &f12 Iron",
         });
         clay.setAmount(12);
-        clay.setOnClick(new Item.click(){public void run(Player p){if(blocks.doCharge(p,Material.IRON_INGOT,12))p.getInventory().addItem(new ItemStack(Material.CLAY,12));}});
+        clay.setOnClick(new Item.click(){public void run(Player p){if(com.stelch.games2.BlazeWars.Inventories.shop.doCharge(p,Material.IRON_INGOT,12))p.getInventory().addItem(new ItemStack(Material.CLAY,12));}});
 
         Item sand = new Item(Material.SAND,"&bSand");
         sand.setLore(new String[]{
@@ -66,7 +80,7 @@ public class blocks implements Listener {
                 "&dFalls"
         });
         sand.setAmount(4);
-        sand.setOnClick(new Item.click(){public void run(Player p){if(blocks.doCharge(p,Material.IRON_INGOT,24))p.getInventory().addItem(new ItemStack(Material.SAND,4));}});
+        sand.setOnClick(new Item.click(){public void run(Player p){if(com.stelch.games2.BlazeWars.Inventories.shop.doCharge(p,Material.IRON_INGOT,24))p.getInventory().addItem(new ItemStack(Material.SAND,4));}});
 
         Item glass = new Item(Material.GLASS,"&bGlass");
         glass.setLore(new String[]{
@@ -76,7 +90,7 @@ public class blocks implements Listener {
                 "&dBlast Proof"
         });
         glass.setAmount(4);
-        glass.setOnClick(new Item.click(){public void run(Player p){if(blocks.doCharge(p,Material.IRON_INGOT,12))p.getInventory().addItem(new ItemStack(Material.GLASS,4));}});
+        glass.setOnClick(new Item.click(){public void run(Player p){if(com.stelch.games2.BlazeWars.Inventories.shop.doCharge(p,Material.IRON_INGOT,12))p.getInventory().addItem(new ItemStack(Material.GLASS,4));}});
 
         Item end_stone = new Item(Material.END_STONE,"&bEnd Stone");
         end_stone.setLore(new String[]{
@@ -84,7 +98,7 @@ public class blocks implements Listener {
                 "&aCost: &f24 Iron",
         });
         end_stone.setAmount(12);
-        end_stone.setOnClick(new Item.click(){public void run(Player p){if(blocks.doCharge(p,Material.IRON_INGOT,24))p.getInventory().addItem(new ItemStack(Material.END_STONE,12));}});
+        end_stone.setOnClick(new Item.click(){public void run(Player p){if(com.stelch.games2.BlazeWars.Inventories.shop.doCharge(p,Material.IRON_INGOT,24))p.getInventory().addItem(new ItemStack(Material.END_STONE,12));}});
 
         Item obsidian = new Item(Material.OBSIDIAN,"&bObsidian");
         obsidian.setLore(new String[]{
@@ -94,7 +108,7 @@ public class blocks implements Listener {
                 "&bBlast Proof"
         });
         obsidian.setAmount(4);
-        obsidian.setOnClick(new Item.click(){public void run(Player p){if(blocks.doCharge(p,Material.BLAZE_ROD,4))p.getInventory().addItem(new ItemStack(Material.OBSIDIAN,4));}});
+        obsidian.setOnClick(new Item.click(){public void run(Player p){if(com.stelch.games2.BlazeWars.Inventories.shop.doCharge(p,Material.BLAZE_ROD,4))p.getInventory().addItem(new ItemStack(Material.OBSIDIAN,4));}});
 
         blocks.shop.setItem(0,close.spigot());
         blocks.shop.setItem(19,wool.spigot());
@@ -107,21 +121,5 @@ public class blocks implements Listener {
 
         blocks.menus.add(blocks.shop);
         return blocks.shop;
-    }
-
-    public static boolean doCharge (Player player, Material mat, int amount) {
-
-        if(player.getInventory().contains(mat,amount)){
-            ItemStack payload = new ItemStack(mat);
-            for (int i = 1; i < amount; i++) {
-                player.getInventory().removeItem(payload);
-            }
-            player.getInventory().remove(payload);
-            player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING,1,1);
-            return true;
-        }else {
-            player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO,1,1);
-            return false;
-        }
     }
 }

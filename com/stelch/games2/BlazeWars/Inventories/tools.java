@@ -1,3 +1,17 @@
+/*
+ *
+ * *
+ *  *
+ *  * © Stelch Games 2019, distribution is strictly prohibited
+ *  *
+ *  * Changes to this file must be documented on push.
+ *  * Unauthorised changes to this file are prohibited.
+ *  *
+ *  * @author Ryan Wood
+ *  * @since 14/7/2019
+ *
+ */
+
 package com.stelch.games2.BlazeWars.Inventories;
 
 
@@ -41,7 +55,7 @@ public class tools implements Listener {
                 "&aCost: &f20 Iron"
         });
         shears.setAmount(1);
-        shears.setOnClick(new Item.click(){public void run(Player p){if(tools.doCharge(p,Material.IRON_INGOT,20))p.getInventory().addItem(new ItemStack(Material.SHEARS,1));}});
+        shears.setOnClick(new Item.click(){public void run(Player p){if(com.stelch.games2.BlazeWars.Inventories.shop.doCharge(p,Material.IRON_INGOT,20))p.getInventory().addItem(new ItemStack(Material.SHEARS,1));}});
 
 
         Item pickaxe = new Item(nextUpgrade(player,PICAXE),"&bPickaxe");
@@ -53,7 +67,7 @@ public class tools implements Listener {
         pickaxe.setAmount(1);
         pickaxe.setOnClick(new Item.click(){public void run(Player p){
             if(pickaxe_cost!=null){
-                if(tools.doCharge(p,pickaxe_cost.getType(),pickaxe_cost.getAmount())) {
+                if(com.stelch.games2.BlazeWars.Inventories.shop.doCharge(p,pickaxe_cost.getType(),pickaxe_cost.getAmount())) {
                     Material last = lastUpgrade(player, PICAXE);
                     Material next = nextUpgrade(player, PICAXE);
                     if(last!=null){p.getInventory().remove(last);}
@@ -72,7 +86,7 @@ public class tools implements Listener {
         axe.setAmount(1);
         axe.setOnClick(new Item.click(){public void run(Player p){
             if(axe_cost!=null){
-                if(tools.doCharge(p,axe_cost.getType(),axe_cost.getAmount())) {
+                if(com.stelch.games2.BlazeWars.Inventories.shop.doCharge(p,axe_cost.getType(),axe_cost.getAmount())) {
                     Material last = lastUpgrade(player, AXE);
                     Material next = nextUpgrade(player, AXE);
                     if(last!=null){p.getInventory().remove(last);}
@@ -91,7 +105,7 @@ public class tools implements Listener {
         shovel.setAmount(1);
         shovel.setOnClick(new Item.click(){public void run(Player p){
             if(shovel_cost!=null){
-                if(tools.doCharge(p,shovel_cost.getType(),shovel_cost.getAmount())) {
+                if(com.stelch.games2.BlazeWars.Inventories.shop.doCharge(p,shovel_cost.getType(),shovel_cost.getAmount())) {
                     Material last = lastUpgrade(player, SHOVEL);
                     Material next = nextUpgrade(player, SHOVEL);
                     if(last!=null){p.getInventory().remove(last);}
@@ -188,21 +202,5 @@ public class tools implements Listener {
                 break;
         }
         return null;
-    }
-
-    public static boolean doCharge (Player player, Material mat, int amount) {
-
-        if(player.getInventory().contains(mat,amount)){
-            ItemStack payload = new ItemStack(mat);
-            for (int i = 1; i < amount; i++) {
-                player.getInventory().removeItem(payload);
-            }
-            player.getInventory().remove(payload);
-            player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING,1,1);
-            return true;
-        }else {
-            player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO,1,1);
-            return false;
-        }
     }
 }

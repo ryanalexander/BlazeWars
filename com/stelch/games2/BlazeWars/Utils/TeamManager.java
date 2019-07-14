@@ -1,3 +1,17 @@
+/*
+ *
+ * *
+ *  *
+ *  * © Stelch Games 2019, distribution is strictly prohibited
+ *  *
+ *  * Changes to this file must be documented on push.
+ *  * Unauthorised changes to this file are prohibited.
+ *  *
+ *  * @author Ryan Wood
+ *  * @since 14/7/2019
+ *
+ */
+
 package com.stelch.games2.BlazeWars.Utils;
 
 import com.stelch.games2.BlazeWars.Game;
@@ -12,13 +26,8 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scoreboard.Team;
 
 import java.util.*;
-
-import static com.stelch.games2.BlazeWars.Utils.TeamManager.Colors.BLUE;
-import static com.stelch.games2.BlazeWars.Utils.TeamManager.Colors.ORANGE;
 
 public class TeamManager {
 
@@ -152,23 +161,23 @@ public class TeamManager {
             case 1:
                 this.spawner_level.put(team,level);
                 this.spawners.get(team).get(Material.IRON_INGOT).setLevel(8);
-                this.spawners.get(team).get(Material.GOLD_INGOT).setLevel(6);
+                this.spawners.get(team).get(Material.GOLD_INGOT).setLevel(3);
                 break;
             case 2:
                 this.spawner_level.put(team,level);
                 this.spawners.get(team).get(Material.IRON_INGOT).setLevel(9);
-                this.spawners.get(team).get(Material.GOLD_INGOT).setLevel(7);
+                this.spawners.get(team).get(Material.GOLD_INGOT).setLevel(4);
                 break;
             case 3:
                 this.spawner_level.put(team,level);
-                this.spawners.get(team).get(Material.IRON_INGOT).setLevel(9);
-                this.spawners.get(team).get(Material.GOLD_INGOT).setLevel(7);
+                this.spawners.get(team).get(Material.IRON_INGOT).setLevel(10);
+                this.spawners.get(team).get(Material.GOLD_INGOT).setLevel(5);
                 this.spawners.get(team).put(Material.BLAZE_ROD,new Game.spawnner(this.forge_location.get(team),new ItemStack(Material.BLAZE_ROD),1,4));
                 break;
             case 4:
                 this.spawner_level.put(team,level);
-                this.spawners.get(team).get(Material.IRON_INGOT).setLevel(9);
-                this.spawners.get(team).get(Material.GOLD_INGOT).setLevel(7);
+                this.spawners.get(team).get(Material.IRON_INGOT).setLevel(11);
+                this.spawners.get(team).get(Material.GOLD_INGOT).setLevel(6);
                 this.spawners.get(team).get(Material.BLAZE_ROD).setLevel(2);
                 break;
             default:

@@ -1,10 +1,24 @@
+/*
+ *
+ * *
+ *  *
+ *  * © Stelch Games 2019, distribution is strictly prohibited
+ *  *
+ *  * Changes to this file must be documented on push.
+ *  * Unauthorised changes to this file are prohibited.
+ *  *
+ *  * @author Ryan Wood
+ *  * @since 14/7/2019
+ *
+ */
+
 package com.stelch.games2.BlazeWars;
 
-import com.stelch.games2.BlazeWars.Inventories.Item;
-import com.stelch.games2.BlazeWars.commands.game;
-import com.stelch.games2.BlazeWars.varables.gameState;
-import com.stelch.games2.BlazeWars.varables.gameType;
 import com.stelch.games2.core.BukkitCore;
+import com.stelch.games2.core.Game.Game;
+import com.stelch.games2.core.Game.varables.gameState;
+import com.stelch.games2.core.Game.varables.gameType;
+import com.stelch.games2.core.InventoryUtils.Item;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -28,38 +42,23 @@ public class Main extends JavaPlugin implements Listener {
       getConfig().options().copyDefaults(true);
       saveConfig();
 
-      game = new Game("BlazeWars", gameType.DESTROY,4,8, this,Bukkit.getWorld("world"));
+      game = new Game("BlazeWars", gameType.DESTROY,4,8, this, Bukkit.getWorld("world"));
 
       BukkitCore.coreChatManager=true;
 
-      game.setAllow_spectators(true);
-
       PluginManager pm = Bukkit.getPluginManager();
       pm.registerEvents(new com.stelch.games2.BlazeWars.Utils.Forge(this),this);
-      pm.registerEvents(new com.stelch.games2.BlazeWars.events.playerJoin(this),this);
-      pm.registerEvents(new com.stelch.games2.BlazeWars.events.blockPlace(),this);
-      pm.registerEvents(new com.stelch.games2.BlazeWars.events.AsyncChatEvent(),this);
-      pm.registerEvents(new com.stelch.games2.BlazeWars.events.playerDeathEvent(this),this);
-      pm.registerEvents(new com.stelch.games2.BlazeWars.events.CommandPreProcessEvent(),this);
-      pm.registerEvents(new com.stelch.games2.BlazeWars.events.EntityInteract(),this);
-      pm.registerEvents(new com.stelch.games2.BlazeWars.events.PlayerMoveEvent(),this);
       pm.registerEvents(new com.stelch.games2.BlazeWars.events.PotionEvent(),this);
       pm.registerEvents(new com.stelch.games2.BlazeWars.Inventories.shop(),this);
       pm.registerEvents(this,this);
 
-      game.setGamestate(gameState.LOBBY);
-
-      getCommand("mct").setExecutor(new com.stelch.games2.BlazeWars.commands.mct(this));
-      getCommand("game").setExecutor(new game(this));
+      game.GameState(gameState.LOBBY);
 
   }
-  
-  @EventHandler
-  public void food(FoodLevelChangeEvent e) { e.setCancelled(true); }
 
     @EventHandler
     public void InventoryClickEvent(InventoryClickEvent e) {
-        for (Map.Entry<Item, Item.click> is : Actions.entrySet()) {
+        for (Map.Entry<com.stelch.games2.core.InventoryUtils.Item, Item.click> is : Actions.entrySet()) {
             if(is.getKey().spigot().equals(e.getCurrentItem())){
                 if(is.getValue()!=null)
                     is.getValue().run((Player)e.getWhoClicked());

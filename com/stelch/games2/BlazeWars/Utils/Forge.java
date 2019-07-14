@@ -1,3 +1,17 @@
+/*
+ *
+ * *
+ *  *
+ *  * © Stelch Games 2019, distribution is strictly prohibited
+ *  *
+ *  * Changes to this file must be documented on push.
+ *  * Unauthorised changes to this file are prohibited.
+ *  *
+ *  * @author Ryan Wood
+ *  * @since 14/7/2019
+ *
+ */
+
 package com.stelch.games2.BlazeWars.Utils;
 
 import com.stelch.games2.BlazeWars.Game;
@@ -15,15 +29,13 @@ import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.Iterator;
-
 public class Forge implements Listener {
 
     private ArmorStand e = null;
 
     private ArmorStand e1;
 
-    private Game.spawnner spawner=null;
+    private spawnner spawner=null;
 
     private boolean deleted = false;
 

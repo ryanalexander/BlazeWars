@@ -1,3 +1,17 @@
+/*
+ *
+ * *
+ *  *
+ *  * © Stelch Games 2019, distribution is strictly prohibited
+ *  *
+ *  * Changes to this file must be documented on push.
+ *  * Unauthorised changes to this file are prohibited.
+ *  *
+ *  * @author Ryan Wood
+ *  * @since 14/7/2019
+ *
+ */
+
 package com.stelch.games2.BlazeWars.Inventories;
 
 
@@ -43,7 +57,7 @@ public class specials implements Listener {
                 "&aCost: &64 Gold"
         });
         tnt.setAmount(1);
-        tnt.setOnClick(new Item.click(){public void run(Player p){if(specials.doCharge(p, GOLD_INGOT,4))p.getInventory().addItem(new ItemStack(Material.TNT,1));}});
+        tnt.setOnClick(new Item.click(){public void run(Player p){if(com.stelch.games2.BlazeWars.Inventories.shop.doCharge(p, GOLD_INGOT,4))p.getInventory().addItem(new ItemStack(Material.TNT,1));}});
 
         Item epearl = new Item(ENDER_PEARL,"&bEnder Pearl");
         epearl.setLore(new String[]{
@@ -51,7 +65,7 @@ public class specials implements Listener {
                 "&aCost: &c4 Blaze Rod"
         });
         epearl.setAmount(1);
-        epearl.setOnClick(new Item.click(){public void run(Player p){if(specials.doCharge(p, BLAZE_ROD,4))p.getInventory().addItem(new ItemStack(ENDER_PEARL,1));}});
+        epearl.setOnClick(new Item.click(){public void run(Player p){if(com.stelch.games2.BlazeWars.Inventories.shop.doCharge(p, BLAZE_ROD,4))p.getInventory().addItem(new ItemStack(ENDER_PEARL,1));}});
 
         Item water = new Item(WATER_BUCKET,"&bWater");
         water.setLore(new String[]{
@@ -59,7 +73,7 @@ public class specials implements Listener {
                 "&aCost: &64 Gold"
         });
         water.setAmount(1);
-        water.setOnClick(new Item.click(){public void run(Player p){if(specials.doCharge(p, GOLD_INGOT,4))p.getInventory().addItem(new ItemStack(WATER_BUCKET,1));}});
+        water.setOnClick(new Item.click(){public void run(Player p){if(com.stelch.games2.BlazeWars.Inventories.shop.doCharge(p, GOLD_INGOT,4))p.getInventory().addItem(new ItemStack(WATER_BUCKET,1));}});
 
         Item fireball = new Item(FIRE_CHARGE,"&bFireball");
         fireball.setLore(new String[]{
@@ -67,7 +81,7 @@ public class specials implements Listener {
                 "&aCost: &f40 Iron"
         });
         fireball.setAmount(1);
-        fireball.setOnClick(new Item.click(){public void run(Player p){if(specials.doCharge(p, IRON_INGOT,40))p.getInventory().addItem(new ItemStack(FIRE_CHARGE,1));}});
+        fireball.setOnClick(new Item.click(){public void run(Player p){if(com.stelch.games2.BlazeWars.Inventories.shop.doCharge(p, IRON_INGOT,40))p.getInventory().addItem(new ItemStack(FIRE_CHARGE,1));}});
 
         Item bridge_egg = new Item(EGG,"&bBridge Egg");
         bridge_egg.setLore(new String[]{
@@ -75,7 +89,7 @@ public class specials implements Listener {
                 "&aCost: &c3 Blaze Rod"
         });
         bridge_egg.setAmount(1);
-        bridge_egg.setOnClick(new Item.click(){public void run(Player p){if(specials.doCharge(p, BLAZE_ROD,3))p.getInventory().addItem(new ItemStack(EGG,1));}});
+        bridge_egg.setOnClick(new Item.click(){public void run(Player p){if(com.stelch.games2.BlazeWars.Inventories.shop.doCharge(p, BLAZE_ROD,3))p.getInventory().addItem(new ItemStack(EGG,1));}});
 
         Item golden_apple = new Item(GOLDEN_APPLE,"&bGolden Apple");
         golden_apple.setLore(new String[]{
@@ -83,7 +97,7 @@ public class specials implements Listener {
                 "&aCost: &63 Gold"
         });
         golden_apple.setAmount(1);
-        golden_apple.setOnClick(new Item.click(){public void run(Player p){if(specials.doCharge(p, GOLD_INGOT,3))p.getInventory().addItem(new ItemStack(GOLDEN_APPLE,1));}});
+        golden_apple.setOnClick(new Item.click(){public void run(Player p){if(com.stelch.games2.BlazeWars.Inventories.shop.doCharge(p, GOLD_INGOT,3))p.getInventory().addItem(new ItemStack(GOLDEN_APPLE,1));}});
 
 
         specials.shop.setItem(0,close.spigot());
@@ -93,24 +107,6 @@ public class specials implements Listener {
         specials.shop.setItem(22,fireball.spigot());
         specials.shop.setItem(23, bridge_egg.spigot());
         specials.shop.setItem(24,golden_apple.spigot());
-
-        specials.menus.add(specials.shop);
         return specials.shop;
-    }
-
-    public static boolean doCharge (Player player, Material mat, int amount) {
-
-        if(player.getInventory().contains(mat,amount)){
-            ItemStack payload = new ItemStack(mat);
-            for (int i = 1; i < amount; i++) {
-                player.getInventory().removeItem(payload);
-            }
-            player.getInventory().remove(payload);
-            player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING,1,1);
-            return true;
-        }else {
-            player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO,1,1);
-            return false;
-        }
     }
 }

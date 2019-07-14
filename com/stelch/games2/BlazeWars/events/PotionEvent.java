@@ -1,3 +1,17 @@
+/*
+ *
+ * *
+ *  *
+ *  * © Stelch Games 2019, distribution is strictly prohibited
+ *  *
+ *  * Changes to this file must be documented on push.
+ *  * Unauthorised changes to this file are prohibited.
+ *  *
+ *  * @author Ryan Wood
+ *  * @since 14/7/2019
+ *
+ */
+
 package com.stelch.games2.BlazeWars.events;
 
 import com.stelch.games2.BlazeWars.Main;
@@ -18,7 +32,7 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class PotionEvent implements Listener {
-
+/*
     @EventHandler
     public void PotionEvent (EntityPotionEffectEvent e){
 
@@ -58,5 +72,5 @@ public class PotionEvent implements Listener {
             }.runTaskLater(Main.getPlugin(Main.class),(30*20));
         }
     }
-
+*/
 }

@@ -1,3 +1,17 @@
+/*
+ *
+ * *
+ *  *
+ *  * © Stelch Games 2019, distribution is strictly prohibited
+ *  *
+ *  * Changes to this file must be documented on push.
+ *  * Unauthorised changes to this file are prohibited.
+ *  *
+ *  * @author Ryan Wood
+ *  * @since 14/7/2019
+ *
+ */
+
 package com.stelch.games2.BlazeWars.Inventories;
 
 import com.stelch.games2.BlazeWars.Main;
@@ -13,6 +27,8 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
+
+import static com.stelch.games2.BlazeWars.Inventories.shop.doCharge;
 
 public class islandUpgrades implements Listener {
 
@@ -79,21 +95,5 @@ public class islandUpgrades implements Listener {
 
         islandUpgrades.menus.add(islandUpgrades.shop);
         return islandUpgrades.shop;
-    }
-
-    public static boolean doCharge (Player player, Material mat, int amount) {
-
-        if(player.getInventory().contains(mat,amount)){
-            ItemStack payload = new ItemStack(mat);
-            for (int i = 1; i < amount; i++) {
-                player.getInventory().removeItem(payload);
-            }
-            player.getInventory().remove(payload);
-            player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING,1,1);
-            return true;
-        }else {
-            player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO,1,1);
-            return false;
-        }
     }
 }

@@ -1,3 +1,17 @@
+/*
+ *
+ * *
+ *  *
+ *  * © Stelch Games 2019, distribution is strictly prohibited
+ *  *
+ *  * Changes to this file must be documented on push.
+ *  * Unauthorised changes to this file are prohibited.
+ *  *
+ *  * @author Ryan Wood
+ *  * @since 14/7/2019
+ *
+ */
+
 package com.stelch.games2.BlazeWars.Inventories;
 
 
@@ -50,7 +64,7 @@ public class potions implements Listener {
         });
         invis.setAmount(1);
         invis.setOnClick(new Item.click(){public void run(Player p){
-            if(potions.doCharge(p, BLAZE_ROD,2)){
+            if(com.stelch.games2.BlazeWars.Inventories.shop.doCharge(p, BLAZE_ROD,2)){
                 ItemStack potion = new ItemStack(Material.POTION, 1);
 
                 PotionMeta potionmeta = (PotionMeta) potion.getItemMeta();
@@ -74,7 +88,7 @@ public class potions implements Listener {
         });
         jump.setAmount(1);
         jump.setOnClick(new Item.click(){public void run(Player p){
-            if(potions.doCharge(p, BLAZE_ROD,1)){
+            if(com.stelch.games2.BlazeWars.Inventories.shop.doCharge(p, BLAZE_ROD,1)){
                 ItemStack potion = new ItemStack(Material.POTION, 1);
 
                 PotionMeta potionmeta = (PotionMeta) potion.getItemMeta();
@@ -95,21 +109,5 @@ public class potions implements Listener {
 
         potions.menus.add(potions.shop);
         return potions.shop;
-    }
-
-    public static boolean doCharge (Player player, Material mat, int amount) {
-
-        if(player.getInventory().contains(mat,amount)){
-            ItemStack payload = new ItemStack(mat);
-            for (int i = 1; i < amount; i++) {
-                player.getInventory().removeItem(payload);
-            }
-            player.getInventory().remove(payload);
-            player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING,1,1);
-            return true;
-        }else {
-            player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO,1,1);
-            return false;
-        }
     }
 }

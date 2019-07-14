@@ -1,3 +1,17 @@
+/*
+ *
+ * *
+ *  *
+ *  * © Stelch Games 2019, distribution is strictly prohibited
+ *  *
+ *  * Changes to this file must be documented on push.
+ *  * Unauthorised changes to this file are prohibited.
+ *  *
+ *  * @author Ryan Wood
+ *  * @since 14/7/2019
+ *
+ */
+
 package com.stelch.games2.BlazeWars.Inventories;
 
 import com.stelch.games2.BlazeWars.varables.menuSource;
@@ -49,7 +63,7 @@ public class eggs  implements Listener {
         });
         MAGMA_CUBE_SPAWN.setAmount(1);
         MAGMA_CUBE_SPAWN.setOnClick(new Item.click(){public void run(Player p){
-            if(eggs.doCharge(p, GOLD_INGOT,30)){
+            if(com.stelch.games2.BlazeWars.Inventories.shop.doCharge(p, GOLD_INGOT,30)){
                 MAGMA_CUBE_SPAWN.setLore(new String[]{String.format("&aYou are tha sneaky mayn")});
                 p.getInventory().addItem(MAGMA_CUBE_SPAWN.spigot());
             }
@@ -60,18 +74,5 @@ public class eggs  implements Listener {
 
         eggs.menus.add(eggs.shop);
         return eggs.shop;
-    }
-
-    public static boolean doCharge (Player player, Material mat, int amount) {
-
-        if(player.getInventory().contains(mat,amount)){
-            ItemStack payload = new ItemStack(mat,amount);
-            player.getInventory().remove(payload);
-            player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING,1,1);
-            return true;
-        }else {
-            player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO,1,1);
-            return false;
-        }
     }
 }

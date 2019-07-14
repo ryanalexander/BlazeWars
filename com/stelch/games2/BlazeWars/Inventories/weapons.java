@@ -1,3 +1,17 @@
+/*
+ *
+ * *
+ *  *
+ *  * © Stelch Games 2019, distribution is strictly prohibited
+ *  *
+ *  * Changes to this file must be documented on push.
+ *  * Unauthorised changes to this file are prohibited.
+ *  *
+ *  * @author Ryan Wood
+ *  * @since 14/7/2019
+ *
+ */
+
 package com.stelch.games2.BlazeWars.Inventories;
 
 
@@ -40,7 +54,7 @@ public class weapons implements Listener {
                 "&aCost: &f10 Iron"
         });
         stone_sword.setAmount(1);
-        stone_sword.setOnClick(new Item.click(){public void run(Player p){if(weapons.doCharge(p,Material.IRON_INGOT,10))p.getInventory().addItem(new ItemStack(Material.STONE_SWORD,1));}});
+        stone_sword.setOnClick(new Item.click(){public void run(Player p){if(com.stelch.games2.BlazeWars.Inventories.shop.doCharge(p,Material.IRON_INGOT,10))p.getInventory().addItem(new ItemStack(Material.STONE_SWORD,1));}});
 
         Item iron_sword = new Item(Material.IRON_SWORD,"&bIron Sword");
         iron_sword.setLore(new String[]{
@@ -48,7 +62,7 @@ public class weapons implements Listener {
                 "&aCost: &67 Gold"
         });
         iron_sword.setAmount(1);
-        iron_sword.setOnClick(new Item.click(){public void run(Player p){if(weapons.doCharge(p,Material.GOLD_INGOT,7))p.getInventory().addItem(new ItemStack(Material.IRON_SWORD,1));}});
+        iron_sword.setOnClick(new Item.click(){public void run(Player p){if(com.stelch.games2.BlazeWars.Inventories.shop.doCharge(p,Material.GOLD_INGOT,7))p.getInventory().addItem(new ItemStack(Material.IRON_SWORD,1));}});
 
         Item diamond_sword = new Item(Material.DIAMOND_SWORD,"&bDiamond Sword");
         diamond_sword.setLore(new String[]{
@@ -56,7 +70,7 @@ public class weapons implements Listener {
                 "&aCost: &e4 Blaze Rod"
         });
         diamond_sword.setAmount(1);
-        diamond_sword.setOnClick(new Item.click(){public void run(Player p){if(weapons.doCharge(p,Material.BLAZE_ROD,4))p.getInventory().addItem(new ItemStack(Material.DIAMOND_SWORD,1));}});
+        diamond_sword.setOnClick(new Item.click(){public void run(Player p){if(com.stelch.games2.BlazeWars.Inventories.shop.doCharge(p,Material.BLAZE_ROD,4))p.getInventory().addItem(new ItemStack(Material.DIAMOND_SWORD,1));}});
 
         Item bow = new Item(Material.BOW,"&bBow");
         bow.setLore(new String[]{
@@ -64,7 +78,7 @@ public class weapons implements Listener {
                 "&aCost: &612 Gold"
         });
         bow.setAmount(1);
-        bow.setOnClick(new Item.click(){public void run(Player p){if(weapons.doCharge(p,Material.GOLD_INGOT,12))p.getInventory().addItem(new ItemStack(Material.BOW,1));}});
+        bow.setOnClick(new Item.click(){public void run(Player p){if(com.stelch.games2.BlazeWars.Inventories.shop.doCharge(p,Material.GOLD_INGOT,12))p.getInventory().addItem(new ItemStack(Material.BOW,1));}});
 
         Item super_bow = new Item(Material.BOW,"&dSuper Bow");
         super_bow.setEnchanted(true);
@@ -79,7 +93,7 @@ public class weapons implements Listener {
         super_bowmeta.addEnchant(Enchantment.ARROW_KNOCKBACK,1,true);
         super_bowmeta.setDisplayName(Text.format("&d"+player.getName()+"'s Super bow"));
         super_bowis.setItemMeta(super_bowmeta);
-        super_bow.setOnClick(new Item.click(){public void run(Player p){if(weapons.doCharge(p,Material.BLAZE_ROD,6))p.getInventory().addItem(super_bowis);}});
+        super_bow.setOnClick(new Item.click(){public void run(Player p){if(com.stelch.games2.BlazeWars.Inventories.shop.doCharge(p,Material.BLAZE_ROD,6))p.getInventory().addItem(super_bowis);}});
 
         Item arrows = new Item(Material.ARROW,"&bArrow");
         arrows.setLore(new String[]{
@@ -87,7 +101,7 @@ public class weapons implements Listener {
                 "&aCost: &62 Gold"
         });
         arrows.setAmount(8);
-        arrows.setOnClick(new Item.click(){public void run(Player p){if(weapons.doCharge(p,Material.GOLD_INGOT,2))p.getInventory().addItem(new ItemStack(Material.ARROW,8));}});
+        arrows.setOnClick(new Item.click(){public void run(Player p){if(com.stelch.games2.BlazeWars.Inventories.shop.doCharge(p,Material.GOLD_INGOT,2))p.getInventory().addItem(new ItemStack(Material.ARROW,8));}});
 
         weapons.shop.setItem(0,close.spigot());
         weapons.shop.setItem(19,stone_sword.spigot());
@@ -99,21 +113,5 @@ public class weapons implements Listener {
 
         weapons.menus.add(weapons.shop);
         return weapons.shop;
-    }
-
-    public static boolean doCharge (Player player, Material mat, int amount) {
-
-        if(player.getInventory().contains(mat,amount)){
-            ItemStack payload = new ItemStack(mat);
-            for (int i = 1; i < amount; i++) {
-                player.getInventory().removeItem(payload);
-            }
-            player.getInventory().remove(payload);
-            player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING,1,1);
-            return true;
-        }else {
-            player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO,1,1);
-            return false;
-        }
     }
 }
