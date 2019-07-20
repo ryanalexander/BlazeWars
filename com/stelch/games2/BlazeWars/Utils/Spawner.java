@@ -16,13 +16,15 @@ package com.stelch.games2.BlazeWars.Utils;
 
 
 import com.stelch.games2.BlazeWars.Game;
-import com.stelch.games2.core.Game.varables.gameState;
+import com.stelch.games2.BlazeWars.varables.gameState;
+import com.stelch.games2.core.InventoryUtils.Item;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.entity.Entity;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
-public class spawnner {
+public class Spawner {
     private boolean stopped = false;
 
     private Location location;
@@ -37,7 +39,7 @@ public class spawnner {
 
     private int level = 0;
 
-    public spawnner(Game game, final Location l, final ItemStack m, int level, int max_holding) {
+    public Spawner(Game game, final Location l, final ItemStack m, int level, int max_holding) {
         System.out.println(String.format("[SPAWNER] Created %s spawner at x: %s y: %s z: %s with level: %s", m.getType().name(), l.getX(), l.getY(), l.getZ(), level));
         this.location = l;
         this.level = level;
@@ -45,16 +47,16 @@ public class spawnner {
         (new BukkitRunnable() {
             public void run() {
                 nextDrop--;
-                if (spawnner.this.stopped || () != gameState.IN_GAME)
+                if (Spawner.this.stopped || (game.getGameState()) != gameState.IN_GAME)
                     cancel();
                 if (getEntitiesAroundPoint(l, max_holding, m) >= 10)
                     return;
                 if (nextDrop <= 0) {
-                    nextDrop = ((levels[spawnner.this.level]) / 20);
+                    nextDrop = ((levels[Spawner.this.level]) / 20);
                     l.getWorld().dropItem(l, m);
                 }
             }
-        }).runTaskTimer(Main.game.handler, 0L, 25L);
+        }).runTaskTimer(game.getHandler(), 0L, 25L);
     }
 
     public long getNextDrop() {
@@ -76,5 +78,22 @@ public class spawnner {
 
     public void stop() {
         this.stopped = true;
+    }
+
+    private static Integer getEntitiesAroundPoint(Location location, double radius, ItemStack type) {
+        int count = 0;
+        for (Entity e : location.getWorld().getNearbyEntities(location, radius, radius, radius)) {
+            if (e instanceof Item) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    private static String capitalizeFirstLetter(String original) {
+        if (original == null || original.length() == 0) {
+            return original;
+        }
+        return original.substring(0, 1).toUpperCase() + original.substring(1).toLowerCase();
     }
 }

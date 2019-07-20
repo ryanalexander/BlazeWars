@@ -28,7 +28,7 @@ public class Spectator {
             p.hidePlayer(Main.getPlugin(Main.class),(Player)this.player);
         }
 
-        Main.game.spectators.put(player,this);
+        //Main.game.spectators.put(player,this);
         player.getInventory().clear();
         player.setAllowFlight(true);
         player.setSilent(true);
@@ -39,7 +39,7 @@ public class Spectator {
         for(Player p : Bukkit.getOnlinePlayers()){
             player.showPlayer(Main.getPlugin(Main.class),(Player)this.player);
         }
-        Main.game.spectators.remove(player);
+        //Main.game.spectators.remove(player);
         player.setGameMode(GameMode.SURVIVAL);
         player.getInventory().clear();
         player.setSilent(false);
